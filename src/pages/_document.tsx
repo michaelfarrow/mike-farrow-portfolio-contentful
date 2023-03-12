@@ -1,5 +1,6 @@
 import { Html, Head, Main, NextScript } from 'next/document'
-import { LIVE_PREVIEW, PREVIEW } from '@/lib/contentful'
+import { LIVE_PREVIEW } from '@/lib/contentful'
+import Link from 'next/link'
 
 export default function Document() {
   return (
@@ -19,7 +20,7 @@ export default function Document() {
       <body>
         {(LIVE_PREVIEW && (
           <div style={{ position: 'fixed', top: '1em', right: '1em' }}>
-            Preview Mode, <a href="/api/exit-preview">Exit</a>
+            Preview Mode, <Link href="/api/exit-preview">Exit</Link>
           </div>
         )) ||
           null}
