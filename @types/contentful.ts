@@ -91,6 +91,7 @@ export interface IContentCodeFields {
     | 'CSS'
     | 'HTML'
     | 'JavaScript'
+    | 'JSON'
     | 'SCSS'
     | 'Shell'
     | 'Shell Session'

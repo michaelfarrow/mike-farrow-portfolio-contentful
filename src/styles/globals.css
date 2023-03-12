@@ -1,3 +1,8 @@
+:root {
+  --text-color: #1f2a51;
+  --text-color-faded: #1f2a51cc;
+}
+
 body {
   /* font-variant-ligatures: none; */
   font-family: 'Overpass Mono', monospace;
@@ -5,7 +10,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   font-weight: 300;
   line-height: 1.7;
-  color: #1f2a51;
+  color: var(--text-color);
   padding: 4em;
   max-width: 1200px;
   margin: 0 auto;
