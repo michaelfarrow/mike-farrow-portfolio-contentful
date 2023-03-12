@@ -59,11 +59,11 @@ export interface Props {
   blockProps?: { [key in BLOCKS]?: HTMLAttributes<any> }
 }
 
-const getType = (node: any): CONTENT_TYPE | null => {
+function getType(node: any): CONTENT_TYPE | null {
   return node?.data?.target?.sys?.contentType?.sys?.id || undefined
 }
 
-const getContentType = (node: any): string | null => {
+function getContentType(node: any): string | null {
   return node?.data?.target?.fields?.file?.contentType || ''
 }
 
@@ -86,8 +86,9 @@ function handleAsset<T extends AssetHandler>(handler: T) {
   return h
 }
 
-// const childrenArray = (children: ReactNode): ReactNode[] =>
-//   Array.isArray(children) ? children || [] : [children]
+function childrenArray(children: ReactNode): ReactNode[] {
+  return Array.isArray(children) ? children || [] : [children]
+}
 
 // const findP = (el?: React.ReactElement) => {
 //   if (!el) return undefined
@@ -206,8 +207,8 @@ Props) {
       [BLOCKS.HEADING_6]: ({}, children) => <h6 {...blockProps(BLOCKS.HEADING_6)}>{children}</h6>,
       [BLOCKS.PARAGRAPH]: ({}, children) => <p {...blockProps(BLOCKS.PARAGRAPH)}>{children}</p>,
       [BLOCKS.HR]: () => <hr {...blockProps(BLOCKS.HR)} />,
-      // [BLOCKS.PARAGRAPH]: ({}, children) =>
-      //   (childrenArray(childrenArray(children)).join('').length && <p>{children}</p>) || null,
+      [BLOCKS.PARAGRAPH]: ({}, children) =>
+        (childrenArray(childrenArray(children)).join('').length && <p>{children}</p>) || null,
     },
   }
   return <>{documentToReactComponents(children, options)}</>
