@@ -14,6 +14,7 @@ import Attributions from '@/components/project/attributions'
 import Picture from '@/components/general/picture'
 import Video from '@/components/content/video'
 import Image from '@/components/content/image'
+import Code from '@/components/content/code'
 import typography from '@/styles/typography.module.css'
 
 export interface Params extends ParsedUrlQuery {
@@ -72,9 +73,10 @@ export default function Index({
       <div className={typography.textLinks}>
         <RichText
           blockEmbeddedEntry={{
+            project: Project,
             contentVideo: Video,
             contentImage: Image,
-            project: Project,
+            contentCode: Code,
           }}
           blockEmbeddedAsset={(asset, type) => {
             if (type.startsWith('image/')) {

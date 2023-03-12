@@ -1,0 +1,7 @@
+.pre,
+.pre > code {
+  color: #1f2a51 !important;
+  color: #1f2a51cc !important;
+  font-family: 'Overpass Mono', monospace !important;
+  font-weight: 400;
+}
