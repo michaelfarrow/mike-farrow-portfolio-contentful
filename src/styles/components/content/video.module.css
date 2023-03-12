@@ -1,0 +1,28 @@
+.wrapper {
+  width: 100%;
+  padding-top: 56.25%;
+  position: relative;
+  background-color: black;
+  color: white;
+  display: flex;
+}
+
+.iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: transparent;
+}
+
+.error {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  padding: 1em;
+  box-sizing: border-box;
+  transform: translateY(-50%);
+  text-align: center;
+}

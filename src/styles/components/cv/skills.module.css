@@ -1,0 +1,49 @@
+.list {
+  padding: 0;
+  margin: 0;
+  font-weight: 700;
+  list-style-type: none;
+  max-width: 700px;
+}
+
+.list .listItem {
+  margin-top: 1em;
+}
+
+.list .listItem:first-child {
+  margin-top: 0;
+}
+
+.list .list {
+  font-weight: 300;
+  display: inline;
+}
+
+.list .list::before {
+  content: ': ';
+}
+
+.list .list .listItem {
+  display: inline;
+  margin: 0;
+}
+
+.list .list .listItem::before {
+  content: ' • ';
+}
+
+.list .list .listItem .listItem::before {
+  content: ', ';
+}
+
+.list .list .listItem:first-child::before {
+  content: none;
+}
+
+.list .list .list::before {
+  content: ' inc. ';
+}
+
+.list .list .list .list {
+  display: none;
+}

@@ -1,0 +1,12 @@
+body {
+  /* font-variant-ligatures: none; */
+  font-family: 'Overpass Mono', monospace;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-weight: 300;
+  line-height: 1.7;
+  color: #1f2a51;
+  padding: 4em;
+  max-width: 1200px;
+  margin: 0 auto;
+}

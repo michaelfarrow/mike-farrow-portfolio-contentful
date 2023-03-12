@@ -1,0 +1,8 @@
+{
+  "files.eol": "\n",
+  "editor.formatOnSave": true,
+  "stylelint.validate": ["css"],
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "css.lint.unknownAtRules": "ignore",
+  "css.lint.validProperties": ["composes"]
+}

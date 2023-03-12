@@ -1,0 +1,42 @@
+{
+  "name": "mike-farrow-portfolio-fe",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently -c auto -n codegen,next --kill-others \"npm run codegen:poll\" \"next dev\"",
+    "build": "next build",
+    "start": "next start",
+    "export": "next export",
+    "lint": "next lint",
+    "codegen": "contentful-typescript-codegen --output @types/contentful.d.ts",
+    "codegen:poll": "contentful-typescript-codegen --output @types/contentful.ts --poll --interval 15"
+  },
+  "devDependencies": {
+    "@types/node": "18.14.6",
+    "@types/react": "18.0.28",
+    "@types/react-dom": "18.0.11",
+    "concurrently": "^7.6.0",
+    "eslint": "8.35.0",
+    "eslint-config-next": "13.2.3",
+    "typescript": "4.9.5"
+  },
+  "dependencies": {
+    "@contentful/rich-text-react-renderer": "^15.16.2",
+    "clsx": "^1.2.1",
+    "contentful": "^9.3.3",
+    "contentful-management": "^10.30.0",
+    "contentful-typescript-codegen": "^3.4.0",
+    "dayjs": "^1.11.7",
+    "dotenv": "^16.0.3",
+    "next": "13.2.3",
+    "normalize.css": "^8.0.1",
+    "react": "18.2.0",
+    "react-dom": "18.2.0"
+  },
+  "prettier": {
+    "semi": false,
+    "printWidth": 100,
+    "bracketSpacing": true,
+    "singleQuote": true
+  }
+}
