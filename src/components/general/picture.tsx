@@ -16,6 +16,7 @@ export interface Props extends React.ComponentPropsWithoutRef<'picture'> {
   }[]
   alt?: string
   defaultWidth?: number
+  maxWidth?: number
   sizes?: string
 }
 
@@ -39,8 +40,9 @@ export default function Picture({
   className,
   images,
   alt,
-  defaultWidth = 1200,
-  sizes = '100vw',
+  maxWidth,
+  defaultWidth = maxWidth ? maxWidth * 2 : 1200,
+  sizes = maxWidth ? `(max-width: ${maxWidth}px) 100vw, ${maxWidth}px` : '100vw',
   ...rest
 }: Props) {
   // Default image is our desktop image, or the last image if we can't determine

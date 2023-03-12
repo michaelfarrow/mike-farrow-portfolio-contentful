@@ -21,6 +21,7 @@ export default function Image({
       {...rest}
     >
       <Picture
+        maxWidth={maxWidth}
         alt={name}
         images={[
           {
