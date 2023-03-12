@@ -1,12 +1,15 @@
 import { CONTENT_TYPE, IEntry } from '@t/contentful'
 import { createClient, Entry } from 'contentful'
 
-const PREVIEW = process.env.NODE_ENV === 'development' && process.env.CONTENTFUL_PREVIEW_TOKEN
+export const PREVIEW = Boolean(
+  process.env.NODE_ENV === 'development' && process.env.CONTENTFUL_PREVIEW_TOKEN
+)
 
-const LIVE_PREVIEW =
+export const LIVE_PREVIEW = Boolean(
   process.env.NODE_ENV === 'production' &&
-  !process.env.NETLIFY &&
-  process.env.CONTENTFUL_PREVIEW_TOKEN
+    !process.env.NETLIFY &&
+    process.env.CONTENTFUL_PREVIEW_TOKEN
+)
 
 const SPACE_ID = process.env.CONTENTFUL_SPACE_ID
 const ACCESS_TOKEN =
