@@ -8,12 +8,14 @@ export type AssetParams = Omit<ImageAssetParams, 'asset' | 'alt' | 'width' | 'he
   ratio?: number
 }
 
+export type ImageConfig = {
+  image?: Asset
+  max?: number
+  params?: AssetParams
+}
+
 export interface Props extends React.ComponentPropsWithoutRef<'picture'> {
-  images: {
-    image?: Asset
-    max?: number
-    params?: AssetParams
-  }[]
+  images: ImageConfig[]
   alt?: string
   defaultWidth?: number
   maxWidth?: number
@@ -46,11 +48,12 @@ export default function Picture({
   ...rest
 }: Props) {
   // Default image is our desktop image, or the last image if we can't determine
-  const defaultImage = images.find(({ max }) => !max) || images[images.length - 1]
+  const defaultImage = (images.find(({ max }) => !max) || images[images.length - 1]) as
+    | ImageConfig
+    | undefined
 
   const defaultImageProps =
-    defaultImage &&
-    defaultImage.image &&
+    defaultImage?.image &&
     imageAssetProps({
       ...defaultImage.params,
       format: 'jpg',
