@@ -6,11 +6,11 @@
   font-weight: 400;
 }
 
-.pre > code {
+/* .pre > code {
   opacity: 0;
   transition: opacity 0.5s;
 }
 
 .mounted code {
   opacity: 1;
-}
+} */
