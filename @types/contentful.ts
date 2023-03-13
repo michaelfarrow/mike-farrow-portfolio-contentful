@@ -374,7 +374,7 @@ export interface ISettingsFields {
   name: string
 
   /** Key */
-  key: 'cv' | 'home' | 'projects'
+  key: 'global' | 'home' | 'cv' | 'projects'
 
   /** Items */
   items?:

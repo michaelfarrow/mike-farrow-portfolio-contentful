@@ -14,18 +14,18 @@
 }
 
 .highlight {
-  color: #d04759;
+  color: var(--colour-brand);
 }
 
 .textLinks a:not([class]) {
-  color: #d04759;
+  color: var(--colour-brand);
   text-underline-offset: 6px;
   text-decoration-thickness: 1px;
-  text-decoration-color: #d0475960;
+  text-decoration-color: var(--colour-brand-faded);
 }
 
 .textLinks a:not([class]):hover {
-  text-decoration-color: #d04759;
+  text-decoration-color: var(--colour-brand);
 }
 
 @media print {

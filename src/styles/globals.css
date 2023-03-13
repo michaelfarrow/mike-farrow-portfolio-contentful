@@ -1,6 +1,8 @@
 :root {
-  --text-color: #1f2a51;
-  --text-color-faded: #1f2a51cc;
+  --colour-text: #1f2a51;
+  --colour-text-faded: #1f2a51cc;
+  --colour-brand: #d04759;
+  --colour-brand-faded: #d0475960;
 }
 
 body {
@@ -10,7 +12,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   font-weight: 300;
   line-height: 1.7;
-  color: var(--text-color);
+  color: var(--colour-text);
   padding: 4em;
   max-width: 1200px;
   margin: 0 auto;

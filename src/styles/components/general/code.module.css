@@ -1,7 +1,7 @@
 .pre,
 .pre > code {
-  color: var(--text-color) !important;
-  color: var(--text-color-faded) !important;
+  color: var(--colour-text) !important;
+  color: var(--colour-text-faded) !important;
   font-family: var(--font-overpass-mono) !important;
   font-weight: 400;
 }

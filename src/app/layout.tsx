@@ -23,10 +23,27 @@ export interface Props {
   children: React.ReactNode
 }
 
-export default function RootLayout({ children }: Props) {
+import { getEntry } from '@/lib/contentful'
+import initSettings from '@/lib/settings'
+import Header from '@/components/global/header'
+
+export default async function RootLayout({ children }: Props) {
+  const settings = await getEntry({
+    content_type: 'settings',
+    'fields.key': 'global',
+  })
+
+  const s = initSettings(settings)
+  const linkedInUrl = s.url('linkedin.url')
+  const linkedInLabel = s.text('linkedin.label')
+
   return (
     <html lang="en" className={clsx(lato.variable, overpassMono.variable)}>
-      <body>{children}</body>
+      <body>
+        <Header />
+        {/* {(linkedInUrl && <Link href={linkedInUrl}>{linkedInLabel || 'LinkedIn'}</Link>) || null} */}
+        <main>{children}</main>
+      </body>
     </html>
   )
 }

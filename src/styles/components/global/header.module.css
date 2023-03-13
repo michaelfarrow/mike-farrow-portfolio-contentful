@@ -1,0 +1,9 @@
+.logo {
+  max-width: 400px;
+}
+
+.logo rect,
+.logo polygon,
+.logo path {
+  fill: var(--colour-brand);
+}
