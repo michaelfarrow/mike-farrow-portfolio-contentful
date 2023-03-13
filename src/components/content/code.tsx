@@ -19,11 +19,12 @@ const languageMap: { [key in IContentCode['fields']['language']]: Language } = {
   'C++': 'cpp',
   'CSS': 'css',
   'HTML': 'markup',
-  'JavaScript': 'tsx',
-  'SCSS': 'scss',
-  'Shell Session': 'shellSession',
-  'Shell': 'bash',
+  'JavaScript': 'jsx',
   'JSON': 'json',
+  'SCSS': 'scss',
+  'Shell': 'bash',
+  'Shell Session': 'shellSession',
+  'TypeScript': 'tsx',
 }
 
 export default function Code({

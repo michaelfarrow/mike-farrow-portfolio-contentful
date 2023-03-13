@@ -95,6 +95,7 @@ export interface IContentCodeFields {
     | 'SCSS'
     | 'Shell'
     | 'Shell Session'
+    | 'TypeScript'
 
   /** Filename */
   filename?: string | undefined
