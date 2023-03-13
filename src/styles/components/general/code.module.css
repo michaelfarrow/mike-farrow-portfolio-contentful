@@ -2,6 +2,15 @@
 .pre > code {
   color: var(--text-color) !important;
   color: var(--text-color-faded) !important;
-  font-family: 'Overpass Mono', monospace !important;
+  font-family: var(--font-overpass-mono) !important;
   font-weight: 400;
+}
+
+.pre > code {
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+
+.mounted code {
+  opacity: 1;
 }

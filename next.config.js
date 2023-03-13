@@ -5,6 +5,7 @@ const nextConfig = {
     unoptimized: true,
   },
   experimental: {
+    appDir: true,
     scrollRestoration: true,
   },
 }

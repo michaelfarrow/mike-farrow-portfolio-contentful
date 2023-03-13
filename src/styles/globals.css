@@ -5,7 +5,7 @@
 
 body {
   /* font-variant-ligatures: none; */
-  font-family: 'Overpass Mono', monospace;
+  font-family: var(--font-overpass-mono);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-weight: 300;

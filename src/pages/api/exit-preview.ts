@@ -1,6 +1,6 @@
 import { NextApiHandler } from 'next'
 
-const exit: NextApiHandler = async ({}, res) => {
+const exitPreview: NextApiHandler = async ({}, res) => {
   // Exit the current user from "Preview Mode". This function accepts no args.
   res.clearPreviewData()
 
@@ -9,4 +9,4 @@ const exit: NextApiHandler = async ({}, res) => {
   res.end()
 }
 
-export default exit
+export default exitPreview
