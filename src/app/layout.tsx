@@ -3,8 +3,16 @@ import '@/styles/globals.css'
 import 'prism-themes/themes/prism-one-light.css'
 // import 'prism-themes/themes/prism-material-light.css'
 
-import { Overpass_Mono, Lato } from 'next/font/google'
 import clsx from 'clsx'
+import { Overpass_Mono, Lato } from 'next/font/google'
+
+import { getEntry } from '@/lib/contentful'
+import initSettings from '@/lib/settings'
+import Header from '@/components/global/header'
+
+export interface Props {
+  children: React.ReactNode
+}
 
 const lato = Lato({
   subsets: ['latin'],
@@ -18,14 +26,6 @@ const overpassMono = Overpass_Mono({
   display: 'swap',
   variable: '--font-overpass-mono',
 })
-
-export interface Props {
-  children: React.ReactNode
-}
-
-import { getEntry } from '@/lib/contentful'
-import initSettings from '@/lib/settings'
-import Header from '@/components/global/header'
 
 export default async function RootLayout({ children }: Props) {
   const settings = await getEntry({
