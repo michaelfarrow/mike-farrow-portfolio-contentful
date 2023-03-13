@@ -1,6 +1,6 @@
 import { HTMLAttributes, ReactNode } from 'react'
 import { Entry, Asset } from 'contentful'
-import { Document as ContentfulDocument, BLOCKS, INLINES } from '@contentful/rich-text-types'
+import { Document as ContentfulDocument, BLOCKS, INLINES, MARKS } from '@contentful/rich-text-types'
 import {
   documentToReactComponents,
   Options,
@@ -10,6 +10,8 @@ import {
 import { CONTENT_TYPE, IEntry } from '@t/contentful'
 import Link from '@/components/general/link'
 import EntryLink from '@/components/general/entry-link'
+
+import styles from '@/styles/components/general/rich-text.module.css'
 
 // import merge from 'merge-options';
 
@@ -106,6 +108,7 @@ function childrenArray(children: ReactNode): ReactNode[] {
 //       }
 //     })
 //   }
+//   console.log('ere')
 //   return p
 // }
 
@@ -134,6 +137,16 @@ function Missing({ children }: { children: string | null }) {
   return <span style={{ display: 'none' }}>Missing handler for: {children}</span>
 }
 
+function unwrap(children: ReactNode, type: string): ReactNode {
+  const _children: any[] = Array.isArray(children) ? children : children ? [children] : []
+  if (!_children.length) return null
+  const firstChild = _children[0]
+  if (typeof firstChild === 'object' && firstChild.type === type && _children.length === 1) {
+    return firstChild?.props?.children || children
+  }
+  return children
+}
+
 export default function RichText({
   children,
   inlineHyperlink,
@@ -150,6 +163,10 @@ Props) {
   }
 
   const options: Options = {
+    renderText: (text) => <span>{text}</span>,
+    renderMark: {
+      [MARKS.CODE]: (children) => <span className={styles.code}>{children}</span>,
+    },
     renderNode: {
       [INLINES.HYPERLINK]: (node, children) => {
         return (
@@ -194,18 +211,15 @@ Props) {
       ),
       [BLOCKS.OL_LIST]: ({}, children) => <ol {...blockProps(BLOCKS.OL_LIST)}>{children}</ol>,
       [BLOCKS.UL_LIST]: ({}, children) => <ul {...blockProps(BLOCKS.UL_LIST)}>{children}</ul>,
-      [BLOCKS.LIST_ITEM]: ({}, children) => <li {...blockProps(BLOCKS.LIST_ITEM)}>{children}</li>,
-      // [BLOCKS.LIST_ITEM]: ({}, children) => {
-      //   const p = findP(childrenArray(children)[0] as React.ReactElement)
-      //   return <li>{(p && p.props.children) || children}</li>
-      // },
+      [BLOCKS.LIST_ITEM]: ({}, children) => {
+        return <li>{unwrap(children, 'p')}</li>
+      },
       [BLOCKS.HEADING_1]: ({}, children) => <h1 {...blockProps(BLOCKS.HEADING_1)}>{children}</h1>,
       [BLOCKS.HEADING_2]: ({}, children) => <h2 {...blockProps(BLOCKS.HEADING_2)}>{children}</h2>,
       [BLOCKS.HEADING_3]: ({}, children) => <h3 {...blockProps(BLOCKS.HEADING_3)}>{children}</h3>,
       [BLOCKS.HEADING_4]: ({}, children) => <h4 {...blockProps(BLOCKS.HEADING_4)}>{children}</h4>,
       [BLOCKS.HEADING_5]: ({}, children) => <h5 {...blockProps(BLOCKS.HEADING_5)}>{children}</h5>,
       [BLOCKS.HEADING_6]: ({}, children) => <h6 {...blockProps(BLOCKS.HEADING_6)}>{children}</h6>,
-      [BLOCKS.PARAGRAPH]: ({}, children) => <p {...blockProps(BLOCKS.PARAGRAPH)}>{children}</p>,
       [BLOCKS.HR]: () => <hr {...blockProps(BLOCKS.HR)} />,
       [BLOCKS.PARAGRAPH]: ({}, children) =>
         (childrenArray(childrenArray(children)).join('').length && <p>{children}</p>) || null,

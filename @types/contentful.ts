@@ -80,7 +80,7 @@ export interface IContactInstitution extends Entry<IContactInstitutionFields> {
 
 export interface IContentCodeFields {
   /** Name */
-  name?: string | undefined
+  name: string
 
   /** Language */
   language:
