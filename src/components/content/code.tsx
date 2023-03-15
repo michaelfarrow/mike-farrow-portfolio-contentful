@@ -1,12 +1,5 @@
-import dynamic from 'next/dynamic'
-
 import { IContentCode } from '@t/contentful'
 import GeneralCode, { Language } from '@/components/general/code'
-// import styles from '@/styles/components/content/video.module.css'
-
-// const GeneralCode = dynamic(() => import('@/components/general/code'), {
-//   ssr: false,
-// })
 
 export interface Props extends React.ComponentPropsWithoutRef<'div'> {
   entry: IContentCode
