@@ -314,14 +314,17 @@ export interface IProjectFields {
   /** Thumbnail */
   thumbnail: Asset
 
-  /** Client */
-  client?: IContactCompany | IContactIndividual | IContactInstitution | undefined
-
   /** Content */
   content: Document
 
+  /** Client */
+  client?: IContactCompany | IContactIndividual | IContactInstitution | undefined
+
   /** Attributions */
   attributions?: IProjectAttribution[] | undefined
+
+  /** Hide from Seach Engines */
+  hideFromSearch: boolean
 }
 
 export interface IProject extends Entry<IProjectFields> {
