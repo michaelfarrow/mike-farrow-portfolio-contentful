@@ -23,14 +23,18 @@ const languageMap: { [key in IContentCode['fields']['language']]: Language } = {
 export default function Code({
   className,
   entry: {
-    fields: { content, language, filename },
+    fields: { content, language, filename, hideCopy },
   },
   ...rest
 }: Props) {
   return (
     <div {...rest}>
-      {(filename && <div>{filename}</div>) || null}
-      <GeneralCode language={languageMap[language]} content={content} />
+      <GeneralCode
+        language={languageMap[language]}
+        content={content}
+        filename={filename}
+        hideCopy={hideCopy}
+      />
     </div>
   )
 }

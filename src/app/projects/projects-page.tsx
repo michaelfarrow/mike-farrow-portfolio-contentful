@@ -1,5 +1,3 @@
-'use client'
-
 import getData from './data'
 import EntryLink from '@/components/general/entry-link'
 

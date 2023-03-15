@@ -102,6 +102,9 @@ export interface IContentCodeFields {
 
   /** Content */
   content: string
+
+  /** Hide copy button */
+  hideCopy: boolean
 }
 
 export interface IContentCode extends Entry<IContentCodeFields> {

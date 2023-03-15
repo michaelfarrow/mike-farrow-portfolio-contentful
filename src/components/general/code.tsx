@@ -1,5 +1,11 @@
-import Refractor from 'react-refractor'
+'use client'
+
+import { useState } from 'react'
 import { Syntax } from 'refractor'
+import Refractor from 'react-refractor'
+import { useTimeoutEffect } from 'react-timing-hooks'
+import { CopyToClipboard } from 'react-copy-to-clipboard'
+import { FiCopy } from 'react-icons/fi'
 
 import arduino from 'refractor/lang/arduino'
 import c from 'refractor/lang/c'
@@ -37,14 +43,45 @@ Object.entries(LANGUAGE_CONFIG).forEach(([{}, lang]) => {
 
 export type Language = keyof typeof LANGUAGE_CONFIG
 
-export interface Props {
+export interface Props extends React.ComponentPropsWithoutRef<'span'> {
   content: string
   language: Language
+  filename?: string
+  hideCopy?: boolean
 }
 
-export default function Code({ language, content }: Props) {
+export default function Code({ language, content, filename, hideCopy, ...rest }: Props) {
   const mapped: Syntax | undefined = LANGUAGE_CONFIG[language]
+
+  const [copied, setCopied] = useState(false)
+
+  const onCopy = () => {
+    setCopied(true)
+  }
+
+  useTimeoutEffect(
+    (timeout) => {
+      if (copied) {
+        timeout(() => setCopied(false), 2000)
+      }
+    },
+    [copied]
+  )
+
   return (
-    <Refractor className={styles.pre} language={mapped?.displayName || 'text'} value={content} />
+    <span {...rest}>
+      {(filename && <span>{filename}</span>) || null}
+      {(copied && <span aria-hidden={!copied}>Copied</span>) || null}
+      <Refractor className={styles.pre} language={mapped?.displayName || 'text'} value={content} />
+      {(!hideCopy && (
+        <CopyToClipboard text={content} onCopy={onCopy}>
+          <button>
+            <FiCopy />
+            <span>Copy</span>
+          </button>
+        </CopyToClipboard>
+      )) ||
+        null}
+    </span>
   )
 }
