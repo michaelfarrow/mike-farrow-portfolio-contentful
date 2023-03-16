@@ -3,15 +3,18 @@
 import { useState } from 'react'
 import Link from 'next/link'
 
+import { useScrollPercentage } from '@/lib/scroll'
 import styles from '@/styles/components/global/header.module.css'
 import utils from '@/styles/utils.module.css'
 
 export default function Header() {
   const [newLogo, setNewLogo] = useState(false)
+  const { percentage: scrollPercentage } = useScrollPercentage({ windowScroll: true })
 
   return (
     <header>
       <Link href="/">
+        <div className={styles.progress} style={{ width: `${scrollPercentage.vertical}%` }} />
         <h1
           onClick={(e) => {
             setNewLogo(!newLogo)

@@ -28,3 +28,7 @@ body {
 .page-wrapper {
   overflow: hidden;
 }
+
+* {
+  scroll-margin-top: 2em;
+}

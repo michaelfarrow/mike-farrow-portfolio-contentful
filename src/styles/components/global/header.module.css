@@ -7,3 +7,12 @@
 .logo path {
   fill: var(--colour-brand);
 }
+
+.progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 5px;
+  background-color: var(--colour-brand);
+  z-index: 100;
+}
