@@ -1,0 +1,24 @@
+.wrapper {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.column {
+  width: 100%;
+}
+
+@media (min-width: 1200px) {
+  .wrapper {
+    flex-wrap: nowrap;
+    margin: 0 -1.5em;
+  }
+
+  .column {
+    width: 50%;
+    padding: 0 1.5em;
+  }
+
+  .reversed .column:first-child {
+    order: 1;
+  }
+}

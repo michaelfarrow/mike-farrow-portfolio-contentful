@@ -12,6 +12,7 @@
     "codegen:poll": "contentful-typescript-codegen --output @types/contentful.ts --poll --interval 15"
   },
   "devDependencies": {
+    "@types/lodash": "^4.14.191",
     "@types/node": "18.14.6",
     "@types/react": "18.0.28",
     "@types/react-copy-to-clipboard": "^5.0.4",
@@ -31,6 +32,7 @@
     "contentful-typescript-codegen": "^3.4.0",
     "dayjs": "^1.11.7",
     "dotenv": "^16.0.3",
+    "lodash": "^4.17.21",
     "next": "^13.2.4",
     "normalize.css": "^8.0.1",
     "prism-themes": "^1.9.0",

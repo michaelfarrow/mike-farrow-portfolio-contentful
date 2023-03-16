@@ -78,6 +78,34 @@ export interface IContactInstitution extends Entry<IContactInstitutionFields> {
   }
 }
 
+export interface IContentBreakpointImageFields {
+  /** Name */
+  name: string
+
+  /** Max */
+  max: 'Mobile' | 'Tablet'
+
+  /** Image */
+  image: Asset
+}
+
+export interface IContentBreakpointImage extends Entry<IContentBreakpointImageFields> {
+  sys: {
+    id: string
+    type: string
+    createdAt: string
+    updatedAt: string
+    locale: string
+    contentType: {
+      sys: {
+        id: 'contentBreakpointImage'
+        linkType: 'ContentType'
+        type: 'Link'
+      }
+    }
+  }
+}
+
 export interface IContentCodeFields {
   /** Name */
   name: string
@@ -124,6 +152,37 @@ export interface IContentCode extends Entry<IContentCodeFields> {
   }
 }
 
+export interface IContentColumnsFields {
+  /** Name */
+  name: string
+
+  /** Primary */
+  primary: Document
+
+  /** Secondary */
+  secondary: Document
+
+  /** Reversed */
+  reversed: boolean
+}
+
+export interface IContentColumns extends Entry<IContentColumnsFields> {
+  sys: {
+    id: string
+    type: string
+    createdAt: string
+    updatedAt: string
+    locale: string
+    contentType: {
+      sys: {
+        id: 'contentColumns'
+        linkType: 'ContentType'
+        type: 'Link'
+      }
+    }
+  }
+}
+
 export interface IContentImageFields {
   /** Name */
   name: string
@@ -131,8 +190,8 @@ export interface IContentImageFields {
   /** Image */
   image: Asset
 
-  /** Mobile Image */
-  mobileImage?: Asset | undefined
+  /** Alternative Images */
+  altImages?: IContentBreakpointImage[] | undefined
 
   /** Caption */
   caption?: string | undefined
@@ -151,6 +210,37 @@ export interface IContentImage extends Entry<IContentImageFields> {
     contentType: {
       sys: {
         id: 'contentImage'
+        linkType: 'ContentType'
+        type: 'Link'
+      }
+    }
+  }
+}
+
+export interface IContentImageCompareFields {
+  /** Name */
+  name: string
+
+  /** Image A */
+  imageA: IContentImage
+
+  /** Image B */
+  imageB: IContentImage
+
+  /** Vertical */
+  vertical: boolean
+}
+
+export interface IContentImageCompare extends Entry<IContentImageCompareFields> {
+  sys: {
+    id: string
+    type: string
+    createdAt: string
+    updatedAt: string
+    locale: string
+    contentType: {
+      sys: {
+        id: 'contentImageCompare'
         linkType: 'ContentType'
         type: 'Link'
       }
@@ -566,8 +656,11 @@ export type CONTENT_TYPE =
   | 'contactCompany'
   | 'contactIndividual'
   | 'contactInstitution'
+  | 'contentBreakpointImage'
   | 'contentCode'
+  | 'contentColumns'
   | 'contentImage'
+  | 'contentImageCompare'
   | 'contentLink'
   | 'contentVideo'
   | 'cvEducation'
@@ -587,8 +680,11 @@ export type IEntry =
   | IContactCompany
   | IContactIndividual
   | IContactInstitution
+  | IContentBreakpointImage
   | IContentCode
+  | IContentColumns
   | IContentImage
+  | IContentImageCompare
   | IContentLink
   | IContentVideo
   | ICvEducation

@@ -4,6 +4,7 @@ import Picture, { Props as PictureProps } from '@/components/general/picture'
 
 export interface Props extends Omit<PictureProps, 'alt' | 'images'> {
   asset: Asset
+  sizes?: string
 }
 
 export default function AssetImage({
@@ -11,6 +12,7 @@ export default function AssetImage({
   asset: {
     fields: { title },
   },
+  sizes,
   ...rest
 }: Props) {
   return (
@@ -22,6 +24,7 @@ export default function AssetImage({
           image: asset,
         },
       ]}
+      sizes={sizes}
     />
   )
 }

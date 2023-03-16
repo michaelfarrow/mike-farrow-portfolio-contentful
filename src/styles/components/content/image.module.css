@@ -1,8 +1,10 @@
 .figure {
-  margin: 4em -4em;
+  padding: 0;
+  margin: 0;
+  /* margin: 4em -4em; */
 }
 
 .caption {
-  margin-top: 1em;
-  padding: 0 4em;
+  /* margin-top: 1em; */
+  /* padding: 0 4em; */
 }

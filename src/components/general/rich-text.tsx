@@ -1,6 +1,13 @@
 import { HTMLAttributes, ReactNode } from 'react'
 import { Entry, Asset } from 'contentful'
-import { Document as ContentfulDocument, BLOCKS, INLINES, MARKS } from '@contentful/rich-text-types'
+import {
+  Document as ContentfulDocument,
+  Block,
+  Inline,
+  BLOCKS,
+  INLINES,
+  MARKS,
+} from '@contentful/rich-text-types'
 import {
   documentToReactComponents,
   Options,
@@ -8,39 +15,17 @@ import {
 } from '@contentful/rich-text-react-renderer'
 
 import { CONTENT_TYPE, IEntry } from '@t/contentful'
+import { toText, slugGenerator } from '@/lib/document'
 import Link from '@/components/general/link'
 import EntryLink from '@/components/general/entry-link'
 
 import styles from '@/styles/components/general/rich-text.module.css'
-
-// import merge from 'merge-options';
 
 export type Document = ContentfulDocument
 
 export interface RichTextProps {
   children: Document
 }
-
-// export interface RichTextEntry<T extends Entry<any>, K = T['fields']> extends Entry<K> {
-//   sys: {
-//     id: string
-//     type: string
-//     createdAt: string
-//     updatedAt: string
-//     locale: string
-//     contentType: {
-//       sys: {
-//         id: string
-//         linkType: 'ContentType'
-//         type: 'Link'
-//       }
-//     }
-//   }
-// }
-
-// export type EntryRenderProps<T extends Entry<any>> = {
-//   entry: RichTextEntry<T>
-// }
 
 export type EntryHandlers = {
   [Entry in IEntry as Entry['sys']['contentType']['sys']['id']]?: React.ComponentType<{
@@ -88,33 +73,11 @@ function handleAsset<T extends AssetHandler>(handler: T) {
   return h
 }
 
+type NodeHandler = (node: Block | Inline, children: ReactNode) => ReactNode
+
 function childrenArray(children: ReactNode): ReactNode[] {
   return Array.isArray(children) ? children || [] : [children]
 }
-
-// const findP = (el?: React.ReactElement) => {
-//   if (!el) return undefined
-//   let p: React.ReactElement | undefined
-//   if (el.props && el.props.children) {
-//     const children = !Array.isArray(el.props.children) ? [el.props.children] : el.props.children
-//     children.forEach((child: any) => {
-//       if (child.type === 'p' && !p) {
-//         p = child
-//       } else {
-//         const childP = findP(child)
-//         if (childP && !p) {
-//           p = childP
-//         }
-//       }
-//     })
-//   }
-//   console.log('ere')
-//   return p
-// }
-
-// function merge<T>(o: T, extend: T) {
-//   return o
-// }
 
 function EntryComponent({
   handlers,
@@ -141,8 +104,14 @@ function unwrap(children: ReactNode, type: string): ReactNode {
   const _children: any[] = Array.isArray(children) ? children : children ? [children] : []
   if (!_children.length) return null
   const firstChild = _children[0]
-  if (typeof firstChild === 'object' && firstChild.type === type && _children.length === 1) {
-    return firstChild?.props?.children || children
+
+  if (
+    typeof firstChild === 'object' &&
+    firstChild.type === type &&
+    (_children.length === 1 || !Array.isArray(_children))
+  ) {
+    const _children = firstChild?.props?.children
+    return _children !== undefined ? _children : children
   }
   return children
 }
@@ -156,10 +125,22 @@ export default function RichText({
   blockEmbeddedEntry,
   blockEmbeddedAsset,
   blockProps: mappedBlockProps,
-}: // options: extendOptions,
-Props) {
+}: Props) {
+  const slug = slugGenerator()
+
   function blockProps(type?: string) {
     return (mappedBlockProps as any)?.[type || ''] || {}
+  }
+
+  function handleHeading(Heading: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6', props?: any) {
+    const handler: NodeHandler = (node, children) => {
+      return (
+        <Heading id={slug(toText(node))} {...props}>
+          {children}
+        </Heading>
+      )
+    }
+    return handler
   }
 
   const options: Options = {
@@ -214,15 +195,27 @@ Props) {
       [BLOCKS.LIST_ITEM]: ({}, children) => {
         return <li>{unwrap(children, 'p')}</li>
       },
-      [BLOCKS.HEADING_1]: ({}, children) => <h1 {...blockProps(BLOCKS.HEADING_1)}>{children}</h1>,
-      [BLOCKS.HEADING_2]: ({}, children) => <h2 {...blockProps(BLOCKS.HEADING_2)}>{children}</h2>,
-      [BLOCKS.HEADING_3]: ({}, children) => <h3 {...blockProps(BLOCKS.HEADING_3)}>{children}</h3>,
-      [BLOCKS.HEADING_4]: ({}, children) => <h4 {...blockProps(BLOCKS.HEADING_4)}>{children}</h4>,
-      [BLOCKS.HEADING_5]: ({}, children) => <h5 {...blockProps(BLOCKS.HEADING_5)}>{children}</h5>,
-      [BLOCKS.HEADING_6]: ({}, children) => <h6 {...blockProps(BLOCKS.HEADING_6)}>{children}</h6>,
+      [BLOCKS.HEADING_1]: handleHeading('h1', blockProps(BLOCKS.HEADING_1)),
+      [BLOCKS.HEADING_2]: handleHeading('h2', blockProps(BLOCKS.HEADING_2)),
+      [BLOCKS.HEADING_3]: handleHeading('h3', blockProps(BLOCKS.HEADING_3)),
+      [BLOCKS.HEADING_4]: handleHeading('h1', blockProps(BLOCKS.HEADING_4)),
+      [BLOCKS.HEADING_5]: handleHeading('h5', blockProps(BLOCKS.HEADING_5)),
+      [BLOCKS.HEADING_6]: handleHeading('h6', blockProps(BLOCKS.HEADING_6)),
       [BLOCKS.HR]: () => <hr {...blockProps(BLOCKS.HR)} />,
-      [BLOCKS.PARAGRAPH]: ({}, children) =>
-        (childrenArray(childrenArray(children)).join('').length && <p>{children}</p>) || null,
+      [BLOCKS.PARAGRAPH]: ({}, children) => {
+        const _children = childrenArray(children)
+        const firstChild = _children[0]
+        const firstChildUnwrapped = firstChild && unwrap(firstChild, 'span')
+
+        if (
+          _children.length === 1 &&
+          typeof firstChildUnwrapped === 'string' &&
+          !firstChildUnwrapped.trim().length
+        )
+          return null
+
+        return <p>{children}</p>
+      },
     },
   }
   return <>{documentToReactComponents(children, options)}</>

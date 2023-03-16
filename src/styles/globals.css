@@ -1,8 +1,15 @@
+@import 'normalize.css';
+@import 'prism-themes/themes/prism-one-light.css';
+
 :root {
   --colour-text: #1f2a51;
   --colour-text-faded: #1f2a51cc;
   --colour-brand: #d04759;
   --colour-brand-faded: #d0475960;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
@@ -14,6 +21,10 @@ body {
   line-height: 1.7;
   color: var(--colour-text);
   padding: 4em;
-  max-width: 1200px;
+  max-width: 2000px;
   margin: 0 auto;
+}
+
+.page-wrapper {
+  overflow: hidden;
 }

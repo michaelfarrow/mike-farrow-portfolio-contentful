@@ -1,7 +1,4 @@
-import 'normalize.css'
 import '@/styles/globals.css'
-import 'prism-themes/themes/prism-one-light.css'
-// import 'prism-themes/themes/prism-material-light.css'
 
 import clsx from 'clsx'
 import { Overpass_Mono, Lato } from 'next/font/google'
@@ -40,9 +37,11 @@ export default async function RootLayout({ children }: Props) {
   return (
     <html lang="en" className={clsx(lato.variable, overpassMono.variable)}>
       <body>
-        <Header />
-        {/* {(linkedInUrl && <Link href={linkedInUrl}>{linkedInLabel || 'LinkedIn'}</Link>) || null} */}
-        <main>{children}</main>
+        <div className="page-wrapper">
+          <Header />
+          {/* {(linkedInUrl && <Link href={linkedInUrl}>{linkedInLabel || 'LinkedIn'}</Link>) || null} */}
+          <main>{children}</main>
+        </div>
       </body>
     </html>
   )
