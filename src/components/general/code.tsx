@@ -22,6 +22,9 @@ import shellSession from 'refractor/lang/shell-session'
 
 import styles from '@/styles/components/general/code.module.css'
 
+// TODO: remove once library fixes
+delete (Refractor as any).defaultProps
+
 const LANGUAGE_CONFIG = {
   arduino,
   c,
