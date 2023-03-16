@@ -24,6 +24,8 @@ export default function ImageCompare({
 }: Props) {
   const wrapper = useRef<HTMLDivElement>(null)
   const [split, setSplit] = useState(0.5)
+  const [loadedA, setLoadedA] = useState(false)
+  const [loadedB, setLoadedB] = useState(false)
 
   useEffect(() => {
     const updateSplit = (e: PointerEvent) => {
@@ -72,9 +74,21 @@ export default function ImageCompare({
     [split, 0],
   ]
 
+  const onImageLoaded = (i: number) => () => {
+    if (i === 0) {
+      setLoadedA(true)
+    } else {
+      setLoadedB(true)
+    }
+  }
+
   return (
     <div
-      className={clsx(vertical ? styles.wrapperVertical : styles.wrapper, className)}
+      className={clsx(
+        vertical ? styles.wrapperVertical : styles.wrapper,
+        loadedA && loadedB ? styles.loaded : undefined,
+        className
+      )}
       ref={wrapper}
       {...rest}
     >
@@ -96,7 +110,7 @@ export default function ImageCompare({
               : {}
           }
         >
-          <Picture entry={image} sizes={sizes} />
+          <Picture entry={image} sizes={sizes} onImageLoaded={onImageLoaded(i)} />
         </div>
       ))}
       <div className={styles.control} style={{ [vertical ? 'top' : 'left']: `${split * 100}%` }} />

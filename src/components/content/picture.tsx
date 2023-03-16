@@ -1,5 +1,3 @@
-import { orderBy } from 'lodash'
-
 import { IContentImage, IContentBreakpointImage } from '@t/contentful'
 import {
   default as GeneralPicture,
@@ -15,7 +13,7 @@ const BREAKPOINT_MAP: { [key in IContentBreakpointImage['fields']['max']]: numbe
   Tablet: 1200,
 }
 
-export default function Image({
+export default function Picture({
   className,
   style,
   entry: {
@@ -28,13 +26,10 @@ export default function Image({
     <GeneralPicture
       alt={name}
       images={[
-        ...orderBy(
-          (altImages || []).map(({ fields: { max, image } }) => ({
-            max: BREAKPOINT_MAP[max],
-            image,
-          })),
-          'max'
-        ),
+        ...(altImages || []).map(({ fields: { max, image } }) => ({
+          max: BREAKPOINT_MAP[max],
+          image,
+        })),
         {
           image,
         },

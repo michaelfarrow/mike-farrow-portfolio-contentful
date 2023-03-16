@@ -49,6 +49,8 @@ export const useScrollPercentage = <T extends HTMLElement>(
 
     listener?.addEventListener('scroll', handleScroll)
 
+    handleScroll()
+
     return () => {
       mounted = false
       listener?.removeEventListener('scroll', handleScroll)

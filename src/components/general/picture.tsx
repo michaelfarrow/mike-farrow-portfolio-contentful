@@ -1,4 +1,5 @@
 import { Asset } from 'contentful'
+import { orderBy } from 'lodash'
 import { imageAssetProps, ImageAssetParams } from '@/lib/image'
 import { default as GeneralImage } from '@/components/general/image'
 
@@ -20,6 +21,7 @@ export interface Props extends React.ComponentPropsWithoutRef<'picture'> {
   defaultWidth?: number
   maxWidth?: number
   sizes?: string
+  onImageLoaded?: () => void
 }
 
 function getHeight(width: number, params?: AssetParams) {
@@ -45,6 +47,7 @@ export default function Picture({
   maxWidth,
   defaultWidth = maxWidth ? maxWidth * 2 : 1200,
   sizes = maxWidth ? `(max-width: ${maxWidth}px) 100vw, ${maxWidth}px` : '100vw',
+  onImageLoaded,
   ...rest
 }: Props) {
   // Default image is our desktop image, or the last image if we can't determine
@@ -65,7 +68,7 @@ export default function Picture({
 
   return (
     <picture {...rest}>
-      {images.map(({ max, params, image }, i) => {
+      {orderBy(images, 'max', 'asc').map(({ max, params, image }, i) => {
         if (!image) return null
         const { width, height } = imageAssetProps({
           ...params,
@@ -86,7 +89,10 @@ export default function Picture({
           ) || null
         )
       })}
-      {(defaultImageProps && <GeneralImage {...defaultImageProps} />) || null}
+      {(defaultImageProps && (
+        <GeneralImage {...defaultImageProps} onImageLoaded={onImageLoaded} />
+      )) ||
+        null}
     </picture>
   )
 }

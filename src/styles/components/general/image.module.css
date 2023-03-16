@@ -1,11 +1,13 @@
 .image {
   display: block;
-  /* opacity: 0;
-  transition: opacity 1s; */
   max-width: 100%;
   height: auto;
+  transition-property: opacity;
+  transition-duration: 0s;
+  opacity: 0;
 }
 
-/* .loaded {
+.loaded {
+  transition-duration: 1s;
   opacity: 1;
-} */
+}

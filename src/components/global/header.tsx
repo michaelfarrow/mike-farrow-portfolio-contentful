@@ -1,20 +1,31 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 
 import { useScrollPercentage } from '@/lib/scroll'
 import styles from '@/styles/components/global/header.module.css'
 import utils from '@/styles/utils.module.css'
 
+const Progress = () => {
+  return null
+  const { percentage: scrollPercentage } = useScrollPercentage({ windowScroll: true })
+  return <div className={styles.progress} style={{ width: `${scrollPercentage.vertical}%` }} />
+}
+
 export default function Header() {
   const [newLogo, setNewLogo] = useState(false)
-  const { percentage: scrollPercentage } = useScrollPercentage({ windowScroll: true })
+  const [mounted, setMounted] = useState(false)
+
+  // Wait until after client-side hydration to show
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   return (
     <header>
       <Link href="/">
-        <div className={styles.progress} style={{ width: `${scrollPercentage.vertical}%` }} />
+        {(mounted && <Progress />) || null}
         <h1
           onClick={(e) => {
             setNewLogo(!newLogo)

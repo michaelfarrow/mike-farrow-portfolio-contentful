@@ -7,6 +7,14 @@
   -ms-user-select: none;
   user-select: none;
   cursor: ew-resize;
+  transition-property: opacity;
+  transition-duration: 0s;
+  opacity: 0;
+}
+
+.loaded {
+  transition-duration: 1s;
+  opacity: 1;
 }
 
 .wrapperVertical {
@@ -16,6 +24,7 @@
 
 .image > picture > img {
   width: 100%;
+  opacity: 1;
 }
 
 .image:nth-child(n + 2) {
