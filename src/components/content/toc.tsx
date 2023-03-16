@@ -1,7 +1,7 @@
 import clsx from 'clsx'
 import { Document, Block } from '@contentful/rich-text-types'
 
-import { toText, slug, slugGenerator } from '@/lib/document'
+import { toText, slugGenerator } from '@/lib/document'
 
 export type HeadingConfig = {
   block: Block
