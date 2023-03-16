@@ -12,7 +12,8 @@ html {
   scroll-behavior: smooth;
 }
 
-body {
+#page-wrapper {
+  overflow: hidden;
   /* font-variant-ligatures: none; */
   font-family: var(--font-overpass-mono);
   -webkit-font-smoothing: antialiased;
@@ -23,10 +24,6 @@ body {
   padding: 4em;
   max-width: 2000px;
   margin: 0 auto;
-}
-
-.page-wrapper {
-  overflow: hidden;
 }
 
 * {

@@ -17,3 +17,14 @@ export type GetStaticPropsNonNullable<
   K extends keyof Awaited<ReturnType<GetData>> = keyof Awaited<ReturnType<GetData>>,
   Preview extends PreviewData = PreviewData
 > = NextGetStaticProps<NonNullableObject<Awaited<ReturnType<GetData>>, K>, Params, Preview>
+
+export function Handle404<T extends React.ComponentType<any>>(Component: T) {
+  const ComponentWith404 = (props: any) => {
+    if (!props || !Object.keys(props).length) {
+      return null
+    }
+    return <Component {...props} />
+  }
+  ComponentWith404.displayName = `${Component.displayName}With404`
+  return ComponentWith404
+}
