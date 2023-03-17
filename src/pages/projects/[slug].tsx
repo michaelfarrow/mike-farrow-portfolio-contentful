@@ -1,7 +1,8 @@
 import getData from '@/app/projects/[slug]/data'
 import { Params, generateStaticParams } from '@/app/projects/[slug]/page'
 import ProjectPage from '@/app/projects/[slug]/project-page'
-import { Handle404 } from '@/lib/page'
+
+import { Handle404 } from '@/components/general/page'
 
 export async function getStaticPaths() {
   return {
