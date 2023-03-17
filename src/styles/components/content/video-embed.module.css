@@ -1,13 +1,17 @@
 .wrapper {
   width: 100%;
-  padding-top: 56.25%;
   position: relative;
   background-color: black;
   color: white;
   display: flex;
 }
 
-.iframe {
+.spacer {
+  width: 100%;
+  padding-top: 56.25%;
+}
+
+.youtube iframe {
   position: absolute;
   top: 0;
   left: 0;

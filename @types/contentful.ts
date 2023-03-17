@@ -280,8 +280,14 @@ export interface IContentVideoFields {
   /** Name */
   name: string
 
-  /** URL */
-  url: string
+  /** Video */
+  video: Asset
+
+  /** Width */
+  width?: number | undefined
+
+  /** Height */
+  height?: number | undefined
 }
 
 export interface IContentVideo extends Entry<IContentVideoFields> {
@@ -294,6 +300,37 @@ export interface IContentVideo extends Entry<IContentVideoFields> {
     contentType: {
       sys: {
         id: 'contentVideo'
+        linkType: 'ContentType'
+        type: 'Link'
+      }
+    }
+  }
+}
+
+export interface IContentVideoEmbedFields {
+  /** Name */
+  name: string
+
+  /** URL */
+  url: string
+
+  /** Width */
+  width?: number | undefined
+
+  /** Height */
+  height?: number | undefined
+}
+
+export interface IContentVideoEmbed extends Entry<IContentVideoEmbedFields> {
+  sys: {
+    id: string
+    type: string
+    createdAt: string
+    updatedAt: string
+    locale: string
+    contentType: {
+      sys: {
+        id: 'contentVideoEmbed'
         linkType: 'ContentType'
         type: 'Link'
       }
@@ -663,6 +700,7 @@ export type CONTENT_TYPE =
   | 'contentImageCompare'
   | 'contentLink'
   | 'contentVideo'
+  | 'contentVideoEmbed'
   | 'cvEducation'
   | 'cvExperience'
   | 'cvSkill'
@@ -687,6 +725,7 @@ export type IEntry =
   | IContentImageCompare
   | IContentLink
   | IContentVideo
+  | IContentVideoEmbed
   | ICvEducation
   | ICvExperience
   | ICvSkill

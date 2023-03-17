@@ -1,6 +1,6 @@
 import { IContentImage, IContentBreakpointImage } from '@t/contentful'
 import {
-  default as GeneralPicture,
+  default as GenericPicture,
   Props as GenericPictureProps,
 } from '@/components/general/picture'
 
@@ -23,7 +23,7 @@ export default function Picture({
   ...rest
 }: Props) {
   return (
-    <GeneralPicture
+    <GenericPicture
       alt={name}
       images={[
         ...(altImages || []).map(({ fields: { max, image } }) => ({

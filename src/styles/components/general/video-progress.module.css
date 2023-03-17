@@ -1,0 +1,69 @@
+.wrapper {
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+.inner {
+  padding: 20px 0;
+  margin: -20px 0;
+}
+
+.background {
+  display: block;
+  background-color: black;
+  position: relative;
+}
+
+.seek {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transform-origin: 0%;
+  background-color: white;
+  opacity: 0.5;
+  transition-property: transform;
+  transition-duration: 100ms;
+}
+
+.progress {
+  background-color: transparent;
+  height: 6px;
+}
+
+/* .video .video-progress__background {
+  transform: scaleY(0.2);
+  transition-property: transform, border-radius;
+  transition-duration: 250ms;
+  border-radius: 0;
+  overflow: hidden;
+}
+
+.video .video-progress__seek-wrapper:hover .video-progress__background {
+  transform: scaleY(1);
+  border-radius: 20px;
+} */
+
+.label {
+  position: absolute;
+  color: white;
+  top: -10px;
+  left: 0;
+  opacity: 0;
+  transition-property: transform, opacity;
+  transition-duration: 0s;
+  transition-delay: 0s;
+  pointer-events: none;
+}
+
+.labelInner {
+  position: absolute;
+  display: block;
+  transform: translate(-50%, -100%);
+}
+
+.inner:hover .label {
+  opacity: 1;
+  transition-delay: 0s, 100ms;
+  transition-duration: 100ms;
+}
