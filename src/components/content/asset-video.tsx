@@ -15,5 +15,5 @@ export default function Video({
   },
   sizes,
 }: Props) {
-  return <GenericVideo title={title} src={url} sizes={sizes} />
+  return <GenericVideo title={title} src={url} controls />
 }

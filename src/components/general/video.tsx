@@ -21,22 +21,22 @@ export interface Props extends React.ComponentPropsWithoutRef<'div'> {
   title?: string
   width?: number
   height?: number
-  sizes?: string
-  // coverImage?: Asset
   timeout?: number
-  hideControls?: boolean
+  background?: boolean
+  controls?: boolean
 }
 
 export default function Video({
   className,
   src,
   title,
-  sizes,
-  width = 16,
-  height = 9,
+  width = 1920,
+  height = 1080,
   timeout = 1,
-  hideControls,
+  background,
+  controls,
   // coverImage,
+  children,
   ...rest
 }: Props) {
   const video: React.MutableRefObject<CrossPlatformHTMLVideoElement | null> = useRef(null)
@@ -144,11 +144,11 @@ export default function Video({
   }
 
   useEffect(() => {
-    EventBus.on('videos:pause', pause)
+    !background && EventBus.on('videos:pause', pause)
     return () => {
       EventBus.off('videos:pause', pause)
     }
-  }, [])
+  }, [pause, background])
 
   return (
     <div
@@ -162,10 +162,13 @@ export default function Video({
       onMouseLeave={onInteractionEnd}
       {...rest}
     >
-      <div
-        className={styles.spacer}
-        style={width && height ? { paddingTop: `${(height / width) * 100}%` } : {}}
-      />
+      {(!children && (
+        <div
+          className={styles.spacer}
+          style={width && height ? { paddingTop: `${(height / width) * 100}%` } : {}}
+        />
+      )) ||
+        null}
       <video
         className={styles.video}
         title={title}
@@ -174,21 +177,25 @@ export default function Video({
         onPause={onPause}
         onEnded={onEnded}
         onTimeUpdate={onTimeUpdate}
+        loop={background}
+        autoPlay={background}
+        muted={background}
       >
         <source src={src} />
       </video>
-      <button
-        className={styles.button}
-        onClick={onPlayPauseClick}
-        onFocus={onInteractionStart}
-        onBlur={onInteractionEnd}
-      >
-        <FiPause className={styles.pause} />
-        <FiPlay className={styles.play} />
-        <span>{playing ? 'Pause' : 'Play'}</span>
-      </button>
-      {(!hideControls && (
+      {(children && <div className={styles.poster}>{children}</div>) || null}
+      {(controls && (
         <>
+          <button
+            className={styles.button}
+            onClick={onPlayPauseClick}
+            onFocus={onInteractionStart}
+            onBlur={onInteractionEnd}
+          >
+            <FiPause className={styles.pause} />
+            <FiPlay className={styles.play} />
+            <span>{playing ? 'Pause' : 'Play'}</span>
+          </button>
           {(fullscreenSupported && (
             <button
               className={styles.fullScreen}
@@ -215,13 +222,6 @@ export default function Video({
         </>
       )) ||
         null}
-      {/* <NoSSR> */}
-      {/* {(coverImage && coverImage.fields.file && (
-          <Image asset={coverImage} className="video__poster" />
-        )) ||
-          null}
-        */}
-      {/* </NoSSR> */}
     </div>
   )
 }

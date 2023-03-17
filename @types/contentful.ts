@@ -288,6 +288,12 @@ export interface IContentVideoFields {
 
   /** Height */
   height?: number | undefined
+
+  /** Poster */
+  poster?: IContentImage | undefined
+
+  /** Background */
+  background: boolean
 }
 
 export interface IContentVideo extends Entry<IContentVideoFields> {
@@ -319,6 +325,9 @@ export interface IContentVideoEmbedFields {
 
   /** Height */
   height?: number | undefined
+
+  /** Poster */
+  poster?: IContentImage | undefined
 }
 
 export interface IContentVideoEmbed extends Entry<IContentVideoEmbedFields> {

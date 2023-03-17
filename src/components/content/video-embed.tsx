@@ -11,8 +11,6 @@ export interface Props extends React.ComponentPropsWithoutRef<'div'> {
   sizes?: string
 }
 
-// TODO: add event bus
-
 const YOUTUBE_REGEX =
   /^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube(-nocookie)?\.com|youtu.be))(\/(?:[\w\-]+\?v=|embed\/|v\/)?)([\w\-]+)(\S+)?$/
 
@@ -45,6 +43,13 @@ export default function VideoEmbed({
   const onPlayerReady = (e: YouTubeEvent) => {
     player.current = e.target
   }
+
+  useEffect(
+    () => () => {
+      EventBus.off('videos:pause', pause)
+    },
+    [pause]
+  )
 
   return (
     <div

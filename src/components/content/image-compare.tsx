@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import clsx from 'clsx'
+import { useAnimationFrameLoop } from 'react-timing-hooks'
 
 import { IContentImageCompare } from '@t/contentful'
 import Picture from '@/components/content/picture'
@@ -24,8 +25,18 @@ export default function ImageCompare({
 }: Props) {
   const wrapper = useRef<HTMLDivElement>(null)
   const [split, setSplit] = useState(0.5)
+  const [interacting, setInteracting] = useState(false)
+  const [splitCurrent, setSplitCurrent] = useState(split)
   const [loadedA, setLoadedA] = useState(false)
   const [loadedB, setLoadedB] = useState(false)
+
+  const { start, stop } = useAnimationFrameLoop(() => {
+    const current = splitCurrent + (split - splitCurrent) / 4
+    setSplitCurrent(current)
+    if (Math.abs(current - split) <= 0.001 && !interacting) {
+      stop()
+    }
+  })
 
   useEffect(() => {
     const updateSplit = (e: PointerEvent) => {
@@ -37,10 +48,9 @@ export default function ImageCompare({
     }
 
     const _wrapper = wrapper.current
-    let pointerDown = false
 
     const onPointerMove = (e: PointerEvent) => {
-      if (pointerDown) {
+      if (interacting) {
         e.preventDefault()
         updateSplit(e)
       }
@@ -48,11 +58,14 @@ export default function ImageCompare({
 
     const onPointerDown = (e: PointerEvent) => {
       e.preventDefault()
-      pointerDown = true
+      setInteracting(true)
+      start()
       updateSplit(e)
     }
 
-    const onPointerUp = () => (pointerDown = false)
+    const onPointerUp = () => {
+      setInteracting(false)
+    }
 
     _wrapper && _wrapper.addEventListener('pointerdown', onPointerDown)
     window.addEventListener('pointermove', onPointerMove)
@@ -65,13 +78,13 @@ export default function ImageCompare({
       window.removeEventListener('pointerup', onPointerUp)
       window.removeEventListener('pointercancel', onPointerUp)
     }
-  }, [vertical])
+  }, [vertical, interacting, start])
 
   const clipPath = [
     [1, 0],
     [1, 1],
-    [split, 1],
-    [split, 0],
+    [splitCurrent, 1],
+    [splitCurrent, 0],
   ]
 
   const onImageLoaded = (i: number) => () => {
@@ -113,7 +126,10 @@ export default function ImageCompare({
           <Picture entry={image} sizes={sizes} onImageLoaded={onImageLoaded(i)} />
         </div>
       ))}
-      <div className={styles.control} style={{ [vertical ? 'top' : 'left']: `${split * 100}%` }} />
+      <div
+        className={styles.control}
+        style={{ [vertical ? 'top' : 'left']: `${splitCurrent * 100}%` }}
+      />
     </div>
   )
 }
