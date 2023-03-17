@@ -7,6 +7,7 @@ import EventBus from '@/lib/event-bus'
 import VideoProgress from '@/components/general/video-progress'
 
 import styles from '@/styles/components/general/video.module.css'
+import utils from '@/styles/utils.module.css'
 
 type CrossPlatformDocument = Document & {
   webkitExitFullscreen?: () => {}
@@ -177,7 +178,6 @@ export default function Video({
         null}
       <video
         className={styles.video}
-        title={title}
         ref={video}
         onPlay={onPlay}
         onPause={(!background && onPause) || undefined}
@@ -228,6 +228,7 @@ export default function Video({
         </>
       )) ||
         null}
+      {(title && <span className={utils.srOnly}>{title}</span>) || null}
     </div>
   )
 }

@@ -18,6 +18,12 @@
   object-fit: cover;
 }
 
+@media all and (display-mode: fullscreen) {
+  .video {
+    object-fit: contain;
+  }
+}
+
 .poster {
   position: relative;
   transition-property: opacity;
