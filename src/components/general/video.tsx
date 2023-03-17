@@ -154,12 +154,18 @@ export default function Video({
     <div
       className={clsx(
         styles.wrapper,
-        currentTime ? (playing ? styles.playing : styles.paused) : styles.stopped,
+        background
+          ? styles.playing
+          : currentTime
+          ? playing
+            ? styles.playing
+            : styles.paused
+          : styles.stopped,
         interactionTimeout !== undefined || controlsInteracting ? styles.interacting : null,
         className
       )}
-      onMouseMove={onInteractionStart}
-      onMouseLeave={onInteractionEnd}
+      onMouseMove={(!background && onInteractionStart) || undefined}
+      onMouseLeave={(!background && onInteractionEnd) || undefined}
       {...rest}
     >
       {(!children && (
@@ -174,9 +180,9 @@ export default function Video({
         title={title}
         ref={video}
         onPlay={onPlay}
-        onPause={onPause}
-        onEnded={onEnded}
-        onTimeUpdate={onTimeUpdate}
+        onPause={(!background && onPause) || undefined}
+        onEnded={(!background && onEnded) || undefined}
+        onTimeUpdate={(!background && onTimeUpdate) || undefined}
         loop={background}
         autoPlay={background}
         muted={background}
@@ -184,7 +190,7 @@ export default function Video({
         <source src={src} />
       </video>
       {(children && <div className={styles.poster}>{children}</div>) || null}
-      {(controls && (
+      {(!background && controls && (
         <>
           <button
             className={styles.button}

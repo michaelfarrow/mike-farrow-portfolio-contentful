@@ -30,7 +30,7 @@ export default function Video({
       src={url}
       width={width}
       height={height}
-      controls={!background}
+      controls
       background={background}
     >
       {poster && <Picture entry={poster} sizes={sizes} />}
