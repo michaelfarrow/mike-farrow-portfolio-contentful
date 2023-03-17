@@ -1,0 +1,12 @@
+.info {
+  display: flex;
+  align-items: center;
+  min-height: 2rem;
+  transition-property: opacity;
+  transition-duration: 500ms;
+  opacity: 0;
+}
+
+.calculated .info {
+  opacity: 1;
+}

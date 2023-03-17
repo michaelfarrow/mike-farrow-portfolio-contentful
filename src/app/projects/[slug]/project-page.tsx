@@ -6,6 +6,8 @@ import { NonNullableObject } from '@/lib/types'
 import TOC from '@/components/content/toc'
 import RichText from '@/components/content/page-rich-text'
 import Attributions from '@/components/project/attributions'
+import ReadingTime from '@/components/content/reading-time'
+
 import typography from '@/styles/typography.module.css'
 
 export interface Props extends NonNullableObject<Awaited<ReturnType<typeof getData>>> {}
@@ -19,7 +21,10 @@ export default function ProjectPage({
     <>
       <h2 className={clsx(typography.h, typography.h2)}>{name}</h2>
       <TOC document={content} />
-      <RichText document={content} />
+      <ReadingTime>
+        {' '}
+        <RichText document={content} />
+      </ReadingTime>
       {attributions?.length ? <Attributions entries={attributions} /> : null}
     </>
   )
