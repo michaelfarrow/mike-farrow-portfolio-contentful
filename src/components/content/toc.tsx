@@ -42,5 +42,7 @@ export default function TOC({ className, document, ...rest }: Props) {
     }
   })
 
-  return renderTocLevel(headings, { className: clsx(className), ...rest })
+  return (
+    (headings.length && renderTocLevel(headings, { className: clsx(className), ...rest })) || null
+  )
 }
