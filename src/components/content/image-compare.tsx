@@ -25,8 +25,8 @@ export default function ImageCompare({
 }: Props) {
   const wrapper = useRef<HTMLDivElement>(null)
   const [split, setSplit] = useState(0.5)
-  const [interacting, setInteracting] = useState(false)
   const [splitCurrent, setSplitCurrent] = useState(split)
+  const [interacting, setInteracting] = useState(false)
   const [loadedA, setLoadedA] = useState(false)
   const [loadedB, setLoadedB] = useState(false)
 
