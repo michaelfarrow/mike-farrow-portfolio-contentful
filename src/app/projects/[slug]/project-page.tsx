@@ -14,15 +14,14 @@ export interface Props extends NonNullableObject<Awaited<ReturnType<typeof getDa
 
 export default function ProjectPage({
   project: {
-    fields: { name, content, attributions },
+    fields: { name, slug, content, attributions },
   },
 }: Props) {
   return (
     <>
       <h2 className={clsx(typography.h, typography.h2)}>{name}</h2>
       <TOC document={content} />
-      <ReadingTime>
-        {' '}
+      <ReadingTime key={`/projects/${slug}`}>
         <RichText document={content} />
       </ReadingTime>
       {attributions?.length ? <Attributions entries={attributions} /> : null}
