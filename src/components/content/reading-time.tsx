@@ -11,7 +11,7 @@ interface Props extends React.ComponentPropsWithoutRef<'div'> {
 
 export default function ReadingTime({ className, children, wordsPerMinute = 200 }: Props) {
   const [minutes, setTime] = useState<number | null>(null)
-  const ref: React.MutableRefObject<HTMLDivElement | null> = useRef(null)
+  const ref = useRef<HTMLDivElement | null>(null)
 
   useTimeoutEffect((timeout) => {
     timeout(() => {
