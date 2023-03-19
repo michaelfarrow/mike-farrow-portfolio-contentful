@@ -67,7 +67,7 @@ export default function Picture({
     })
 
   return (
-    <picture {...rest}>
+    <picture className={className} {...rest}>
       {orderBy(images, 'max', 'asc').map(({ max, params, image }, i) => {
         if (!image) return null
         const { width, height } = imageAssetProps({

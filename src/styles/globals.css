@@ -4,8 +4,8 @@
 :root {
   --colour-text: #1f2a51;
   --colour-text-faded: #1f2a51cc;
-  --colour-brand: #d04759;
-  --colour-brand-faded: #d0475960;
+  --colour-brand: #fd4440;
+  --colour-brand-faded: #fd444060;
 }
 
 html {
@@ -13,7 +13,7 @@ html {
 }
 
 #page-wrapper {
-  overflow: hidden;
+  /* overflow: hidden; */
   /* font-variant-ligatures: none; */
   font-family: var(--font-overpass-mono);
   -webkit-font-smoothing: antialiased;

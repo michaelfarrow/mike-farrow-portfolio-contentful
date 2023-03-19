@@ -8,6 +8,8 @@ import RichText from '@/components/content/page-rich-text'
 import Attributions from '@/components/project/attributions'
 import ReadingTime from '@/components/content/reading-time'
 
+import styles from '@/styles/pages/project.module.css'
+import richTextStyles from '@/styles/pages/content/project.module.css'
 import typography from '@/styles/typography.module.css'
 
 export interface Props extends NonNullableObject<Awaited<ReturnType<typeof getData>>> {}
@@ -19,10 +21,12 @@ export default function ProjectPage({
 }: Props) {
   return (
     <>
-      <h2 className={clsx(typography.h, typography.h2)}>{name}</h2>
+      <h1 className={typography.h1}>{name}</h1>
       <TOC document={content} />
       <ReadingTime key={`/projects/${slug}`}>
-        <RichText document={content} />
+        <div className={clsx(styles.content, typography.textLinks)}>
+          <RichText document={content} styles={richTextStyles} />
+        </div>
       </ReadingTime>
       {attributions?.length ? <Attributions entries={attributions} /> : null}
     </>

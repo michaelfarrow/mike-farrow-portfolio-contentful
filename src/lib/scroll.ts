@@ -1,24 +1,26 @@
 import { useLayoutEffect, useRef, useState } from 'react'
 import { debounce } from 'lodash'
 
-export interface Percentage {
+export interface State {
   vertical: number
   horizontal: number
 }
 
-export interface UseScrollPercentageOptions {
-  onProgress?: (percentage: Percentage) => void
+export interface UseScrollPositionOptions {
+  onProgress?: (data: { position: State; percentage: State }) => void
   windowScroll?: boolean
   timeout?: number
 }
 
-export const useScrollPercentage = <T extends HTMLElement>(
-  options?: UseScrollPercentageOptions
-) => {
+export const useScrollPosition = <T extends HTMLElement>(options?: UseScrollPositionOptions) => {
   const { onProgress, windowScroll, timeout } = options || {}
 
   const ref = useRef<T>(null)
-  const [percentage, setPercentage] = useState<Percentage>({
+  const [position, setPosition] = useState<State>({
+    vertical: 0,
+    horizontal: 0,
+  })
+  const [percentage, setPercentage] = useState<State>({
     vertical: 0,
     horizontal: 0,
   })
@@ -34,16 +36,24 @@ export const useScrollPercentage = <T extends HTMLElement>(
         const { scrollTop, scrollHeight, clientHeight, scrollLeft, scrollWidth, clientWidth } =
           container
 
+        setPosition({ vertical: scrollTop, horizontal: scrollLeft })
+
         const verticalProgress = Math.abs((scrollTop / (scrollHeight - clientHeight)) * 100)
         const horizontalProgress = Math.abs((scrollLeft / (scrollWidth - clientWidth)) * 100)
+
+        const position = {
+          vertical: scrollTop,
+          horizontal: scrollLeft,
+        }
 
         const percentage = {
           vertical: isNaN(verticalProgress) ? 0 : verticalProgress,
           horizontal: isNaN(horizontalProgress) ? 0 : horizontalProgress,
         }
 
+        setPosition(position)
         setPercentage(percentage)
-        onProgress?.(percentage)
+        onProgress?.({ position, percentage })
       }
     }, timeout ?? 10)
 
@@ -57,5 +67,5 @@ export const useScrollPercentage = <T extends HTMLElement>(
     }
   }, [onProgress, ref, timeout, windowScroll])
 
-  return { percentage, ref }
+  return { percentage, position, ref }
 }

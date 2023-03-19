@@ -1,0 +1,7 @@
+.content > *:first-child {
+  margin-top: 0;
+}
+
+.content > *:last-child {
+  margin-top: 0;
+}

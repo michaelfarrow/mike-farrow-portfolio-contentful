@@ -1,4 +1,5 @@
 import { HTMLAttributes, ReactNode } from 'react'
+import clsx from 'clsx'
 import { Entry, Asset } from 'contentful'
 import {
   Document as ContentfulDocument,
@@ -44,6 +45,7 @@ export interface Props {
   blockEmbeddedAsset?: (asset: Asset, contentType: string) => ReactNode
   options?: Options
   blockProps?: { [key in BLOCKS]?: HTMLAttributes<any> }
+  styles?: any
 }
 
 function getType(node: any): CONTENT_TYPE | null {
@@ -125,6 +127,7 @@ export default function RichText({
   blockEmbeddedEntry,
   blockEmbeddedAsset,
   blockProps: mappedBlockProps,
+  styles: externalStyles = {},
 }: Props) {
   const slug = slugGenerator()
 
@@ -135,7 +138,11 @@ export default function RichText({
   function handleHeading(Heading: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6', props?: any) {
     const handler: NodeHandler = (node, children) => {
       return (
-        <Heading id={slug(toText(node))} {...props}>
+        <Heading
+          className={clsx(externalStyles.h, externalStyles[Heading])}
+          id={slug(toText(node))}
+          {...props}
+        >
           {children}
         </Heading>
       )
@@ -146,7 +153,9 @@ export default function RichText({
   const options: Options = {
     renderText: (text) => <span>{text}</span>,
     renderMark: {
-      [MARKS.CODE]: (children) => <span className={styles.code}>{children}</span>,
+      [MARKS.CODE]: (children) => (
+        <span className={clsx(styles.code, externalStyles.markCode)}>{children}</span>
+      ),
     },
     renderNode: {
       [INLINES.HYPERLINK]: (node, children) => {
@@ -190,10 +199,18 @@ export default function RichText({
         (asset, contentType) =>
           (blockEmbeddedAsset && contentType && blockEmbeddedAsset(asset, contentType)) || null
       ),
-      [BLOCKS.OL_LIST]: ({}, children) => <ol {...blockProps(BLOCKS.OL_LIST)}>{children}</ol>,
-      [BLOCKS.UL_LIST]: ({}, children) => <ul {...blockProps(BLOCKS.UL_LIST)}>{children}</ul>,
+      [BLOCKS.OL_LIST]: ({}, children) => (
+        <ol className={externalStyles.ol} {...blockProps(BLOCKS.OL_LIST)}>
+          {children}
+        </ol>
+      ),
+      [BLOCKS.UL_LIST]: ({}, children) => (
+        <ul className={externalStyles.ul} {...blockProps(BLOCKS.UL_LIST)}>
+          {children}
+        </ul>
+      ),
       [BLOCKS.LIST_ITEM]: ({}, children) => {
-        return <li>{unwrap(children, 'p')}</li>
+        return <li className={externalStyles.li}>{unwrap(children, 'p')}</li>
       },
       [BLOCKS.HEADING_1]: handleHeading('h1', blockProps(BLOCKS.HEADING_1)),
       [BLOCKS.HEADING_2]: handleHeading('h2', blockProps(BLOCKS.HEADING_2)),
@@ -201,7 +218,7 @@ export default function RichText({
       [BLOCKS.HEADING_4]: handleHeading('h1', blockProps(BLOCKS.HEADING_4)),
       [BLOCKS.HEADING_5]: handleHeading('h5', blockProps(BLOCKS.HEADING_5)),
       [BLOCKS.HEADING_6]: handleHeading('h6', blockProps(BLOCKS.HEADING_6)),
-      [BLOCKS.HR]: () => <hr {...blockProps(BLOCKS.HR)} />,
+      [BLOCKS.HR]: () => <hr className={externalStyles.hr} {...blockProps(BLOCKS.HR)} />,
       [BLOCKS.PARAGRAPH]: ({}, children) => {
         const _children = childrenArray(children)
         const firstChild = _children[0]
@@ -214,7 +231,7 @@ export default function RichText({
         )
           return null
 
-        return <p>{children}</p>
+        return <p className={externalStyles.p}>{children}</p>
       },
     },
   }

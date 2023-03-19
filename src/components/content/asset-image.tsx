@@ -12,19 +12,17 @@ export default function AssetImage({
   asset: {
     fields: { title },
   },
-  sizes,
   ...rest
 }: Props) {
   return (
     <Picture
-      {...rest}
       alt={title}
       images={[
         {
           image: asset,
         },
       ]}
-      sizes={sizes}
+      {...rest}
     />
   )
 }

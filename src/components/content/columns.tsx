@@ -7,6 +7,7 @@ import styles from '@/styles/components/content/columns.module.css'
 
 export interface Props extends React.ComponentPropsWithoutRef<'div'> {
   entry: IContentColumns
+  styles?: any
 }
 
 export default function PageRichText({
@@ -14,6 +15,7 @@ export default function PageRichText({
   entry: {
     fields: { primary, secondary, reversed },
   },
+  styles: richTextStyles,
   ...rest
 }: Props) {
   return (
@@ -22,12 +24,15 @@ export default function PageRichText({
       {...rest}
     >
       {[primary, secondary].map((document, i) => (
-        <RichText
-          key={i}
-          className={styles.column}
-          document={document}
-          sizes="(min-width: 1200px) 50vw, 100vw"
-        />
+        <div key={i} className={styles.column}>
+          <div className={styles.content}>
+            <RichText
+              document={document}
+              sizes="(min-width: 1200px) 50vw, 100vw"
+              styles={richTextStyles}
+            />
+          </div>
+        </div>
       ))}
     </div>
   )

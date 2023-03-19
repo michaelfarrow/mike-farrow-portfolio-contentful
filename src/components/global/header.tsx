@@ -1,15 +1,16 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import clsx from 'clsx'
 import Link from 'next/link'
 
-import { useScrollPercentage } from '@/lib/scroll'
+import { useScrollPosition } from '@/lib/scroll'
 import styles from '@/styles/components/global/header.module.css'
 import utils from '@/styles/utils.module.css'
 
 const Progress = () => {
   return null
-  const { percentage: scrollPercentage } = useScrollPercentage({ windowScroll: true })
+  const { percentage: scrollPercentage } = useScrollPosition({ windowScroll: true })
   return <div className={styles.progress} style={{ width: `${scrollPercentage.vertical}%` }} />
 }
 
@@ -17,7 +18,9 @@ export default function Header() {
   const [newLogo, setNewLogo] = useState(false)
   const [mounted, setMounted] = useState(false)
 
-  // Wait until after client-side hydration to show
+  const { position: scrollPos } = useScrollPosition({ windowScroll: true })
+
+  // Wait until after client-side hydration to show progress
   useEffect(() => {
     setMounted(true)
   }, [])
@@ -35,7 +38,7 @@ export default function Header() {
           <span className={utils.srOnly}>Mike Farrow</span>
           {(newLogo && (
             <svg
-              className={styles.logo}
+              className={clsx(styles.logo, scrollPos.vertical > 100 && styles.logoCollapse)}
               version="1.1"
               xmlns="http://www.w3.org/2000/svg"
               xmlnsXlink="http://www.w3.org/1999/xlink"
@@ -85,7 +88,7 @@ export default function Header() {
             </svg>
           )) || (
             <svg
-              className={styles.logo}
+              className={clsx(styles.logo, scrollPos.vertical > 100 && styles.logoCollapse)}
               version="1.1"
               xmlns="http://www.w3.org/2000/svg"
               xmlnsXlink="http://www.w3.org/1999/xlink"

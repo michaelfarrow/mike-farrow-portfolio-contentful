@@ -1,11 +1,22 @@
 .logo {
+  position: fixed;
+  top: 1em;
+  left: 1em;
   max-width: 400px;
+  z-index: 999999;
+  transition-property: max-width;
+  transition-duration: 300ms;
+  transition-timing-function: ease-out;
 }
 
 .logo rect,
 .logo polygon,
 .logo path {
   fill: var(--colour-brand);
+}
+
+.logoCollapse {
+  max-width: 200px;
 }
 
 .progress {

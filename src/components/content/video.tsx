@@ -1,8 +1,8 @@
 import { IContentVideo } from '@t/contentful'
-import { default as GenericVideo } from '@/components/general/video'
+import { default as GenericVideo, Props as GenericVideoProps } from '@/components/general/video'
 import Picture from '@/components/content/picture'
 
-export interface Props {
+export interface Props extends Omit<GenericVideoProps, 'src' | 'title' | 'width' | 'height'> {
   entry: IContentVideo
   sizes?: string
 }
@@ -23,6 +23,7 @@ export default function Video({
     },
   },
   sizes,
+  ...rest
 }: Props) {
   return (
     <GenericVideo
@@ -32,6 +33,7 @@ export default function Video({
       height={height}
       controls
       background={background}
+      {...rest}
     >
       {poster && <Picture entry={poster} sizes={sizes} />}
     </GenericVideo>

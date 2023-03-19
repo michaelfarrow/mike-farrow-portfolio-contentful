@@ -21,7 +21,6 @@ const languageMap: { [key in IContentCode['fields']['language']]: Language } = {
 }
 
 export default function Code({
-  className,
   entry: {
     fields: { content, language, filename, hideCopy },
   },

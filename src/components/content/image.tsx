@@ -1,6 +1,7 @@
 import { IContentImage } from '@t/contentful'
 import Picture from '@/components/content/picture'
 import styles from '@/styles/components/content/image.module.css'
+import clsx from 'clsx'
 
 export interface Props extends React.ComponentPropsWithoutRef<'figure'> {
   entry: IContentImage
@@ -19,7 +20,7 @@ export default function Image({
 }: Props) {
   return (
     <figure
-      className={styles.figure}
+      className={clsx(styles.figure, className)}
       style={{ ...((maxWidth && { maxWidth }) || {}), ...style }}
       {...rest}
     >
