@@ -1,7 +1,6 @@
 import clsx from 'clsx'
-import { useRef, useState } from 'react'
+import { useRef, useEffect, useState } from 'react'
 import readingTime from 'reading-time'
-import { useTimeoutEffect } from 'react-timing-hooks'
 
 import styles from '@/styles/components/content/reading-time.module.css'
 
@@ -13,22 +12,20 @@ export default function ReadingTime({ className, children, wordsPerMinute = 200 
   const [minutes, setTime] = useState<number | null>(null)
   const ref = useRef<HTMLDivElement | null>(null)
 
-  useTimeoutEffect((timeout) => {
-    timeout(() => {
-      if (ref && ref.current) {
-        setTime(
-          Math.max(
-            1,
-            Math.ceil(
-              readingTime(ref.current.innerText, {
-                wordsPerMinute,
-              }).minutes
-            )
+  useEffect(() => {
+    if (ref && ref.current) {
+      setTime(
+        Math.max(
+          1,
+          Math.ceil(
+            readingTime(ref.current.innerText, {
+              wordsPerMinute,
+            }).minutes
           )
         )
-      }
-    }, 500)
-  }, [])
+      )
+    }
+  }, [wordsPerMinute])
 
   const isCalculated = minutes !== null
 
