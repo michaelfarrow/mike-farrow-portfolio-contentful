@@ -3,6 +3,34 @@
 import { Asset, Entry } from 'contentful'
 import { Document } from '@contentful/rich-text-types'
 
+export interface ICategoryFields {
+  /** Name */
+  name: string
+
+  /** Slug */
+  slug: string
+
+  /** Description */
+  description?: string | undefined
+}
+
+export interface ICategory extends Entry<ICategoryFields> {
+  sys: {
+    id: string
+    type: string
+    createdAt: string
+    updatedAt: string
+    locale: string
+    contentType: {
+      sys: {
+        id: 'category'
+        linkType: 'ContentType'
+        type: 'Link'
+      }
+    }
+  }
+}
+
 export interface IContactCompanyFields {
   /** Name */
   name: string
@@ -447,14 +475,20 @@ export interface IProjectFields {
   /** Slug */
   slug: string
 
-  /** Description */
-  description?: string | undefined
-
   /** Date */
   date: string
 
+  /** Categories */
+  categories?: ICategory[] | undefined
+
+  /** Description */
+  description?: string | undefined
+
   /** Thumbnail */
   thumbnail: Asset
+
+  /** Colour */
+  colour?: string | undefined
 
   /** Content */
   content: Document
@@ -702,6 +736,7 @@ export interface ISettingsUrl extends Entry<ISettingsUrlFields> {
 }
 
 export type CONTENT_TYPE =
+  | 'category'
   | 'contactCompany'
   | 'contactIndividual'
   | 'contactInstitution'
@@ -727,6 +762,7 @@ export type CONTENT_TYPE =
   | 'settingsUrl'
 
 export type IEntry =
+  | ICategory
   | IContactCompany
   | IContactIndividual
   | IContactInstitution

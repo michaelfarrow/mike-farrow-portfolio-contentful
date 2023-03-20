@@ -18,13 +18,18 @@ html {
   font-family: var(--font-body);
   /* -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale; */
-  font-size: 22px;
+  font-size: 18px;
   font-weight: 300;
   line-height: 1.8;
   color: var(--colour-text);
-  padding: 0 4em;
   max-width: 2000px;
   margin: 0 auto;
+}
+
+@media (min-width: 800px) {
+  #page-wrapper {
+    font-size: 22px;
+  }
 }
 
 * {

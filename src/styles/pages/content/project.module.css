@@ -1,4 +1,38 @@
+.h2 {
+  composes: h2 from '../../typography.module.css';
+  margin-top: 2em;
+}
+
+.h3 {
+  composes: h3 from '../../typography.module.css';
+  margin-top: 1.5em;
+}
+
+.hr {
+  border: 0;
+  height: 1px;
+  background: var(--colour-text);
+  opacity: 0.25;
+}
+
+.image,
+.imageCompare,
+.video,
+.videoEmbed,
+.assetVideo,
+.assetImage,
+.code,
+.hr {
+  margin-top: 2em;
+  margin-bottom: 2em;
+}
+
 @media (min-width: 1200px) {
+  .columns {
+    margin-left: -2em;
+    margin-right: -2em;
+  }
+
   .h,
   .p,
   .ul,
@@ -22,38 +56,7 @@
     margin-left: 0;
     margin-right: 0;
   }
-}
 
-.h2 {
-  composes: h2 from '../../typography.module.css';
-  margin-top: 3em;
-}
-
-.h3 {
-  composes: h3 from '../../typography.module.css';
-  margin-top: 2em;
-}
-
-.hr {
-  border: 0;
-  height: 1px;
-  background: var(--colour-text);
-  opacity: 0.25;
-}
-
-.image,
-.imageCompare,
-.video,
-.videoEmbed,
-.assetVideo,
-.assetImage,
-.code,
-.hr {
-  margin-top: 2em;
-  margin-bottom: 2em;
-}
-
-@media (min-width: 1200px) {
   .columns,
   .image,
   .imageCompare,
@@ -75,8 +78,8 @@
   .columns .assetImage,
   .columns .code,
   .columns .hr {
-    margin-top: 2em;
-    margin-bottom: 2em;
+    margin-top: 1em;
+    margin-bottom: 1em;
   }
 
   .columns > div > div > *:first-child {
