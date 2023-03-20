@@ -1,10 +1,10 @@
 .header {
-  position: fixed;
+  position: absolute;
   z-index: 999999;
 }
 
 .logo {
-  position: fixed;
+  position: absolute;
   top: 1em;
   left: 1em;
   width: 70vw;
@@ -12,6 +12,12 @@
   transition-property: width, max-width, top, left, transform;
   transition-duration: 300ms;
   transition-timing-function: cubic-bezier(0.85, 0, 0.15, 1);
+}
+
+@media (min-width: 800px) {
+  .logo {
+    position: fixed;
+  }
 }
 
 @media (min-width: 1200px) {

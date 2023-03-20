@@ -24,6 +24,7 @@ html {
   color: var(--colour-text);
   max-width: 2000px;
   margin: 0 auto;
+  padding-top: 1px;
 }
 
 @media (min-width: 800px) {
