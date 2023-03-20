@@ -4,11 +4,28 @@ import readingTime from 'reading-time'
 
 import styles from '@/styles/components/content/reading-time.module.css'
 
-interface Props extends React.ComponentPropsWithoutRef<'div'> {
+interface Props extends Omit<React.ComponentPropsWithoutRef<'div'>, 'children'> {
+  content: React.ReactNode
+  children?: (props: {
+    content: React.ReactNode
+    minutesContent: React.ReactNode
+    minutes: number | null
+  }) => React.ReactNode
+
   wordsPerMinute?: number
 }
 
-export default function ReadingTime({ className, children, wordsPerMinute = 200 }: Props) {
+export default function ReadingTime({
+  className,
+  content,
+  wordsPerMinute = 200,
+  children = ({ content, minutesContent }) => (
+    <>
+      {minutesContent}
+      {content}
+    </>
+  ),
+}: Props) {
   const [minutes, setTime] = useState<number | null>(null)
   const ref = useRef<HTMLDivElement | null>(null)
 
@@ -27,14 +44,24 @@ export default function ReadingTime({ className, children, wordsPerMinute = 200 
     }
   }, [wordsPerMinute])
 
-  const isCalculated = minutes !== null
-
   return (
-    <div className={clsx(isCalculated ? styles.calculated : undefined, className)}>
-      <div className={styles.info} aria-hidden={!isCalculated}>
-        {isCalculated ? `${minutes} minute read` : 'loading read time'}
-      </div>
-      <div ref={ref}>{children}</div>
-    </div>
+    <>
+      {children({
+        content: <div ref={ref}>{content}</div>,
+        minutesContent: (
+          <div
+            className={clsx(
+              styles.info,
+              minutes !== null ? styles.calculated : undefined,
+              className
+            )}
+            aria-hidden={!minutes !== null}
+          >
+            {minutes !== null ? `${minutes} minute read` : 'loading read time'}
+          </div>
+        ),
+        minutes,
+      })}
+    </>
   )
 }

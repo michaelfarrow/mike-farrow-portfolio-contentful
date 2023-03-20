@@ -1,25 +1,44 @@
-.p,
-.h,
-.code {
-  max-width: 900px;
-  margin-left: auto;
-  margin-right: auto;
-}
+@media (min-width: 1200px) {
+  .h,
+  .p,
+  .ul,
+  .ol,
+  .code,
+  .imageMaxWidth,
+  .hr {
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+  }
 
-.columns .p,
-.columns .h,
-.columns .code {
-  max-width: none;
-  margin-left: 0;
-  margin-right: 0;
+  .columns .h,
+  .columns .p,
+  .columns .ul,
+  .columns .ol,
+  .columns .code,
+  .columns .imageMaxWidth,
+  .columns .hr {
+    max-width: none;
+    margin-left: 0;
+    margin-right: 0;
+  }
 }
 
 .h2 {
+  composes: h2 from '../../typography.module.css';
   margin-top: 3em;
 }
 
 .h3 {
+  composes: h3 from '../../typography.module.css';
   margin-top: 2em;
+}
+
+.hr {
+  border: 0;
+  height: 1px;
+  background: var(--colour-text);
+  opacity: 0.25;
 }
 
 .image,
@@ -28,12 +47,14 @@
 .videoEmbed,
 .assetVideo,
 .assetImage,
-.code {
+.code,
+.hr {
   margin-top: 2em;
   margin-bottom: 2em;
 }
 
 @media (min-width: 1200px) {
+  .columns,
   .image,
   .imageCompare,
   .video,
@@ -41,9 +62,21 @@
   .assetVideo,
   .assetImage,
   .code,
-  .columns {
+  .hr {
     margin-top: 5em;
     margin-bottom: 5em;
+  }
+
+  .columns .image,
+  .columns .imageCompare,
+  .columns .video,
+  .columns .videoEmbed,
+  .columns .assetVideo,
+  .columns .assetImage,
+  .columns .code,
+  .columns .hr {
+    margin-top: 2em;
+    margin-bottom: 2em;
   }
 
   .columns > div > div > *:first-child {

@@ -8,5 +8,6 @@ export default async function getData() {
 
   return {
     settings,
+    home: true,
   }
 }

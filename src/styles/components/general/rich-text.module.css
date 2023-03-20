@@ -1,12 +1,16 @@
 .code {
+  font-family: var(--font-monospace);
   display: inline-block;
   white-space: pre;
   overflow-x: auto;
   padding: 0.1em 0.5em;
   background-color: oldlace;
   vertical-align: middle;
+  max-width: 100%;
+  overflow: auto;
 }
 
 .code:first-child:last-child {
   padding: 1em 1.5em;
+  font-size: 0.85em;
 }

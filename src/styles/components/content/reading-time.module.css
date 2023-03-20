@@ -7,6 +7,6 @@
   opacity: 0;
 }
 
-.calculated .info {
+.info.calculated {
   opacity: 1;
 }

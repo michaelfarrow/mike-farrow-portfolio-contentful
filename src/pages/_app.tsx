@@ -2,27 +2,30 @@ import '@/styles/globals.css'
 
 import type { AppProps } from 'next/app'
 import clsx from 'clsx'
-import { Overpass_Mono, Lato } from 'next/font/google'
+import { DM_Mono, Sora } from 'next/font/google'
+
+// Jost, Sora
 
 import Header from '@/components/global/header'
 
-const lato = Lato({
+const monospace = DM_Mono({
   subsets: ['latin'],
   display: 'swap',
-  weight: ['100', '300', '400', '700', '900'],
-  variable: '--font-lato',
+  weight: ['400'],
+  variable: '--font-monospace',
 })
 
-const overpassMono = Overpass_Mono({
+const body = Sora({
   subsets: ['latin'],
+  // weight: ['400'],
   display: 'swap',
-  variable: '--font-overpass-mono',
+  variable: '--font-body',
 })
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <div id="page-wrapper" className={clsx(lato.variable, overpassMono.variable)}>
-      <Header />
+    <div id="page-wrapper" className={clsx(monospace.variable, body.variable)}>
+      <Header home={!!pageProps.home} />
       <main>
         <Component {...pageProps} />
       </main>

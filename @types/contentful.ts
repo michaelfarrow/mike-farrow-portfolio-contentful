@@ -447,6 +447,9 @@ export interface IProjectFields {
   /** Slug */
   slug: string
 
+  /** Description */
+  description?: string | undefined
+
   /** Date */
   date: string
 

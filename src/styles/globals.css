@@ -15,17 +15,18 @@ html {
 #page-wrapper {
   /* overflow: hidden; */
   /* font-variant-ligatures: none; */
-  font-family: var(--font-overpass-mono);
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  font-weight: 400;
-  line-height: 1.7;
+  font-family: var(--font-body);
+  /* -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale; */
+  font-size: 22px;
+  font-weight: 300;
+  line-height: 1.8;
   color: var(--colour-text);
-  padding: 4em;
+  padding: 0 4em;
   max-width: 2000px;
   margin: 0 auto;
 }
 
 * {
-  scroll-margin-top: 2em;
+  scroll-margin-top: 1.5em;
 }

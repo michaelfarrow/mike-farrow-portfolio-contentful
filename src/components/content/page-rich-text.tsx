@@ -23,7 +23,13 @@ export default function PageRichText({ document, sizes, styles, ...rest }: Props
     <Columns className={styles.columns} {...props} styles={styles} />
   )
 
-  const _Image = (props: ImageProps) => <Image className={styles.image} {...props} sizes={sizes} />
+  const _Image = (props: ImageProps) => {
+    const image = <Image className={styles.image} {...props} sizes={sizes} />
+    if (props.entry.fields.maxWidth) {
+      return <div className={styles.imageMaxWidth}>{image}</div>
+    }
+    return image
+  }
   const _ImageCompare = (props: ImageCompareProps) => (
     <ImageCompare className={styles.imageCompare} {...props} sizes={sizes} />
   )
