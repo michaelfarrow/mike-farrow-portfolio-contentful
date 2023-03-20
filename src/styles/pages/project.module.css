@@ -26,6 +26,22 @@
 .headerWrapper {
   position: relative;
   height: 100%;
+  margin-left: 0.5em;
+  margin-right: 0.5em;
+}
+
+@media (min-width: 800px) {
+  .headerWrapper {
+    margin-left: 1em;
+    margin-right: 1em;
+  }
+}
+
+@media (min-width: 1200px) {
+  .headerWrapper {
+    margin-left: 0;
+    margin-right: 0;
+  }
 }
 
 .headerImage img {
