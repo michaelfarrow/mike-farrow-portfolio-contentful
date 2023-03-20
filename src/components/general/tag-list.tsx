@@ -9,8 +9,8 @@ export interface Props extends React.ComponentPropsWithoutRef<'div'> {
 
 export default function TagList({ className, tags, ...rest }: Props): JSX.Element {
   return (
-    <div className={clsx(styles.wrapper, className)}>
-      <ul className={styles.list} {...rest}>
+    <div className={clsx(styles.wrapper, className)} {...rest}>
+      <ul className={styles.list}>
         {tags.map((tag, i) => (
           <li key={`tag-${i}`}>
             <Tag className={styles.tag}>{tag}</Tag>
