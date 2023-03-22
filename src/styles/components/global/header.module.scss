@@ -1,12 +1,13 @@
 .header {
   position: absolute;
   z-index: 999999;
+  margin: 0 auto;
 }
 
 .logo {
   position: absolute;
-  top: 1em;
-  left: 1em;
+  top: 2rem;
+  left: 0;
   width: 70vw;
   max-width: 400px;
   transition-property: width, max-width, top, left, transform;
@@ -15,14 +16,14 @@
 }
 
 @media (min-width: 800px) {
-  .logo {
+  .header {
     position: fixed;
   }
 }
 
 @media (min-width: 1200px) {
   .logo {
-    left: 2em;
+    left: 2rem;
   }
 }
 

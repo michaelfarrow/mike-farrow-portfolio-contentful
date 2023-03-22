@@ -3,7 +3,7 @@ import clsx from 'clsx'
 
 import { IProjectAttribution } from '@t/contentful'
 import OptionalLink from '@/components/general/optional-link'
-import typography from '@/styles/typography.module.css'
+import typography from '@/styles/typography.module.scss'
 
 export interface Props extends React.ComponentPropsWithoutRef<'ul'> {
   entries: IProjectAttribution[]

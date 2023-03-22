@@ -4,7 +4,7 @@ import YouTube, { YouTubeEvent, YouTubePlayer } from 'react-youtube'
 
 import { IContentVideoEmbed } from '@t/contentful'
 import EventBus from '@/lib/event-bus'
-import styles from '@/styles/components/content/video-embed.module.css'
+import styles from '@/styles/components/content/video-embed.module.scss'
 
 export interface Props extends React.ComponentPropsWithoutRef<'div'> {
   entry: IContentVideoEmbed

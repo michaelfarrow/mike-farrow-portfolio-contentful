@@ -1,14 +1,11 @@
 {
   "files.eol": "\n",
   "editor.formatOnSave": true,
-  "stylelint.validate": [
-    "css"
-  ],
+  "stylelint.validate": ["css"],
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "css.lint.unknownAtRules": "ignore",
-  "css.lint.validProperties": [
-    "composes"
-  ],
+  "css.lint.validProperties": ["composes"],
+  "scss.lint.validProperties": ["composes"],
   "typescript.tsdk": "node_modules/typescript/lib",
   "typescript.enablePromptUseWorkspaceTsdk": true
 }

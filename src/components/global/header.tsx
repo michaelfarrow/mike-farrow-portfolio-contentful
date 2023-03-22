@@ -5,8 +5,8 @@ import clsx from 'clsx'
 import Link from 'next/link'
 
 import { useScrollPosition } from '@/lib/scroll'
-import styles from '@/styles/components/global/header.module.css'
-import utils from '@/styles/utils.module.css'
+import styles from '@/styles/components/global/header.module.scss'
+import utils from '@/styles/utils.module.scss'
 
 export interface Props {
   home?: boolean

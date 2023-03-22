@@ -6,7 +6,7 @@ import { DateRange } from '@/components/general/date-time'
 import RichText from '@/components/general/rich-text'
 import OptionalLink from '@/components/general/optional-link'
 
-import styles from '@/styles/components/cv/experience.module.css'
+import styles from '@/styles/components/cv/experience.module.scss'
 
 export interface Props extends React.ComponentPropsWithoutRef<'ul'> {
   entries: ICvExperience[]

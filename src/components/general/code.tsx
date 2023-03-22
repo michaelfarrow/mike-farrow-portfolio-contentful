@@ -20,7 +20,7 @@ import scss from 'refractor/lang/scss'
 import bash from 'refractor/lang/bash'
 import shellSession from 'refractor/lang/shell-session'
 
-import styles from '@/styles/components/general/code.module.css'
+import styles from '@/styles/components/general/code.module.scss'
 
 // TODO: remove once library fixes
 delete (Refractor as any).defaultProps

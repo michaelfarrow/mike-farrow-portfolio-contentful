@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import clsx from 'clsx'
 import { useAnimationFrameLoop } from 'react-timing-hooks'
 
-import styles from '@/styles/components/general/progress.module.css'
+import styles from '@/styles/components/general/progress.module.scss'
 
 export interface Props extends React.ComponentPropsWithoutRef<'div'> {
   className?: string

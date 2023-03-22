@@ -10,10 +10,12 @@ import ReadingTime from '@/components/content/reading-time'
 import DateTime from '@/components/general/date-time'
 import TagList from '@/components/general/tag-list'
 
-import styles from '@/styles/pages/project.module.css'
-import richTextStyles from '@/styles/pages/content/project.module.css'
-import typography from '@/styles/typography.module.css'
+import typography from '@/styles/typography.module.scss'
 import Picture from '@/components/general/picture'
+
+import layout from '@/styles/layout.module.scss'
+import styles from '@/styles/pages/project.module.scss'
+import richTextStyles from '@/styles/pages/content/project.module.scss'
 
 export interface Props extends NonNullableObject<Awaited<ReturnType<typeof getData>>> {}
 
@@ -22,6 +24,8 @@ export default function ProjectPage({
     fields: { name, slug, date, colour, categories, description, content, thumbnail, attributions },
   },
 }: Props) {
+  const imageFullWidth = false
+
   return (
     <>
       <ReadingTime
@@ -34,33 +38,48 @@ export default function ProjectPage({
       >
         {({ content: contentNode, minutesContent }) => (
           <>
-            <div className={styles.columns}>
-              <div className={styles.column}>
-                <div
+            <div
+              className={clsx(
+                styles.headerColumns,
+                layout.columns,
+                imageFullWidth && styles.imageRelative
+              )}
+            >
+              <div
+                className={clsx(
+                  styles.headerColumnImage,
+                  layout.column,
+                  !imageFullWidth && styles.imageRelative
+                )}
+              >
+                {/* <div
                   className={styles.headerWrapper}
                   style={colour ? { backgroundColor: colour } : {}}
-                >
-                  <Picture
-                    className={styles.headerImage}
-                    images={[{ image: thumbnail }]}
-                    sizes="(min-width: 1200px) 50vw, 100vw"
-                  />
-                </div>
+                > */}
+                <Picture
+                  className={styles.headerImage}
+                  style={colour ? { backgroundColor: colour } : {}}
+                  images={[{ image: thumbnail }]}
+                  sizes={imageFullWidth ? '100vw' : '(min-width: 1200px) 50vw, 100vw'}
+                />
+                {/* </div> */}
               </div>
-              <div className={styles.column}>
-                <h1 className={clsx(typography.h1, styles.title)}>{name}</h1>
-                {(description && <p className={styles.description}>{description}</p>) || null}
-                <div className={styles.info}>
-                  {(categories?.length && (
-                    <TagList tags={categories.map(({ fields: { name } }) => name)} />
-                  )) ||
-                    null}
-                  <p className={styles.date}>
-                    <DateTime str={date} format="MMMM YYYY" />
-                  </p>
+              <div className={clsx(styles.headerColumnInfo, layout.column)}>
+                <div className={styles.infoContainer}>
+                  <h1 className={clsx(typography.h1, styles.title)}>{name}</h1>
+                  {(description && <p className={styles.description}>{description}</p>) || null}
+                  <div className={styles.info}>
+                    {(categories?.length && (
+                      <TagList tags={categories.map(({ fields: { name } }) => name)} />
+                    )) ||
+                      null}
+                    <p className={styles.date}>
+                      <DateTime str={date} format="MMMM YYYY" />
+                    </p>
+                  </div>
+                  {/* {minutesContent} */}
+                  {/* <TOC document={content} /> */}
                 </div>
-                {/* {minutesContent} */}
-                {/* <TOC document={content} /> */}
               </div>
             </div>
             {contentNode}

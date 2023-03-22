@@ -1,7 +1,7 @@
 import clsx from 'clsx'
 
 import { ICvSkill } from '@t/contentful'
-import styles from '@/styles/components/cv/skills.module.css'
+import styles from '@/styles/components/cv/skills.module.scss'
 
 export interface Props extends React.ComponentPropsWithoutRef<'ul'> {
   entries: ICvSkill[]

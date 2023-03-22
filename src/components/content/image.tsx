@@ -1,6 +1,6 @@
 import { IContentImage } from '@t/contentful'
 import Picture from '@/components/content/picture'
-import styles from '@/styles/components/content/image.module.css'
+import styles from '@/styles/components/content/image.module.scss'
 import clsx from 'clsx'
 
 export interface Props extends React.ComponentPropsWithoutRef<'figure'> {

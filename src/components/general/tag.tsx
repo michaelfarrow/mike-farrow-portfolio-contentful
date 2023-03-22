@@ -1,6 +1,6 @@
 import clsx from 'clsx'
 
-import styles from '@/styles/components/general/tag.module.css'
+import styles from '@/styles/components/general/tag.module.scss'
 
 export interface Props extends React.ComponentPropsWithoutRef<'span'> {
   children?: string

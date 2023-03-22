@@ -18,7 +18,7 @@ export interface Props {
   styles?: any
 }
 
-export default function PageRichText({ document, sizes, styles, ...rest }: Props) {
+export default function PageRichText({ document, sizes, styles = {}, ...rest }: Props) {
   const _Columns = (props: ColumnsProps) => (
     <Columns className={styles.columns} {...props} styles={styles} />
   )

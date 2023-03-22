@@ -1,4 +1,4 @@
-import '@/styles/globals.css'
+import '@/styles/globals.scss'
 
 import clsx from 'clsx'
 import { Overpass_Mono, Lato } from 'next/font/google'

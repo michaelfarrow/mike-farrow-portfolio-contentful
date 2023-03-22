@@ -3,7 +3,7 @@ import clsx from 'clsx'
 import getData from './data'
 
 import initSettings from '@/lib/settings'
-import typography from '@/styles/typography.module.css'
+import typography from '@/styles/typography.module.scss'
 
 export interface Props extends Awaited<ReturnType<typeof getData>> {}
 

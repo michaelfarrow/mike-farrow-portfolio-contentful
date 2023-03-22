@@ -1,7 +1,7 @@
 import clsx from 'clsx'
 
 import Tag from '@/components/general/tag'
-import styles from '@/styles/components/general/tag-list.module.css'
+import styles from '@/styles/components/general/tag-list.module.scss'
 
 export interface Props extends React.ComponentPropsWithoutRef<'div'> {
   tags: string[]

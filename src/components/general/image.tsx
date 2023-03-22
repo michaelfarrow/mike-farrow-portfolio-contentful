@@ -4,7 +4,7 @@ import { useState, useEffect, SyntheticEvent, useRef, useCallback } from 'react'
 import clsx from 'clsx'
 import { useTimeout } from 'react-timing-hooks'
 
-import styles from '@/styles/components/general/image.module.css'
+import styles from '@/styles/components/general/image.module.scss'
 
 export interface Props extends React.ComponentPropsWithoutRef<'img'> {
   onImageLoaded?: () => void

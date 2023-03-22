@@ -2,7 +2,7 @@ import clsx from 'clsx'
 import { useRef, useEffect, useState } from 'react'
 import readingTime from 'reading-time'
 
-import styles from '@/styles/components/content/reading-time.module.css'
+import styles from '@/styles/components/content/reading-time.module.scss'
 
 interface Props extends Omit<React.ComponentPropsWithoutRef<'div'>, 'children'> {
   content: React.ReactNode

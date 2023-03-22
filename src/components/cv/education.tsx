@@ -5,7 +5,7 @@ import { ICvEducation } from '@t/contentful'
 import { DateRange } from '@/components/general/date-time'
 import OptionalLink from '@/components/general/optional-link'
 
-import styles from '@/styles/components/cv/education.module.css'
+import styles from '@/styles/components/cv/education.module.scss'
 
 export interface Props extends React.ComponentPropsWithoutRef<'ul'> {
   entries: ICvEducation[]

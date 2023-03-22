@@ -20,7 +20,7 @@ import { toText, slugGenerator } from '@/lib/document'
 import Link from '@/components/general/link'
 import EntryLink from '@/components/general/entry-link'
 
-import styles from '@/styles/components/general/rich-text.module.css'
+import styles from '@/styles/components/general/rich-text.module.scss'
 
 export type Document = ContentfulDocument
 

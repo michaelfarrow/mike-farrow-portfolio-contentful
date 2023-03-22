@@ -1,0 +1,144 @@
+.h2 {
+  composes: h2 from '../../typography.module.scss';
+  margin-top: 2em;
+}
+
+.h3 {
+  composes: h3 from '../../typography.module.scss';
+  margin-top: 1.5em;
+}
+
+.h4,
+.h5,
+.h6 {
+  composes: h3 from '../../typography.module.scss';
+  font-size: 1em;
+  margin-top: 1.5em;
+}
+
+.hr {
+  border: 0;
+  height: 1px;
+  background: var(--colour-text);
+  opacity: 0.25;
+}
+
+.h,
+.p,
+.ul,
+.ol,
+.code,
+.imageMaxWidth,
+.hr {
+  composes: contentContainer from '../../layout.module.scss';
+}
+
+.image,
+.imageCompare,
+.video,
+.videoEmbed,
+.assetVideo,
+.assetImage,
+.code,
+.hr {
+  margin-top: 3rem;
+  margin-bottom: 3rem;
+}
+
+.image,
+.assetImage,
+.imageCompare,
+.video,
+.assetVideo,
+.videoEmbed {
+  + .image,
+  + .assetImage,
+  + .imageCompare,
+  + .video,
+  + .assetVideo,
+  + .videoEmbed {
+    margin-top: -2rem;
+  }
+}
+
+.image,
+.imageCompare,
+.video,
+.videoEmbed,
+.assetVideo,
+.assetImage {
+  margin-left: -1rem;
+  margin-right: -1rem;
+}
+
+@media (min-width: 1200px) {
+  .columns .h,
+  .columns .p,
+  .columns .ul,
+  .columns .ol,
+  .columns .code,
+  .columns .imageMaxWidth,
+  .columns .hr {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .image,
+  .imageCompare,
+  .video,
+  .videoEmbed,
+  .assetVideo,
+  .assetImage {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .columns,
+  .image,
+  .imageCompare,
+  .video,
+  .videoEmbed,
+  .assetVideo,
+  .assetImage,
+  .code,
+  .hr {
+    margin-top: 5rem;
+    margin-bottom: 5rem;
+  }
+
+  .image,
+  .assetImage,
+  .imageCompare,
+  .video,
+  .assetVideo,
+  .videoEmbed {
+    + .image,
+    + .assetImage,
+    + .imageCompare,
+    + .video,
+    + .assetVideo,
+    + .videoEmbed {
+      margin-top: -3rem;
+    }
+  }
+
+  .columns .image,
+  .columns .imageCompare,
+  .columns .video,
+  .columns .videoEmbed,
+  .columns .assetVideo,
+  .columns .assetImage,
+  .columns .code,
+  .columns .hr {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .columns > div > div > *:first-child {
+    margin-top: 0;
+  }
+
+  .columns > div > div > *:last-child {
+    margin-bottom: 0;
+  }
+}

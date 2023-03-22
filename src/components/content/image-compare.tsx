@@ -6,7 +6,7 @@ import { useAnimationFrameLoop } from 'react-timing-hooks'
 
 import { IContentImageCompare } from '@t/contentful'
 import Picture from '@/components/content/picture'
-import styles from '@/styles/components/content/image-compare.module.css'
+import styles from '@/styles/components/content/image-compare.module.scss'
 
 export interface Props extends React.ComponentPropsWithoutRef<'div'> {
   entry: IContentImageCompare

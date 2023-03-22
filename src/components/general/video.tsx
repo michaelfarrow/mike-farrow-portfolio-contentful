@@ -6,8 +6,8 @@ import { useTimeout } from 'react-timing-hooks'
 import EventBus from '@/lib/event-bus'
 import VideoProgress from '@/components/general/video-progress'
 
-import styles from '@/styles/components/general/video.module.css'
-import utils from '@/styles/utils.module.css'
+import styles from '@/styles/components/general/video.module.scss'
+import utils from '@/styles/utils.module.scss'
 
 type CrossPlatformDocument = Document & {
   webkitExitFullscreen?: () => {}

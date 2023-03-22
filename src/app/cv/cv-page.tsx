@@ -8,7 +8,7 @@ import Experience from '@/components/cv/experience'
 import Education from '@/components/cv/education'
 import Skills from '@/components/cv/skills'
 
-import typography from '@/styles/typography.module.css'
+import typography from '@/styles/typography.module.scss'
 
 export interface Props extends Awaited<ReturnType<typeof getData>> {}
 

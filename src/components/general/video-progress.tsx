@@ -4,7 +4,7 @@ import useMouse from '@react-hook/mouse-position'
 import formatDuration from 'format-duration'
 
 import Progress from '@/components/general/progress'
-import styles from '@/styles/components/general/video-progress.module.css'
+import styles from '@/styles/components/general/video-progress.module.scss'
 
 const SEEK_PAD = 25
 
