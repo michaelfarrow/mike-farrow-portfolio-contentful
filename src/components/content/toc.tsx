@@ -5,6 +5,7 @@ import { toText, slugGenerator } from '@/lib/document'
 
 export type HeadingConfig = {
   block: Block
+  slug: string
   children: HeadingConfig[]
 }
 
@@ -23,7 +24,7 @@ export default function TOC({ className, document, ...rest }: Props) {
           const text = toText(heading.block)
           return (
             <li key={i}>
-              <a href={`#${slug(text)}`}>{text}</a>
+              <a href={`#${heading.slug}`}>{text}</a>
               {heading.children?.length ? renderTocLevel(heading.children) : undefined}
             </li>
           )
@@ -33,12 +34,17 @@ export default function TOC({ className, document, ...rest }: Props) {
   }
 
   document.content.forEach((block) => {
-    if (block.nodeType.startsWith('heading-2')) {
-      headings.push({ block, children: [] })
-    } else if (block.nodeType.startsWith('heading-3')) {
-      if (headings.length) {
-        headings[headings.length - 1].children?.push({ block, children: [] })
-      }
+    const headingSlug = block.nodeType.startsWith('heading') ? slug(toText(block)) : ''
+
+    switch (block.nodeType) {
+      case 'heading-2':
+        headings.push({ block, slug: headingSlug, children: [] })
+        break
+      case 'heading-3':
+        if (headings.length) {
+          headings[headings.length - 1].children?.push({ block, slug: headingSlug, children: [] })
+        }
+        break
     }
   })
 
