@@ -1,4 +1,14 @@
 .wrapper {
+  --slider-progress-percent: calc(var(--slider-progress) * 100%);
+  position: relative;
+}
+
+.horizontal .control {
+  transform: translateX(var(--slider-progress-percent));
+}
+
+.vertical .control {
+  transform: translateY(var(--slider-progress-percent));
 }
 
 .controlInner {

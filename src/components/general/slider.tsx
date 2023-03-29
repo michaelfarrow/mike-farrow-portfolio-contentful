@@ -1,6 +1,7 @@
 import { useRef, useState, useEffect } from 'react'
 import clsx from 'clsx'
 
+import { styleWithVars } from '@/lib/style'
 import styles from '@/styles/components/general/slider.module.scss'
 
 const PAD = 0
@@ -11,7 +12,14 @@ export interface Props extends React.ComponentPropsWithoutRef<'div'> {
   onUpdate?: (current: number) => void
 }
 
-export default function VideoProgress({ className, current, vertical, onUpdate, ...rest }: Props) {
+export default function VideoProgress({
+  className,
+  style,
+  current,
+  vertical,
+  onUpdate,
+  ...rest
+}: Props) {
   const ref = useRef<HTMLDivElement>(null)
   const [interacting, setInteracting] = useState(false)
 
@@ -60,11 +68,16 @@ export default function VideoProgress({ className, current, vertical, onUpdate, 
   return (
     <div
       ref={ref}
-      className={clsx(styles.wrapper, interacting && styles.interacting, className)}
+      className={clsx(
+        styles.wrapper,
+        interacting && styles.interacting,
+        vertical ? styles.vertical : styles.horizontal,
+        className
+      )}
+      style={styleWithVars(style, { '--slider-progress': current })}
       {...rest}
-      style={{ position: 'relative' }}
     >
-      <div className={styles.control} style={{ transform: `translateX(${current * 100}%)` }}>
+      <div className={styles.control}>
         <div className={styles.controlInner} />
       </div>
     </div>

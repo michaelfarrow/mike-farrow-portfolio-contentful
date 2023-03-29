@@ -1,5 +1,6 @@
 .wrapper {
   composes: placeholder from '../../utils.module.scss';
+  --image-compare-progress-percent: calc(var(--image-compare-progress) * 100%);
   position: relative;
   -webkit-touch-callout: none;
   -webkit-user-select: none;
@@ -7,7 +8,6 @@
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  cursor: ew-resize;
 }
 
 .inner {
@@ -21,9 +21,30 @@
   opacity: 1;
 }
 
+.wrapperHorizontal {
+  cursor: ew-resize;
+}
+
 .wrapperVertical {
-  composes: wrapper;
   cursor: ns-resize;
+}
+
+.wrapperHorizontal .image:nth-child(n + 2) {
+  clip-path: polygon(
+    100% 0%,
+    100% 100%,
+    var(--image-compare-progress-percent) 100%,
+    var(--image-compare-progress-percent) 0%
+  );
+}
+
+.wrapperVertical .image:nth-child(n + 2) {
+  clip-path: polygon(
+    0% 100%,
+    100% 100%,
+    100% var(--image-compare-progress-percent),
+    0% var(--image-compare-progress-percent)
+  );
 }
 
 .image > picture > img {
@@ -55,6 +76,14 @@
   height: 100%;
   transform: translateX(-50%);
   background-color: white;
+}
+
+.wrapperHorizontal .control {
+  left: calc(var(--image-compare-progress) * 100%);
+}
+
+.wrapperVertical .control {
+  top: calc(var(--image-compare-progress) * 100%);
 }
 
 .wrapperVertical .control {

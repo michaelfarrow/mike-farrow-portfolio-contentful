@@ -1,4 +1,6 @@
 .wrapper {
+  --video-embed-width: 1920;
+  --video-embed-height: 1080;
   position: relative;
   color: white;
   display: flex;
@@ -6,7 +8,7 @@
 
 .spacer {
   width: 100%;
-  padding-top: 56.25%;
+  padding-top: calc(var(--video-embed-height) / var(--video-embed-width) * 100%);
 }
 
 .youtube iframe {

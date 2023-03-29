@@ -3,6 +3,7 @@ import clsx from 'clsx'
 import { FiMaximize, FiPlay, FiPause } from 'react-icons/fi'
 import { useTimeout } from 'react-timing-hooks'
 
+import { styleWithVars } from '@/lib/style'
 import EventBus from '@/lib/event-bus'
 import VideoProgress from '@/components/general/video-progress'
 
@@ -29,6 +30,7 @@ export interface Props extends React.ComponentPropsWithoutRef<'div'> {
 
 export default function Video({
   className,
+  style,
   src,
   title,
   width = 1920,
@@ -165,17 +167,15 @@ export default function Video({
         interactionTimeout !== undefined || controlsInteracting ? styles.interacting : null,
         className
       )}
+      style={styleWithVars(
+        style,
+        width && height ? { '--video-width': width, '--video-height': height } : {}
+      )}
       onMouseMove={(!background && onInteractionStart) || undefined}
       onMouseLeave={(!background && onInteractionEnd) || undefined}
       {...rest}
     >
-      {(!children && (
-        <div
-          className={styles.spacer}
-          style={width && height ? { paddingTop: `${(height / width) * 100}%` } : {}}
-        />
-      )) ||
-        null}
+      {(!children && <div className={styles.spacer} />) || null}
       <video
         className={styles.video}
         ref={video}

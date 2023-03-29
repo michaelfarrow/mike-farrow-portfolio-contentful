@@ -3,6 +3,7 @@ import clsx from 'clsx'
 import YouTube, { YouTubeEvent, YouTubePlayer } from 'react-youtube'
 
 import { IContentVideoEmbed } from '@t/contentful'
+import { styleWithVars } from '@/lib/style'
 import EventBus from '@/lib/event-bus'
 import styles from '@/styles/components/content/video-embed.module.scss'
 
@@ -16,6 +17,7 @@ const YOUTUBE_REGEX =
 
 export default function VideoEmbed({
   className,
+  style,
   entry: {
     fields: { name, url, width, height },
   },
@@ -55,14 +57,12 @@ export default function VideoEmbed({
     <div
       {...rest}
       className={clsx(styles.wrapper, className)}
-      onClick={() => {
-        console.log('wrapper click')
-      }}
+      style={styleWithVars(
+        style,
+        width && height ? { '--video-embed-width': width, '--video-embed-height': height } : {}
+      )}
     >
-      <div
-        className={styles.spacer}
-        style={width && height ? { paddingTop: `${(height / width) * 100}%` } : {}}
-      />
+      <div className={styles.spacer} />
       {video ? (
         <YouTube
           className={styles.youtube}

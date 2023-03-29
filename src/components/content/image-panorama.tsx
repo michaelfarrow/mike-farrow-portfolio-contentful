@@ -6,6 +6,7 @@ import useMouse from '@react-hook/mouse-position'
 import { useAnimationFrameLoop } from 'react-timing-hooks'
 
 import { IContentImagePanorama } from '@t/contentful'
+import { styleWithVars } from '@/lib/style'
 import { imageAssetProps } from '@/lib/image'
 import { useScrollPosition } from '@/lib/scroll'
 import Image from '@/components/general/image'
@@ -22,6 +23,7 @@ const PAD = 0.1
 
 export default function ImagePanorama({
   className,
+  style,
   entry: {
     fields: { name, image, maxHeight, ratio },
   },
@@ -91,24 +93,18 @@ export default function ImagePanorama({
     <div
       className={clsx(styles.wrapper, className)}
       // ref={ref}
+      style={styleWithVars(style, {
+        '--image-panorama-progress': pos,
+        '--image-panorama-ratio': ratio,
+        '--image-panorama-max-height': `${maxHeight}px`,
+      })}
       {...rest}
       // onMouseEnter={onMouseEnter}
       // onMouseLeave={onMouseLeave}
     >
-      <div style={{ maxHeight, transform: `translateZ(0) translateX(${pos * 100}%)` }}>
-        <div
-          style={{
-            paddingTop: `${ratio * 100}%`,
-            maxHeight,
-          }}
-        >
-          <Image
-            className={styles.image}
-            src={src}
-            alt={name}
-            // style={{ objectPosition: `${pos * 100}%` }}
-            style={{ transform: `translateZ(0) translateX(${pos * -100}%)` }}
-          />
+      <div className={styles.imageOuter}>
+        <div className={styles.imageInner}>
+          <Image className={styles.image} src={src} alt={name} />
         </div>
       </div>
       <Slider current={targetPos} className={styles.slider} onUpdate={onSliderUpdate} />

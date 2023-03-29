@@ -3,6 +3,7 @@ import clsx from 'clsx'
 import useMouse from '@react-hook/mouse-position'
 import formatDuration from 'format-duration'
 
+import { styleWithVars } from '@/lib/style'
 import Progress from '@/components/general/progress'
 import styles from '@/styles/components/general/video-progress.module.scss'
 
@@ -16,6 +17,7 @@ export interface Props extends React.ComponentPropsWithoutRef<'div'> {
 
 export default function VideoProgress({
   className,
+  style,
   duration,
   currentTime,
   onSeek,
@@ -40,14 +42,18 @@ export default function VideoProgress({
     onSeek && onSeek(pos)
   }
 
-  let seekPos = hover && mouse.x && mouse.elementWidth ? mouse.x : 0
+  let seekPercent = hover && mouse.x && mouse.elementWidth ? mouse.x / mouse.elementWidth : 0
 
-  if (mouse.elementWidth) {
-    seekPos = Math.max(SEEK_PAD, Math.min(mouse.elementWidth - SEEK_PAD, seekPos))
-  }
+  // if (mouse.elementWidth) {
+  //   seekPos = Math.max(SEEK_PAD, Math.min(mouse.elementWidth - SEEK_PAD, seekPos))
+  // }
 
   return (
-    <div className={clsx(styles.wrapper, className)} {...rest}>
+    <div
+      className={clsx(styles.wrapper, className)}
+      style={styleWithVars(style, { '--video-progress-seek-percent': seekPercent })}
+      {...rest}
+    >
       <div
         ref={ref}
         className={styles.inner}
@@ -56,20 +62,10 @@ export default function VideoProgress({
         onClick={onClick}
       >
         <span className={styles.background}>
-          <span
-            className={styles.seek}
-            style={{
-              transform: `scaleX(${hover ? pos : 0})`,
-            }}
-          />
+          <span className={styles.seek} />
           <Progress className={styles.progress} max={duration} current={currentTime} animate />
         </span>
-        <span
-          className={styles.label}
-          style={{
-            transform: `translateX(${seekPos}px)`,
-          }}
-        >
+        <span className={styles.label}>
           <span className={styles.labelInner}>
             {(hover && formatDuration(duration * pos * 1000)) || ''}
           </span>

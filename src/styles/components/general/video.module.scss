@@ -1,10 +1,13 @@
 .wrapper {
+  --video-width: 1920;
+  --video-height: 1080;
   position: relative;
   overflow: hidden;
 }
 
 .spacer {
   width: 100%;
+  padding-top: calc(var(--video-height) / var(--video-width) * 100%);
 }
 
 .video {

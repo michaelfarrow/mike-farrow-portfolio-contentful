@@ -10,6 +10,15 @@
   overflow: hidden;
 }
 
+.imageOuter {
+  max-height: calc(var(--image-panorama-max-height) * 1px);
+  transform: translateZ(0) translateX(calc(var(--image-panorama-progress) * 100%));
+}
+
+.imageInner {
+  padding-top: calc(var(--image-panorama-ratio) * 100%);
+}
+
 .image {
   position: absolute;
   top: 0;
@@ -17,6 +26,7 @@
   height: 100%;
   width: auto;
   pointer-events: none;
+  transform: translateZ(0) translateX(calc(var(--image-panorama-progress) * -100%));
   // width: 100%;
   // object-fit: cover;
   // object-position: 0%;

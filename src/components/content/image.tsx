@@ -1,4 +1,5 @@
 import { IContentImage } from '@t/contentful'
+import { styleWithVars } from '@/lib/style'
 import Picture from '@/components/content/picture'
 import styles from '@/styles/components/content/image.module.scss'
 import clsx from 'clsx'
@@ -21,7 +22,7 @@ export default function Image({
   return (
     <figure
       className={clsx(styles.figure, className)}
-      style={{ ...((maxWidth && { maxWidth }) || {}), ...style }}
+      style={styleWithVars(style, maxWidth && { '--picture-max-width': `${maxWidth}px` })}
       {...rest}
     >
       <Picture entry={entry} maxWidth={maxWidth} sizes={sizes} />

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import clsx from 'clsx'
 import { useAnimationFrameLoop } from 'react-timing-hooks'
 
+import { styleWithVars } from '@/lib/style'
 import styles from '@/styles/components/general/progress.module.scss'
 
 export interface Props extends React.ComponentPropsWithoutRef<'div'> {
@@ -14,6 +15,7 @@ export interface Props extends React.ComponentPropsWithoutRef<'div'> {
 
 export default function Progress({
   className,
+  style,
   min = 0,
   max = 100,
   current,
@@ -42,8 +44,12 @@ export default function Progress({
         100
 
   return (
-    <div className={clsx(styles.wrapper, className)} {...rest}>
-      <span className={styles.bar} style={{ transform: `scaleX(${percent / 100})` }} />
+    <div
+      className={clsx(styles.wrapper, className)}
+      style={styleWithVars(style, { '--progress-percent': percent / 100 })}
+      {...rest}
+    >
+      <span className={styles.bar} />
       <span className={styles.label}>{percent}</span>
     </div>
   )

@@ -1,4 +1,5 @@
 .picture {
   composes: placeholder from '../../utils.module.scss';
   display: block;
+  max-width: var(--picture-max-width);
 }

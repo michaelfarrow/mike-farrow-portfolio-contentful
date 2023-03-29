@@ -5,6 +5,7 @@ import clsx from 'clsx'
 import { useAnimationFrameLoop } from 'react-timing-hooks'
 
 import { IContentImageCompare } from '@t/contentful'
+import { styleWithVars } from '@/lib/style'
 import Picture from '@/components/content/picture'
 import styles from '@/styles/components/content/image-compare.module.scss'
 
@@ -17,6 +18,7 @@ const PAD = 0.1
 
 export default function ImageCompare({
   className,
+  style,
   entry: {
     fields: { imageA, imageB, vertical },
   },
@@ -80,13 +82,6 @@ export default function ImageCompare({
     }
   }, [vertical, interacting, start])
 
-  const clipPath = [
-    [1, 0],
-    [1, 1],
-    [splitCurrent, 1],
-    [splitCurrent, 0],
-  ]
-
   const onImageLoaded = (i: number) => () => {
     if (i === 0) {
       setLoadedA(true)
@@ -98,39 +93,24 @@ export default function ImageCompare({
   return (
     <div
       className={clsx(
-        vertical ? styles.wrapperVertical : styles.wrapper,
+        styles.wrapper,
+        vertical ? styles.wrapperVertical : styles.wrapperHorizontal,
         loadedA && loadedB ? styles.loaded : undefined,
         className
       )}
       ref={wrapper}
+      style={styleWithVars(style, {
+        '--image-compare-progress': splitCurrent,
+      })}
       {...rest}
     >
       <div className={styles.inner}>
         {[imageA, imageB].map((image, i) => (
-          <div
-            key={i}
-            className={styles.image}
-            style={
-              i !== 0
-                ? {
-                    clipPath: `polygon(${clipPath
-                      .map((xy) => {
-                        const xyMapped = xy.map((p) => `${p * 100}%`)
-                        vertical && xyMapped.reverse()
-                        return xyMapped.join(' ')
-                      })
-                      .join(', ')})`,
-                  }
-                : {}
-            }
-          >
+          <div key={i} className={styles.image}>
             <Picture entry={image} sizes={sizes} onImageLoaded={onImageLoaded(i)} />
           </div>
         ))}
-        <div
-          className={styles.control}
-          style={{ [vertical ? 'top' : 'left']: `${splitCurrent * 100}%` }}
-        />
+        <div className={styles.control} />
       </div>
     </div>
   )

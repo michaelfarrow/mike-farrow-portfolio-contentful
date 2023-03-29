@@ -2,6 +2,7 @@ import { Asset } from 'contentful'
 import clsx from 'clsx'
 import { orderBy } from 'lodash'
 
+import { styleWithVars } from '@/lib/style'
 import { imageAssetProps, ImageAssetParams } from '@/lib/image'
 import { default as GeneralImage } from '@/components/general/image'
 
@@ -74,7 +75,7 @@ export default function Picture({
   return (
     <picture
       className={clsx(styles.picture, className)}
-      style={{ ...((maxWidth && { maxWidth }) || {}), ...style }}
+      style={styleWithVars(style, maxWidth && { '--picture-max-width': `${maxWidth}px` })}
       {...rest}
     >
       {orderBy(images, 'max', 'asc').map(({ max, params, image }, i) => {
