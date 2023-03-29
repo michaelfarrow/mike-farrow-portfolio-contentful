@@ -105,31 +105,33 @@ export default function ImageCompare({
       ref={wrapper}
       {...rest}
     >
-      {[imageA, imageB].map((image, i) => (
+      <div className={styles.inner}>
+        {[imageA, imageB].map((image, i) => (
+          <div
+            key={i}
+            className={styles.image}
+            style={
+              i !== 0
+                ? {
+                    clipPath: `polygon(${clipPath
+                      .map((xy) => {
+                        const xyMapped = xy.map((p) => `${p * 100}%`)
+                        vertical && xyMapped.reverse()
+                        return xyMapped.join(' ')
+                      })
+                      .join(', ')})`,
+                  }
+                : {}
+            }
+          >
+            <Picture entry={image} sizes={sizes} onImageLoaded={onImageLoaded(i)} />
+          </div>
+        ))}
         <div
-          key={i}
-          className={styles.image}
-          style={
-            i !== 0
-              ? {
-                  clipPath: `polygon(${clipPath
-                    .map((xy) => {
-                      const xyMapped = xy.map((p) => `${p * 100}%`)
-                      vertical && xyMapped.reverse()
-                      return xyMapped.join(' ')
-                    })
-                    .join(', ')})`,
-                }
-              : {}
-          }
-        >
-          <Picture entry={image} sizes={sizes} onImageLoaded={onImageLoaded(i)} />
-        </div>
-      ))}
-      <div
-        className={styles.control}
-        style={{ [vertical ? 'top' : 'left']: `${splitCurrent * 100}%` }}
-      />
+          className={styles.control}
+          style={{ [vertical ? 'top' : 'left']: `${splitCurrent * 100}%` }}
+        />
+      </div>
     </div>
   )
 }

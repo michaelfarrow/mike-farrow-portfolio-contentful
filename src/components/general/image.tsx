@@ -36,7 +36,7 @@ export default function Image({ className, onImageLoaded, ...rest }: Props) {
     <img
       loading="lazy"
       {...rest}
-      className={clsx(styles.image, loaded && styles.loaded)}
+      className={clsx(styles.image, loaded && styles.loaded, className)}
       ref={image}
       onLoad={_onLoad}
     />

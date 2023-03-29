@@ -276,6 +276,37 @@ export interface IContentImageCompare extends Entry<IContentImageCompareFields> 
   }
 }
 
+export interface IContentImagePanoramaFields {
+  /** Name */
+  name: string
+
+  /** Image */
+  image: Asset
+
+  /** Ratio */
+  ratio: number
+
+  /** Max Height */
+  maxHeight: number
+}
+
+export interface IContentImagePanorama extends Entry<IContentImagePanoramaFields> {
+  sys: {
+    id: string
+    type: string
+    createdAt: string
+    updatedAt: string
+    locale: string
+    contentType: {
+      sys: {
+        id: 'contentImagePanorama'
+        linkType: 'ContentType'
+        type: 'Link'
+      }
+    }
+  }
+}
+
 export interface IContentLinkFields {
   /** Name */
   name: string
@@ -745,6 +776,7 @@ export type CONTENT_TYPE =
   | 'contentColumns'
   | 'contentImage'
   | 'contentImageCompare'
+  | 'contentImagePanorama'
   | 'contentLink'
   | 'contentVideo'
   | 'contentVideoEmbed'
@@ -771,6 +803,7 @@ export type IEntry =
   | IContentColumns
   | IContentImage
   | IContentImageCompare
+  | IContentImagePanorama
   | IContentLink
   | IContentVideo
   | IContentVideoEmbed

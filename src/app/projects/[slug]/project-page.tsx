@@ -58,7 +58,7 @@ export default function ProjectPage({
                 > */}
                 <Picture
                   className={styles.headerImage}
-                  style={colour ? { backgroundColor: colour } : {}}
+                  // style={colour ? { backgroundColor: colour } : {}}
                   images={[{ image: thumbnail }]}
                   sizes={imageFullWidth ? '100vw' : '(min-width: 1200px) 50vw, 100vw'}
                 />

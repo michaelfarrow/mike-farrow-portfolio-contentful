@@ -6,6 +6,7 @@ import RichText from '@/components/general/rich-text'
 import Columns, { Props as ColumnsProps } from '@/components/content/columns'
 import Image, { Props as ImageProps } from '@/components/content/image'
 import ImageCompare, { Props as ImageCompareProps } from '@/components/content/image-compare'
+import ImagePanorama, { Props as ImagePanoramaProps } from '@/components/content/image-panorama'
 import AssetImage from '@/components/content/asset-image'
 import Video, { Props as VideoProps } from '@/components/content/video'
 import VideoEmbed, { Props as VideoEmbedProps } from '@/components/content/video-embed'
@@ -33,6 +34,9 @@ export default function PageRichText({ document, sizes, styles = {}, ...rest }: 
   const _ImageCompare = (props: ImageCompareProps) => (
     <ImageCompare className={styles.imageCompare} {...props} sizes={sizes} />
   )
+  const _ImagePanorama = (props: ImagePanoramaProps) => (
+    <ImagePanorama className={styles.imagePanorama} {...props} />
+  )
   const _Video = (props: VideoProps) => <Video className={styles.video} {...props} sizes={sizes} />
   const _VideoEmbed = (props: VideoEmbedProps) => (
     <VideoEmbed className={styles.videoEmbed} {...props} sizes={sizes} />
@@ -47,6 +51,7 @@ export default function PageRichText({ document, sizes, styles = {}, ...rest }: 
         contentVideoEmbed: _VideoEmbed,
         contentImage: _Image,
         contentImageCompare: _ImageCompare,
+        contentImagePanorama: _ImagePanorama,
         contentCode: _Code,
       }}
       blockEmbeddedAsset={(asset, type) => {

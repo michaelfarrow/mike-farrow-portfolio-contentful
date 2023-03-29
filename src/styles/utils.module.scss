@@ -8,3 +8,24 @@
   clip: rect(0, 0, 0, 0);
   border: 0;
 }
+
+.placeholder {
+  animation-duration: 2s;
+  animation-fill-mode: forwards;
+  animation-iteration-count: infinite;
+  animation-name: placeHolderShimmer;
+  animation-timing-function: ease-in-out;
+  background-color: #eeeeee;
+}
+
+@keyframes placeHolderShimmer {
+  0% {
+    background-color: #eeeeeeff;
+  }
+  50% {
+    background-color: #eeeeee66;
+  }
+  100% {
+    background-color: #eeeeeeff;
+  }
+}

@@ -1,4 +1,5 @@
 .wrapper {
+  composes: placeholder from '../../utils.module.scss';
   position: relative;
   -webkit-touch-callout: none;
   -webkit-user-select: none;
@@ -7,12 +8,15 @@
   -ms-user-select: none;
   user-select: none;
   cursor: ew-resize;
+}
+
+.inner {
   transition-property: opacity;
   transition-duration: 0s;
   opacity: 0;
 }
 
-.loaded {
+.loaded .inner {
   transition-duration: 1s;
   opacity: 1;
 }

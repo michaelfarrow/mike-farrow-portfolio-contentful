@@ -9,7 +9,6 @@ import styles from '@/styles/components/general/video-progress.module.scss'
 const SEEK_PAD = 25
 
 export interface Props extends React.ComponentPropsWithoutRef<'div'> {
-  className?: string
   duration: number
   currentTime: number
   onSeek?: (t: number) => void
@@ -22,7 +21,7 @@ export default function VideoProgress({
   onSeek,
   ...rest
 }: Props) {
-  const ref = useRef(null)
+  const ref = useRef<HTMLDivElement | null>(null)
   const mouse = useMouse(ref, {})
 
   const pos = mouse.elementWidth !== null && mouse.x !== null ? mouse.x / mouse.elementWidth : 0

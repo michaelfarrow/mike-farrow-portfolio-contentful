@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import clsx from 'clsx'
 import { useAnimationFrameLoop } from 'react-timing-hooks'
 

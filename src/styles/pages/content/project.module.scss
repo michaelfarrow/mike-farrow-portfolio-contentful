@@ -1,3 +1,34 @@
+@mixin full-width-items {
+  .image,
+  .imageCompare,
+  .imagePanorama,
+  .video,
+  .videoEmbed,
+  .assetVideo,
+  .assetImage {
+    @content;
+  }
+}
+
+@mixin limited-width-items {
+  .h,
+  .p,
+  .ul,
+  .ol,
+  .code,
+  .imageMaxWidth,
+  .hr {
+    @content;
+  }
+}
+
+@mixin other-items {
+  .code,
+  .hr {
+    @content;
+  }
+}
+
 .h2 {
   composes: h2 from '../../typography.module.scss';
   margin-top: 2em;
@@ -23,115 +54,71 @@
   opacity: 0.25;
 }
 
-.h,
-.p,
-.ul,
-.ol,
-.code,
-.imageMaxWidth,
-.hr {
+@include limited-width-items {
   composes: contentContainer from '../../layout.module.scss';
 }
 
-.image,
-.imageCompare,
-.video,
-.videoEmbed,
-.assetVideo,
-.assetImage,
-.code,
-.hr {
+@include full-width-items {
   margin-top: 3rem;
   margin-bottom: 3rem;
-}
-
-.image,
-.assetImage,
-.imageCompare,
-.video,
-.assetVideo,
-.videoEmbed {
-  + .image,
-  + .assetImage,
-  + .imageCompare,
-  + .video,
-  + .assetVideo,
-  + .videoEmbed {
-    margin-top: -2rem;
-  }
-}
-
-.image,
-.imageCompare,
-.video,
-.videoEmbed,
-.assetVideo,
-.assetImage {
   margin-left: -1rem;
   margin-right: -1rem;
 }
 
+@include other-items {
+  margin-top: 3rem;
+  margin-bottom: 3rem;
+}
+
+@include full-width-items {
+  & + {
+    @include full-width-items {
+      margin-top: -2rem;
+    }
+  }
+}
+
 @media (min-width: 1200px) {
-  .columns .h,
-  .columns .p,
-  .columns .ul,
-  .columns .ol,
-  .columns .code,
-  .columns .imageMaxWidth,
-  .columns .hr {
+  @include full-width-items {
+    margin-top: 5rem;
+    margin-bottom: 5rem;
     margin-left: 0;
     margin-right: 0;
   }
 
-  .image,
-  .imageCompare,
-  .video,
-  .videoEmbed,
-  .assetVideo,
-  .assetImage {
-    margin-left: 0;
-    margin-right: 0;
-  }
-
-  .columns,
-  .image,
-  .imageCompare,
-  .video,
-  .videoEmbed,
-  .assetVideo,
-  .assetImage,
-  .code,
-  .hr {
+  @include other-items {
     margin-top: 5rem;
     margin-bottom: 5rem;
   }
 
-  .image,
-  .assetImage,
-  .imageCompare,
-  .video,
-  .assetVideo,
-  .videoEmbed {
-    + .image,
-    + .assetImage,
-    + .imageCompare,
-    + .video,
-    + .assetVideo,
-    + .videoEmbed {
-      margin-top: -3rem;
+  .columns {
+    margin-top: 5rem;
+    margin-bottom: 5rem;
+  }
+
+  @include full-width-items {
+    & + {
+      @include full-width-items {
+        margin-top: -3rem;
+      }
     }
   }
 
-  .columns .image,
-  .columns .imageCompare,
-  .columns .video,
-  .columns .videoEmbed,
-  .columns .assetVideo,
-  .columns .assetImage,
-  .columns .code,
-  .columns .hr {
-    margin-top: 1rem;
-    margin-bottom: 1rem;
+  .columns {
+    @include full-width-items {
+      margin-top: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    @include limited-width-items {
+      margin-left: 0;
+      margin-right: 0;
+    }
+
+    @include other-items {
+      margin-top: 1rem;
+      margin-bottom: 1rem;
+    }
   }
 
   .columns > div > div > *:first-child {

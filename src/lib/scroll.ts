@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { debounce } from 'lodash'
 
 export interface State {
@@ -25,7 +25,7 @@ export const useScrollPosition = <T extends HTMLElement>(options?: UseScrollPosi
     horizontal: 0,
   })
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     let mounted = true
 
     const container = windowScroll ? document.scrollingElement! : ref.current
