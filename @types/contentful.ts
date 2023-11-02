@@ -31,15 +31,18 @@ export interface ICategory extends Entry<ICategoryFields> {
   }
 }
 
-export interface IContactCompanyFields {
+export interface IContactFields {
   /** Name */
   name: string
+
+  /** Type */
+  type: 'Company' | 'Individual' | 'Institution'
 
   /** Link */
   link?: IContentLink | undefined
 }
 
-export interface IContactCompany extends Entry<IContactCompanyFields> {
+export interface IContact extends Entry<IContactFields> {
   sys: {
     id: string
     type: string
@@ -48,57 +51,7 @@ export interface IContactCompany extends Entry<IContactCompanyFields> {
     locale: string
     contentType: {
       sys: {
-        id: 'contactCompany'
-        linkType: 'ContentType'
-        type: 'Link'
-      }
-    }
-  }
-}
-
-export interface IContactIndividualFields {
-  /** Name */
-  name: string
-
-  /** Link */
-  link?: IContentLink | undefined
-}
-
-export interface IContactIndividual extends Entry<IContactIndividualFields> {
-  sys: {
-    id: string
-    type: string
-    createdAt: string
-    updatedAt: string
-    locale: string
-    contentType: {
-      sys: {
-        id: 'contactIndividual'
-        linkType: 'ContentType'
-        type: 'Link'
-      }
-    }
-  }
-}
-
-export interface IContactInstitutionFields {
-  /** Name */
-  name: string
-
-  /** Link */
-  link?: IContentLink | undefined
-}
-
-export interface IContactInstitution extends Entry<IContactInstitutionFields> {
-  sys: {
-    id: string
-    type: string
-    createdAt: string
-    updatedAt: string
-    locale: string
-    contentType: {
-      sys: {
-        id: 'contactInstitution'
+        id: 'contact'
         linkType: 'ContentType'
         type: 'Link'
       }
@@ -408,7 +361,7 @@ export interface IContentVideoEmbed extends Entry<IContentVideoEmbedFields> {
 
 export interface ICvEducationFields {
   /** Institution */
-  institution: IContactInstitution
+  institution: IContact
 
   /** Qualification */
   qualification: string
@@ -439,7 +392,7 @@ export interface ICvEducation extends Entry<ICvEducationFields> {
 
 export interface ICvExperienceFields {
   /** Employer / Client */
-  employer: IContactCompany | IContactIndividual | IContactInstitution
+  employer: IContact
 
   /** Title */
   title: string
@@ -525,7 +478,7 @@ export interface IProjectFields {
   content: Document
 
   /** Client */
-  client?: IContactCompany | IContactIndividual | IContactInstitution | undefined
+  client?: IContact | undefined
 
   /** Attributions */
   attributions?: IProjectAttribution[] | undefined
@@ -559,7 +512,7 @@ export interface IProjectAttributionFields {
   shortName: string
 
   /** Attributions */
-  attributions: (IContactCompany | IContactIndividual | IContactInstitution)[]
+  attributions: IContact[]
 }
 
 export interface IProjectAttribution extends Entry<IProjectAttributionFields> {
@@ -579,52 +532,15 @@ export interface IProjectAttribution extends Entry<IProjectAttributionFields> {
   }
 }
 
-export interface ISettingsFields {
-  /** Name */
-  name: string
-
+export interface ISettingFields {
   /** Key */
-  key: 'global' | 'home' | 'cv' | 'projects'
-
-  /** Items */
-  items?:
-    | (
-        | ISettingsDecimal
-        | ISettingsInteger
-        | ISettingsRichText
-        | ISettingsText
-        | ISettingsTextList
-        | ISettingsUrl
-      )[]
-    | undefined
-}
-
-export interface ISettings extends Entry<ISettingsFields> {
-  sys: {
-    id: string
-    type: string
-    createdAt: string
-    updatedAt: string
-    locale: string
-    contentType: {
-      sys: {
-        id: 'settings'
-        linkType: 'ContentType'
-        type: 'Link'
-      }
-    }
-  }
-}
-
-export interface ISettingsDecimalFields {
-  /** Key */
-  key: string
+  key: 'cv.blurb' | 'global.linkedin.label' | 'global.linkedin.url' | 'home.blurb'
 
   /** Value */
-  value: number
+  value?: string | undefined
 }
 
-export interface ISettingsDecimal extends Entry<ISettingsDecimalFields> {
+export interface ISetting extends Entry<ISettingFields> {
   sys: {
     id: string
     type: string
@@ -633,132 +549,7 @@ export interface ISettingsDecimal extends Entry<ISettingsDecimalFields> {
     locale: string
     contentType: {
       sys: {
-        id: 'settingsDecimal'
-        linkType: 'ContentType'
-        type: 'Link'
-      }
-    }
-  }
-}
-
-export interface ISettingsIntegerFields {
-  /** Key */
-  key: string
-
-  /** Value */
-  value: number
-}
-
-export interface ISettingsInteger extends Entry<ISettingsIntegerFields> {
-  sys: {
-    id: string
-    type: string
-    createdAt: string
-    updatedAt: string
-    locale: string
-    contentType: {
-      sys: {
-        id: 'settingsInteger'
-        linkType: 'ContentType'
-        type: 'Link'
-      }
-    }
-  }
-}
-
-export interface ISettingsRichTextFields {
-  /** Key */
-  key: string
-
-  /** Value */
-  value: Document
-}
-
-export interface ISettingsRichText extends Entry<ISettingsRichTextFields> {
-  sys: {
-    id: string
-    type: string
-    createdAt: string
-    updatedAt: string
-    locale: string
-    contentType: {
-      sys: {
-        id: 'settingsRichText'
-        linkType: 'ContentType'
-        type: 'Link'
-      }
-    }
-  }
-}
-
-export interface ISettingsTextFields {
-  /** Key */
-  key: string
-
-  /** Value */
-  value: string
-}
-
-export interface ISettingsText extends Entry<ISettingsTextFields> {
-  sys: {
-    id: string
-    type: string
-    createdAt: string
-    updatedAt: string
-    locale: string
-    contentType: {
-      sys: {
-        id: 'settingsText'
-        linkType: 'ContentType'
-        type: 'Link'
-      }
-    }
-  }
-}
-
-export interface ISettingsTextListFields {
-  /** Key */
-  key: string
-
-  /** Value */
-  value: string[]
-}
-
-export interface ISettingsTextList extends Entry<ISettingsTextListFields> {
-  sys: {
-    id: string
-    type: string
-    createdAt: string
-    updatedAt: string
-    locale: string
-    contentType: {
-      sys: {
-        id: 'settingsTextList'
-        linkType: 'ContentType'
-        type: 'Link'
-      }
-    }
-  }
-}
-
-export interface ISettingsUrlFields {
-  /** Key */
-  key: string
-
-  /** Value */
-  value: string
-}
-
-export interface ISettingsUrl extends Entry<ISettingsUrlFields> {
-  sys: {
-    id: string
-    type: string
-    createdAt: string
-    updatedAt: string
-    locale: string
-    contentType: {
-      sys: {
-        id: 'settingsUrl'
+        id: 'setting'
         linkType: 'ContentType'
         type: 'Link'
       }
@@ -768,9 +559,7 @@ export interface ISettingsUrl extends Entry<ISettingsUrlFields> {
 
 export type CONTENT_TYPE =
   | 'category'
-  | 'contactCompany'
-  | 'contactIndividual'
-  | 'contactInstitution'
+  | 'contact'
   | 'contentBreakpointImage'
   | 'contentCode'
   | 'contentColumns'
@@ -785,19 +574,11 @@ export type CONTENT_TYPE =
   | 'cvSkill'
   | 'project'
   | 'projectAttribution'
-  | 'settings'
-  | 'settingsDecimal'
-  | 'settingsInteger'
-  | 'settingsRichText'
-  | 'settingsText'
-  | 'settingsTextList'
-  | 'settingsUrl'
+  | 'setting'
 
 export type IEntry =
   | ICategory
-  | IContactCompany
-  | IContactIndividual
-  | IContactInstitution
+  | IContact
   | IContentBreakpointImage
   | IContentCode
   | IContentColumns
@@ -812,13 +593,7 @@ export type IEntry =
   | ICvSkill
   | IProject
   | IProjectAttribution
-  | ISettings
-  | ISettingsDecimal
-  | ISettingsInteger
-  | ISettingsRichText
-  | ISettingsText
-  | ISettingsTextList
-  | ISettingsUrl
+  | ISetting
 
 export type LOCALE_CODE = 'en-US'
 

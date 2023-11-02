@@ -1,3 +1,5 @@
+'use client'
+
 import { useState, useEffect, useRef, useCallback } from 'react'
 import clsx from 'clsx'
 import { FiMaximize, FiPlay, FiPause } from 'react-icons/fi'

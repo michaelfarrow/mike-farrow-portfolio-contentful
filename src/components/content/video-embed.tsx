@@ -1,3 +1,5 @@
+'use client'
+
 import { useCallback, useEffect, useRef } from 'react'
 import clsx from 'clsx'
 import YouTube, { YouTubeEvent, YouTubePlayer } from 'react-youtube'

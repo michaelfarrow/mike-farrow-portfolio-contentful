@@ -1,43 +1,48 @@
 import '@/styles/globals.scss'
 
 import clsx from 'clsx'
-import { Overpass_Mono, Lato } from 'next/font/google'
+import { DM_Mono, Sora } from 'next/font/google'
+import { draftMode } from 'next/headers'
+import { usePathname } from 'next/navigation'
 
-import { getEntry } from '@/lib/contentful'
-import initSettings from '@/lib/settings'
+import initSettings, { getSettings } from '@/lib/settings'
 import Header from '@/components/global/header'
+import DraftMode from '@/components/global/draft-mode'
 
 export interface Props {
   children: React.ReactNode
 }
 
-const lato = Lato({
+const monospace = DM_Mono({
   subsets: ['latin'],
   display: 'swap',
-  weight: ['100', '300', '400', '700', '900'],
-  variable: '--font-lato',
+  weight: ['400'],
+  variable: '--font-monospace',
 })
 
-const overpassMono = Overpass_Mono({
+const body = Sora({
   subsets: ['latin'],
+  // weight: ['400'],
   display: 'swap',
-  variable: '--font-overpass-mono',
+  variable: '--font-body',
 })
 
 export default async function RootLayout({ children }: Props) {
-  const settings = await getEntry({
-    content_type: 'settings',
-    'fields.key': 'global',
-  })
+  const settings = await getSettings('global')
 
   const s = initSettings(settings)
-  const linkedInUrl = s.url('linkedin.url')
-  const linkedInLabel = s.text('linkedin.label')
+  const linkedInUrl = s.text('global.linkedin.url')
+  const linkedInLabel = s.text('global.linkedin.label')
 
   return (
-    <html lang="en" className={clsx(lato.variable, overpassMono.variable)}>
+    <html lang="en" className={clsx(monospace.variable, body.variable)}>
       <body>
-        <div className="page-wrapper">
+        <div id="page-wrapper">
+          {draftMode().isEnabled && (
+            <p className="bg-orange-200 py-4 px-[6vw]">
+              Draft mode is on! <DraftMode />
+            </p>
+          )}
           <Header />
           {/* {(linkedInUrl && <Link href={linkedInUrl}>{linkedInLabel || 'LinkedIn'}</Link>) || null} */}
           <main>{children}</main>

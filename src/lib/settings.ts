@@ -1,44 +1,48 @@
-import { Entry } from 'contentful'
+import { ISettingFields } from '@t/contentful'
+import { getEntries } from '@/lib/contentful'
 
-import { ArrayElement } from '@/lib/types'
-import { ISettings } from '@t/contentful'
-
-type SettingContentType = ArrayElement<NonNullable<ISettings['fields']['items']>>
-type SettingType = SettingContentType['sys']['contentType']['sys']['id']
-
-type Setting<P extends SettingType, T = SettingContentType> = T extends Entry<any> & {
-  sys: { contentType: { sys: { id: P } } }
+const get = (settings: ISettingFields[]) => (key: string) => {
+  if (!settings) return null
+  const setting = settings.find((setting) => setting.key === key)
+  if (!setting) return null
+  return setting.value !== undefined ? setting.value : undefined
 }
-  ? T['fields']['value']
-  : never
-
-const get =
-  (settings: ISettings | null) =>
-  <T extends SettingType>(type: T, key: string): Setting<T> | null => {
-    if (!settings) return null
-    const _key = `${settings.fields.key}.${key}`
-    const setting = settings.fields.items?.find(
-      (item) => item.sys.contentType.sys.id === type && _key === item.fields.key
-    )
-    return (setting?.fields.value !== undefined ? setting?.fields.value : null) as any
-  }
 
 const createHelper =
-  (settings: ISettings | null) =>
-  <T extends SettingType>(type: T) =>
+  (settings: ISettingFields[]) =>
+  <T>(process: (v?: string | null) => T) =>
   (key: string) =>
-    get(settings)(type, key)
+    process(get(settings)(key))
 
-export default function wrap(settings: ISettings | null) {
+export default function wrap(settings: ISettingFields[]) {
   const h = createHelper(settings)
 
   return {
-    get: get(settings),
-    text: h('settingsText'),
-    integer: h('settingsInteger'),
-    decimal: h('settingsDecimal'),
-    richText: h('settingsRichText'),
-    textList: h('settingsTextList'),
-    url: h('settingsUrl'),
+    text: h((v) => v || null),
+    number: h((v) => {
+      if (v) {
+        const n = Number(v)
+        if (!isNaN(n)) return n
+      }
+      return null
+    }),
+    bool: h((v) => v !== null),
+    textArray: h(
+      (v) =>
+        (v &&
+          v
+            .split(/(?<=[^\\]|^);/)
+            .map((v) => v.trim().replace(/\\;/g, ';'))
+            .filter((v) => v.length)) ||
+        null
+    ),
   }
+}
+
+export async function getSettings(prefix?: string) {
+  const settings = await getEntries({
+    content_type: 'setting',
+    ...((prefix && { 'fields.key[match]': `^${prefix}` }) || {}),
+  })
+  return settings.map((setting) => setting.fields)
 }

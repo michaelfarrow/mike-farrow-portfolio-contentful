@@ -1,3 +1,5 @@
+'use client'
+
 import clsx from 'clsx'
 import { useRef, useEffect, useState } from 'react'
 import readingTime from 'reading-time'
