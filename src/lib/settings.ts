@@ -10,9 +10,18 @@ const get = (settings: ISettingFields[]) => (key: string) => {
 
 const createHelper =
   (settings: ISettingFields[]) =>
-  <T>(process: (v?: string | null) => T) =>
-  (key: string) =>
-    process(get(settings)(key))
+  <T, D extends NonNullable<T>>(process: (v?: string | null) => T) => {
+    function getSetting(key: string): T
+    function getSetting(key: string, defaultValue: D): NonNullable<T>
+
+    function getSetting(key: string, defaultValue?: any) {
+      const val = process(get(settings)(key))
+      if (!val && defaultValue !== undefined) return defaultValue
+      return val
+    }
+
+    return getSetting
+  }
 
 export default function wrap(settings: ISettingFields[]) {
   const h = createHelper(settings)
