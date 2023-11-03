@@ -3,7 +3,7 @@ import { redirect } from 'next/navigation'
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url)
-  if (searchParams.get('previewSecret') !== process.env.CONTENTFUL_PREVIEW_SECRET) {
+  if (searchParams.get('secret') !== process.env.CONTENTFUL_PREVIEW_SECRET) {
     return new Response('Invalid token', { status: 401 })
   }
 
