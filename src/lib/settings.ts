@@ -16,8 +16,11 @@ const createHelper =
 
     function getSetting(key: string, defaultValue?: any) {
       const val = process(get(settings)(key))
-      if (defaultValue !== undefined) return val || defaultValue
-      return val
+      return defaultValue !== undefined
+        ? val !== null && val !== undefined
+          ? val
+          : defaultValue
+        : val
     }
 
     return getSetting
