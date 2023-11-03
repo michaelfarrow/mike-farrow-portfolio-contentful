@@ -3,7 +3,7 @@ import '@/styles/globals.scss'
 import clsx from 'clsx'
 import { DM_Mono, Sora } from 'next/font/google'
 import { draftMode } from 'next/headers'
-import { usePathname } from 'next/navigation'
+import { Analytics } from '@vercel/analytics/react'
 
 import initSettings, { getSettings } from '@/lib/settings'
 import Header from '@/components/global/header'
@@ -47,6 +47,7 @@ export default async function RootLayout({ children }: Props) {
           {/* {(linkedInUrl && <Link href={linkedInUrl}>{linkedInLabel || 'LinkedIn'}</Link>) || null} */}
           <main>{children}</main>
         </div>
+        <Analytics />
       </body>
     </html>
   )
