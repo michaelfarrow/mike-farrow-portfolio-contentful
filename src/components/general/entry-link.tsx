@@ -33,7 +33,7 @@ export default function EntryLink({ className, entry, children, ...rest }: Props
     <Link
       {...rest}
       className={className}
-      href={`/${path}${entry.fields[type.key]}`} /* scroll={false} */
+      href={`/${path}${encodeURIComponent(entry.fields[type.key])}`} /* scroll={false} */
     >
       {children}
     </Link>

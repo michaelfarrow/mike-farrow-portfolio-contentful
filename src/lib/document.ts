@@ -13,7 +13,7 @@ export function toText(node: Block | Inline): string {
 export function slugGenerator() {
   const slugs: string[] = []
 
-  return function (text: string) {
+  return (text: string) => {
     let slug = paramCase(text)
     let i = 1
     while (slugs.includes(slug)) {

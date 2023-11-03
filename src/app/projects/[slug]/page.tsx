@@ -22,16 +22,12 @@ export interface Params {
   slug: string
 }
 
-async function getData(slug: string) {
-  const project = await getEntry({
+async function getProject(slug: string) {
+  return await getEntry({
     content_type: 'project',
     include: 4,
     'fields.slug': slug,
   })
-
-  return {
-    project,
-  }
 }
 
 export async function generateMetadata({
@@ -39,7 +35,7 @@ export async function generateMetadata({
 }: {
   params: Params
 }): Promise<Metadata> {
-  const { project } = await getData(slug)
+  const project = await getProject(slug)
   if (!project) return notFound()
 
   const {
@@ -62,7 +58,7 @@ export async function generateStaticParams() {
 export default async function Page({ params: { slug } }: { params: Params }) {
   const imageFullWidth = false
 
-  const { project } = await getData(slug)
+  const project = await getProject(slug)
   if (!project) return notFound()
 
   const { name, date, colour, categories, description, content, thumbnail, attributions } =
