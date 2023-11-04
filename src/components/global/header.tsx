@@ -13,7 +13,7 @@ export interface Props {
 }
 
 const Progress = () => {
-  return null
+  // return null
   const { percentage: scrollPercentage } = useScrollPosition({ windowScroll: true })
   return <div className={styles.progress} style={{ width: `${scrollPercentage.vertical}%` }} />
 }

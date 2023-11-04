@@ -1,6 +1,16 @@
 import { ISettingFields } from '@t/contentful'
 import { getEntries } from '@/lib/contentful'
 
+export async function getSettings(prefix?: string) {
+  const settings = await getEntries({
+    content_type: 'setting',
+    ...((prefix && { 'fields.key[match]': `^${prefix}` }) || {}),
+  })
+
+  const mapped = settings.map((setting) => setting.fields)
+  return mapped
+}
+
 const get = (settings: ISettingFields[]) => (key: string) => {
   if (!settings) return null
   const setting = settings.find((setting) => setting.key === key)
@@ -9,13 +19,13 @@ const get = (settings: ISettingFields[]) => (key: string) => {
 }
 
 const createHelper =
-  (settings: ISettingFields[]) =>
+  (settings: ISettingFields[], prefix?: string) =>
   <T, D extends NonNullable<T>>(process: (v?: string | null) => T) => {
     function getSetting(key: string): T
     function getSetting(key: string, defaultValue: D): NonNullable<T>
 
     function getSetting(key: string, defaultValue?: any) {
-      const val = process(get(settings)(key))
+      const val = process(get(settings)(prefix ? `${prefix}.${key}` : key))
       return defaultValue !== undefined
         ? val !== null && val !== undefined
           ? val
@@ -25,9 +35,9 @@ const createHelper =
 
     return getSetting
   }
-
-export default function wrap(settings: ISettingFields[]) {
-  const h = createHelper(settings)
+export default async function settings(prefix?: string) {
+  const settings = await getSettings(prefix)
+  const h = createHelper(settings, prefix)
 
   return {
     text: h((v) => v || null),
@@ -49,12 +59,4 @@ export default function wrap(settings: ISettingFields[]) {
         null
     ),
   }
-}
-
-export async function getSettings(prefix?: string) {
-  const settings = await getEntries({
-    content_type: 'setting',
-    ...((prefix && { 'fields.key[match]': `^${prefix}` }) || {}),
-  })
-  return settings.map((setting) => setting.fields)
 }

@@ -1,7 +1,7 @@
 import clsx from 'clsx'
 
 import { getEntries } from '@/lib/contentful'
-import initSettings, { getSettings } from '@/lib/settings'
+import settings from '@/lib/settings'
 
 import Experience from '@/components/cv/experience'
 import Education from '@/components/cv/education'
@@ -10,8 +10,6 @@ import Skills from '@/components/cv/skills'
 import typography from '@/styles/typography.module.scss'
 
 export default async function Page() {
-  const settings = await getSettings('cv')
-
   const experience = await getEntries({
     content_type: 'cvExperience',
     order: '-fields.from',
@@ -31,8 +29,8 @@ export default async function Page() {
     include: 10,
   })
 
-  const s = initSettings(settings)
-  const blurb = s.text('cv.blurb')
+  const s = await settings('cv')
+  const blurb = s.text('blurb')
 
   return (
     <div className={typography.textLinks}>

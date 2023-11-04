@@ -1,13 +1,11 @@
 import clsx from 'clsx'
 
-import initSettings, { getSettings } from '@/lib/settings'
+import settings from '@/lib/settings'
 import typography from '@/styles/typography.module.scss'
 
 export default async function Page() {
-  const settings = await getSettings('home')
-
-  const s = initSettings(settings)
-  const blurb = s.text('home.blurb')
+  const s = await settings('home')
+  const blurb = s.text('blurb')
 
   return (
     <>

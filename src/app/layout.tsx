@@ -5,9 +5,11 @@ import { DM_Mono, Sora } from 'next/font/google'
 import { draftMode } from 'next/headers'
 import { Analytics } from '@vercel/analytics/react'
 
-import initSettings, { getSettings } from '@/lib/settings'
+import settings from '@/lib/settings'
 import Header from '@/components/global/header'
 import DraftMode from '@/components/global/draft-mode'
+
+// import Link from '@/components/general/link'
 
 export interface Props {
   children: React.ReactNode
@@ -28,18 +30,17 @@ const body = Sora({
 })
 
 export default async function RootLayout({ children }: Props) {
-  const settings = await getSettings('global')
+  const s = await settings('global')
 
-  const s = initSettings(settings)
-  const linkedInUrl = s.text('global.linkedin.url')
-  const linkedInLabel = s.text('global.linkedin.label')
+  // const linkedInUrl = s.text('linkedin.url')
+  // const linkedInLabel = s.text('linkedin.label')
 
   return (
     <html lang="en" className={clsx(monospace.variable, body.variable)}>
       <body>
         <div id="page-wrapper">
           {draftMode().isEnabled && (
-            <p className="bg-orange-200 py-4 px-[6vw]">
+            <p>
               Draft mode is on! <DraftMode />
             </p>
           )}
