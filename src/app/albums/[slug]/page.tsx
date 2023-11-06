@@ -1,8 +1,10 @@
+import http from 'http'
+import { ExifParserFactory, ExifData } from 'ts-exif-parser'
+import numToFraction from 'num2fraction'
+
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { unstable_cache } from 'next/cache'
-import http from 'http'
-import { ExifParserFactory, ExifData } from 'ts-exif-parser'
 
 import { getEntry, getEntries } from '@/lib/contentful'
 
@@ -80,10 +82,9 @@ export default async function Page({ params: { slug } }: { params: Params }) {
         fields: {
           file: { url },
         },
-        sys: { updatedAt },
+        sys: { id, updatedAt },
       } = photo
-      const get = unstable_cache(() => getPhotoData(url), ['photo', url, updatedAt])
-      photoData[i] = await get()
+      photoData[i] = await unstable_cache(() => getPhotoData(url), ['photo', id, updatedAt])()
     }
   }
 
@@ -94,20 +95,31 @@ export default async function Page({ params: { slug } }: { params: Params }) {
         {(photos || []).map((photo, i) => {
           const { title } = photo.fields
           const exif = photoData[i]
-          const { Model, LensModel, FocalLength, ExposureTime, FNumber, ISO } = exif.tags || {}
+          const {
+            Model: model,
+            LensModel: lens,
+            FocalLength: focalLength,
+            ExposureTime: exposure,
+            FNumber: aperture,
+            ISO: iso,
+          } = exif.tags || {}
 
           const photoInfo = [
-            FocalLength && `${FocalLength}mm`,
-            ExposureTime && `${ExposureTime}s`,
-            FNumber && `f/${FNumber}`,
-            ISO && `ISO ${ISO}`,
+            aperture && `f/${aperture}`,
+            exposure && (exposure < 1 ? numToFraction(exposure) : `${exposure}"`),
+            iso && `ISO${iso}`,
+            focalLength && `${focalLength}mm`,
           ].filter((v) => !!v)
 
           return (
             <div key={i}>
               <Picture images={[{ image: photo }]} maxWidth={600} alt={title} />
-              {Model && <div>{Model}</div>}
-              {LensModel && <div>{LensModel}</div>}
+              {model && (
+                <div>
+                  {model.replace(/[mM](\d)+/g, ({}, digit: number) => ` Mark ${'I'.repeat(digit)}`)}
+                </div>
+              )}
+              {lens && <div>{lens.replace(/(?<=RF)(?=\d)/g, ' ')}</div>}
               {(photoInfo.length && <div>{photoInfo.join(' ')}</div>) || null}
             </div>
           )
