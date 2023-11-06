@@ -1,5 +1,5 @@
-import { notFound } from 'next/navigation'
 import { Metadata } from 'next'
+import { notFound } from 'next/navigation'
 import clsx from 'clsx'
 
 import TOC from '@/components/content/toc'

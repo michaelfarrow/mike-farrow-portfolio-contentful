@@ -48,7 +48,8 @@
     "react-youtube": "^10.1.0",
     "reading-time": "^1.5.0",
     "refractor": "^4.8.1",
-    "sass": "^1.59.3"
+    "sass": "^1.59.3",
+    "ts-exif-parser": "^0.2.2"
   },
   "prettier": {
     "semi": false,

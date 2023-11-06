@@ -452,6 +452,40 @@ export interface ICvSkill extends Entry<ICvSkillFields> {
   }
 }
 
+export interface IPhotoAlbumFields {
+  /** Name */
+  name: string
+
+  /** Slug */
+  slug: string
+
+  /** Date */
+  date: string
+
+  /** Location */
+  location?: { lat: number; lon: number } | undefined
+
+  /** Photos */
+  photos?: Asset[] | undefined
+}
+
+export interface IPhotoAlbum extends Entry<IPhotoAlbumFields> {
+  sys: {
+    id: string
+    type: string
+    createdAt: string
+    updatedAt: string
+    locale: string
+    contentType: {
+      sys: {
+        id: 'photoAlbum'
+        linkType: 'ContentType'
+        type: 'Link'
+      }
+    }
+  }
+}
+
 export interface IProjectFields {
   /** Name */
   name: string
@@ -572,6 +606,7 @@ export type CONTENT_TYPE =
   | 'cvEducation'
   | 'cvExperience'
   | 'cvSkill'
+  | 'photoAlbum'
   | 'project'
   | 'projectAttribution'
   | 'setting'
@@ -591,6 +626,7 @@ export type IEntry =
   | ICvEducation
   | ICvExperience
   | ICvSkill
+  | IPhotoAlbum
   | IProject
   | IProjectAttribution
   | ISetting

@@ -173,7 +173,7 @@ export default function RichText({
             </EntryComponent>
           )
         }
-        return <EntryLink entry={entry}>{children}</EntryLink>
+        return <EntryLink entry={entry as any}>{children}</EntryLink>
       }),
       [INLINES.ASSET_HYPERLINK]: handleAsset(
         (asset, contentType, children) =>

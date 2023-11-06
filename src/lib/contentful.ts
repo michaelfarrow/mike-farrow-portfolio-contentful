@@ -37,13 +37,13 @@ type GetEntriesPageParams<T> = {
   entries?: T[]
 }
 
-type Query<T extends CONTENT_TYPE> = {
+export type Query<T extends CONTENT_TYPE> = {
   content_type: T
   include?: number
   [key: string]: any
 }
 
-type ContentType<P extends CONTENT_TYPE, T = IEntry> = T extends Entry<any> & {
+export type ContentType<P extends CONTENT_TYPE, T = IEntry> = T extends Entry<any> & {
   sys: { contentType: { sys: { id: P } } }
 }
   ? T
