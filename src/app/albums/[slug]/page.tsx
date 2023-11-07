@@ -1,12 +1,11 @@
-import http from 'http'
-import { ExifParserFactory, ExifData } from 'ts-exif-parser'
+import { ExifData } from 'ts-exif-parser'
 import numToFraction from 'num2fraction'
 
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import { unstable_cache } from 'next/cache'
 
 import { getEntry, getEntries } from '@/lib/contentful'
+import { getAssetExifData } from '@/lib/photo'
 
 import Picture from '@/components/general/picture'
 
@@ -47,52 +46,22 @@ export async function generateStaticParams() {
   }))
 }
 
-function getPhotoData(url: string): Promise<ExifData> {
-  let buff = Buffer.alloc(0)
-
-  return new Promise((resolve, reject) => {
-    http.get(url.replace(/^\/\//, 'http://'), (res) => {
-      res.on('data', (chunk) => {
-        buff = Buffer.concat([buff, chunk])
-        if (buff.byteLength >= 65635) {
-          res.destroy()
-        }
-      })
-
-      res.on('close', () => {
-        resolve(ExifParserFactory.create(buff).parse())
-      })
-
-      res.on('error', reject)
-    })
-  })
-}
-
 export default async function Page({ params: { slug } }: { params: Params }) {
   const album = await getAlbum(slug)
   if (!album) return notFound()
 
-  const { name, photos } = album.fields
+  const { name, photos = [] } = album.fields
   const photoData: ExifData[] = []
 
-  if (photos) {
-    for (let i = 0; i < photos.length; i++) {
-      const photo = photos[i]
-      const {
-        fields: {
-          file: { url },
-        },
-        sys: { id, updatedAt },
-      } = photo
-      photoData[i] = await unstable_cache(() => getPhotoData(url), ['photo', id, updatedAt])()
-    }
+  for (let i = 0; i < photos.length; i++) {
+    photoData[i] = await getAssetExifData(photos[i])
   }
 
   return (
     <>
       <h1>{name}</h1>
       <div>
-        {(photos || []).map((photo, i) => {
+        {photos.map((photo, i) => {
           const { title } = photo.fields
           const exif = photoData[i]
           const {
