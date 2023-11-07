@@ -79,7 +79,10 @@ export default async function Page({ params: { slug } }: { params: Params }) {
             exposure && (exposure < 1 ? numToFraction(exposure) : `${exposure}"`),
             iso && `ISO${iso}`,
             focalLength && `${focalLength}mm`,
-            exposureCompensation && `+/- ${exposureCompensation}`,
+            exposureCompensation &&
+              `${Number(exposureCompensation) < 0 ? '-' : '+'}${Math.abs(
+                Number(exposureCompensation)
+              )} EV`,
           ].filter((v) => !!v)
 
           return (
