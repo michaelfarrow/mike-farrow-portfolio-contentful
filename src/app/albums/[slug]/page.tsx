@@ -102,6 +102,7 @@ export default async function Page({ params: { slug } }: { params: Params }) {
             ExposureTime: exposure,
             FNumber: aperture,
             ISO: iso,
+            ExposureCompensation: exposureCompensation,
           } = exif.tags || {}
 
           const photoInfo = [
@@ -109,6 +110,7 @@ export default async function Page({ params: { slug } }: { params: Params }) {
             exposure && (exposure < 1 ? numToFraction(exposure) : `${exposure}"`),
             iso && `ISO${iso}`,
             focalLength && `${focalLength}mm`,
+            exposureCompensation && `+/- ${exposureCompensation}`,
           ].filter((v) => !!v)
 
           return (
