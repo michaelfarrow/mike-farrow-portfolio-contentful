@@ -1,6 +1,8 @@
-import { CONTENT_TYPE, IEntry } from '@t/contentful'
+import { CONTENT_TYPE, IContentLink, IEntry } from '@t/contentful'
 import { ContentType } from '@/lib/contentful'
-import Link, { LinkProps } from 'next/link'
+import { default as NextLink, LinkProps } from 'next/link'
+
+import Link from '@/components/general/link'
 
 export interface Props extends Omit<LinkProps, 'href'> {
   className?: string
@@ -30,16 +32,26 @@ const types: LinkTypes = {
 
 export default function EntryLink({ className, entry, children, ...rest }: Props) {
   const _type = entry.sys.contentType.sys.id
+
+  if (_type == 'contentLink') {
+    return (
+      <Link {...rest} className={className} href={(entry as IContentLink).fields.url}>
+        {children}
+      </Link>
+    )
+  }
+
   const type = types[_type]
   if (!type) return <a className={className}>Link type {_type} not found</a>
   const path = (type.path && `${type.path}/`) || ''
+
   return (
-    <Link
+    <NextLink
       {...rest}
       className={className}
       href={`/${path}${encodeURIComponent((entry.fields as any)[type.key])}`} /* scroll={false} */
     >
       {children}
-    </Link>
+    </NextLink>
   )
 }
