@@ -27,19 +27,17 @@ export default function Education({ className, entries, ...rest }: Props) {
             },
           },
           i
-        ) => {
-          return (
-            <li key={i} className={styles.listItem}>
-              <h3 className={styles.date}>
-                <DateRange from={from} to={to} hideMonth />
-              </h3>
-              <p className={styles.qualification}>{qualification}</p>
-              <p className={styles.institution}>
-                <OptionalLink link={link}>{institution}</OptionalLink>
-              </p>
-            </li>
-          )
-        }
+        ) => (
+          <li key={i} className={styles.listItem}>
+            <h3 className={styles.date}>
+              <DateRange from={from} to={to} hideMonth />
+            </h3>
+            <p className={styles.qualification}>{qualification}</p>
+            <p className={styles.institution}>
+              <OptionalLink link={link}>{institution}</OptionalLink>
+            </p>
+          </li>
+        )
       )}
     </ul>
   )

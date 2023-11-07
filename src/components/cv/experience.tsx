@@ -29,24 +29,22 @@ export default function Experience({ className, entries, ...rest }: Props) {
             },
           },
           i
-        ) => {
-          return (
-            <li key={i} className={styles.listItem}>
-              <h3 className={styles.date}>
-                <DateRange from={from} to={to} monthFormat="MMMM" showDuration />
-              </h3>
-              <span className={styles.role}>
-                <p>{title}</p>
-                <p>
-                  <OptionalLink link={link}>{employer}</OptionalLink>
-                </p>
-              </span>
-              <span className={styles.description}>
-                <RichText>{description}</RichText>
-              </span>
-            </li>
-          )
-        }
+        ) => (
+          <li key={i} className={styles.listItem}>
+            <h3 className={styles.date}>
+              <DateRange from={from} to={to} monthFormat="MMMM" showDuration />
+            </h3>
+            <span className={styles.role}>
+              <p>{title}</p>
+              <p>
+                <OptionalLink link={link}>{employer}</OptionalLink>
+              </p>
+            </span>
+            <span className={styles.description}>
+              <RichText>{description}</RichText>
+            </span>
+          </li>
+        )
       )}
     </ul>
   )
