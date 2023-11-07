@@ -87,14 +87,24 @@ export default async function Page({ params: { slug } }: { params: Params }) {
 
           return (
             <div key={i}>
-              <Picture images={[{ image: photo }]} maxWidth={600} alt={title} />
-              {model && (
-                <div>
-                  {model.replace(/[mM](\d)+/g, ({}, digit: number) => ` Mark ${'I'.repeat(digit)}`)}
-                </div>
-              )}
-              {lens && <div>{lens.replace(/(?<=RF)(?=\d)/g, ' ')}</div>}
-              {(photoInfo.length && <div>{photoInfo.join(' ')}</div>) || null}
+              <figure>
+                <Picture images={[{ image: photo }]} maxWidth={600} alt={title} />
+                {((model || lens || photoInfo.length) && (
+                  <figcaption>
+                    {model && (
+                      <div>
+                        {model.replace(
+                          /[mM](\d)+/g,
+                          ({}, digit: number) => ` Mark ${'I'.repeat(digit)}`
+                        )}
+                      </div>
+                    )}
+                    {lens && <div>{lens.replace(/(?<=RF)(?=\d)/g, ' ')}</div>}
+                    {(photoInfo.length && <div>{photoInfo.join(' ')}</div>) || null}
+                  </figcaption>
+                )) ||
+                  null}
+              </figure>
             </div>
           )
         })}
