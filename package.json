@@ -16,15 +16,15 @@
     "@types/lodash": "^4.14.191",
     "@types/node": "18.14.6",
     "@types/num2fraction": "^1.2.1",
-    "@types/react": "18.0.28",
+    "@types/react": "^18.2.37",
     "@types/react-copy-to-clipboard": "^5.0.4",
-    "@types/react-dom": "18.0.11",
+    "@types/react-dom": "^18.2.15",
     "@types/refractor": "^3.0.2",
     "concurrently": "^7.6.0",
-    "eslint": "8.35.0",
-    "eslint-config-next": "^13.4.7",
+    "eslint": "^8.53.0",
+    "eslint-config-next": "^14.0.1",
     "tsconfig-paths": "^4.2.0",
-    "typescript": "4.9.5"
+    "typescript": "^5.2.2"
   },
   "dependencies": {
     "@contentful/rich-text-react-renderer": "^15.16.2",
