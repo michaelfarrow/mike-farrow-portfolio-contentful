@@ -1,7 +1,25 @@
 import http from 'http'
-import { ExifParserFactory, ExifData } from 'ts-exif-parser'
+import { ExifParserFactory, ExifData, ExifTags } from 'ts-exif-parser'
 import { unstable_cache } from 'next/cache'
 import { Asset } from 'contentful'
+import numToFraction from 'num2fraction'
+
+export type ProcessedExifTags = {
+  camera?: string
+  lens?: string
+  settings: {
+    aperture?: string
+    shutterSpeed?: string
+    iso?: string
+    focalLength?: string
+    exposureCompensation?: string
+  }
+}
+
+export type ExifDataResponse = {
+  raw: ExifTags
+  processed: ProcessedExifTags
+}
 
 export function getRemoteExifData(url: string): Promise<ExifData> {
   let buff = Buffer.alloc(0)
@@ -24,7 +42,7 @@ export function getRemoteExifData(url: string): Promise<ExifData> {
   })
 }
 
-export function getAssetExifData(asset: Asset) {
+export async function getAssetExifData(asset: Asset): Promise<ExifDataResponse> {
   const {
     fields: {
       file: { url },
@@ -32,5 +50,41 @@ export function getAssetExifData(asset: Asset) {
     sys: { id, updatedAt },
   } = asset
 
-  return unstable_cache(() => getRemoteExifData(url), ['photo', id, updatedAt])()
+  const data = await unstable_cache(() => getRemoteExifData(url), ['photo', id, updatedAt])()
+
+  const tags = data.tags || {}
+
+  const {
+    Model: model,
+    LensModel: lens,
+    FocalLength: focalLength,
+    ExposureTime: exposure,
+    FNumber: aperture,
+    ISO: iso,
+    ExposureCompensation: exposureCompensation,
+  } = tags
+
+  const settings: ProcessedExifTags['settings'] = {
+    aperture: (aperture && `f/${aperture}`) || undefined,
+    shutterSpeed:
+      (exposure && (exposure < 1 ? numToFraction(exposure) : `${exposure}"`)) || undefined,
+    iso: (iso && `ISO${iso}`) || undefined,
+    focalLength: (focalLength && `${focalLength}mm`) || undefined,
+    exposureCompensation:
+      (exposureCompensation &&
+        `${Number(exposureCompensation) < 0 ? '-' : '+'}${Math.abs(
+          Number(exposureCompensation)
+        )} EV`) ||
+      undefined,
+  }
+  const processed: ProcessedExifTags = {
+    camera: model?.replace(/[mM](\d)+/g, ({}, digit: number) => ` Mark ${'I'.repeat(digit)}`),
+    lens: lens?.replace(/(?<=RF)(?=\d)/g, ' '),
+    settings,
+  }
+
+  return {
+    raw: tags,
+    processed,
+  }
 }

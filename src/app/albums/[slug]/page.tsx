@@ -1,11 +1,8 @@
-import { ExifData } from 'ts-exif-parser'
-import numToFraction from 'num2fraction'
-
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 
 import { getEntry, getEntries } from '@/lib/contentful'
-import { getAssetExifData } from '@/lib/photo'
+import { getAssetExifData, ProcessedExifTags } from '@/lib/photo'
 
 import Picture from '@/components/general/picture'
 
@@ -51,10 +48,10 @@ export default async function Page({ params: { slug } }: { params: Params }) {
   if (!album) return notFound()
 
   const { name, photos = [] } = album.fields
-  const photoData: ExifData[] = []
+  const photoData: ProcessedExifTags[] = []
 
   for (let i = 0; i < photos.length; i++) {
-    photoData[i] = await getAssetExifData(photos[i])
+    photoData[i] = (await getAssetExifData(photos[i])).processed
   }
 
   return (
@@ -63,44 +60,18 @@ export default async function Page({ params: { slug } }: { params: Params }) {
       <div>
         {photos.map((photo, i) => {
           const { title } = photo.fields
-          const exif = photoData[i]
-          const {
-            Model: model,
-            LensModel: lens,
-            FocalLength: focalLength,
-            ExposureTime: exposure,
-            FNumber: aperture,
-            ISO: iso,
-            ExposureCompensation: exposureCompensation,
-          } = exif.tags || {}
-
-          const photoInfo = [
-            aperture && `f/${aperture}`,
-            exposure && (exposure < 1 ? numToFraction(exposure) : `${exposure}"`),
-            iso && `ISO${iso}`,
-            focalLength && `${focalLength}mm`,
-            exposureCompensation &&
-              `${Number(exposureCompensation) < 0 ? '-' : '+'}${Math.abs(
-                Number(exposureCompensation)
-              )} EV`,
-          ].filter((v) => !!v)
+          const { camera, lens, settings } = photoData[i]
+          const settingsArray = Object.values(settings).filter((v) => !!v)
 
           return (
             <div key={i}>
               <figure>
                 <Picture images={[{ image: photo }]} maxWidth={600} alt={title} />
-                {((model || lens || photoInfo.length) && (
+                {((camera || lens || settingsArray.length) && (
                   <figcaption>
-                    {model && (
-                      <div>
-                        {model.replace(
-                          /[mM](\d)+/g,
-                          ({}, digit: number) => ` Mark ${'I'.repeat(digit)}`
-                        )}
-                      </div>
-                    )}
-                    {lens && <div>{lens.replace(/(?<=RF)(?=\d)/g, ' ')}</div>}
-                    {(photoInfo.length && <div>{photoInfo.join(' ')}</div>) || null}
+                    {camera && <div>{camera}</div>}
+                    {lens && <div>{lens}</div>}
+                    {(settingsArray.length && <div>{settingsArray.join(' ')}</div>) || null}
                   </figcaption>
                 )) ||
                   null}
