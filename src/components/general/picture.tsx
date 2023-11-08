@@ -45,7 +45,7 @@ function createSrcSet(asset: Asset, params?: AssetParams) {
   }).join(', ')
 }
 
-export default function Picture({
+export default async function Picture({
   className,
   style,
   images,

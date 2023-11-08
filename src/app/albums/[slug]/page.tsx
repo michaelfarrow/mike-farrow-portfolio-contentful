@@ -2,7 +2,7 @@ import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 
 import { getEntry, getEntries } from '@/lib/contentful'
-import { getAssetExifData, ProcessedExifTags } from '@/lib/photo'
+import { getAssetExifData, ProcessedExifTags } from '@/lib/image'
 
 import Picture from '@/components/general/picture'
 
@@ -51,7 +51,7 @@ export default async function Page({ params: { slug } }: { params: Params }) {
   const photoData: ProcessedExifTags[] = []
 
   for (let i = 0; i < photos.length; i++) {
-    photoData[i] = (await getAssetExifData(photos[i])).processed
+    photoData[i] = (await getAssetExifData(photos[i], true)).processed
   }
 
   return (

@@ -1,7 +1,7 @@
 require('dotenv').config()
 
 import { getEntries } from '@/lib/contentful'
-import { getRemoteExifData } from '@/lib/photo'
+import { getAssetExifData } from '@/lib/image'
 
 async function run() {
   const albums = await getEntries({
@@ -13,8 +13,8 @@ async function run() {
     const { photos = [] } = album.fields
 
     for (const photo of photos) {
-      const data = await getRemoteExifData(photo.fields.file.url)
-      console.log(data.tags)
+      const data = await getAssetExifData(photo)
+      console.log(data)
     }
   }
 }
