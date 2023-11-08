@@ -98,7 +98,7 @@ export function imageAssetProps({
 }
 
 export async function getRemoteExifData(url: string) {
-  console.log('DEBUG getRemoteExifData')
+  console.log('DEBUG getRemoteExifData', url)
   const buffer = await getRemoteBuffer(url, 65635)
   return ExifParserFactory.create(buffer).parse()
 }
