@@ -5,6 +5,12 @@ import { Document, Block, Inline, Text } from '@contentful/rich-text-types'
 
 import { getEntries } from '@/lib/contentful'
 
+type Result = {
+  type: string
+  name?: string
+  url: string
+}
+
 function allowedError(e: any) {
   return [
     999, // linkedin not logged in error
@@ -49,22 +55,28 @@ async function run() {
     content_type: 'project',
   })
 
+  const ok: Result[] = []
+  const fail: Result[] = []
+
+  const check = async (type: string, name: string, url: string) => {
+    console.log('Checking:', [type, name, url].join(' / '))
+    ;((await checkUrl(url)) ? ok : fail).push({ type, name, url })
+  }
+
   for (const link of links) {
-    const { url } = link.fields
-    const res = await checkUrl(url)
-    console.log(url, res)
+    const { url, name } = link.fields
+    await check('Content > Link', name, url)
   }
 
   for (const project of projects) {
     const { name, content } = project.fields
-    if (name == 'Test Project') {
-      const links = findLinks(content)
-      for (const link of links) {
-        const res = await checkUrl(link)
-        console.log(link, res)
-      }
+    const links = findLinks(content)
+    for (const link of links) {
+      await check('Project', name, link)
     }
   }
+
+  console.log({ ok, fail })
 }
 
 run()
