@@ -74,6 +74,8 @@ export default inngest.createFunction(
         }
       })
 
+      await step.sleep('wait', '5s')
+
       if (projectInfo) {
         for (const url of projectInfo.urls) {
           await step.run('check-project-url', async () => {
@@ -83,6 +85,8 @@ export default inngest.createFunction(
               exists: await checkUrl(url),
             }
           })
+
+          await step.sleep('wait', '5s')
         }
       }
     }
@@ -104,6 +108,8 @@ export default inngest.createFunction(
           exists: await checkUrl(url),
         }
       })
+
+      await step.sleep('wait', '5s')
     }
 
     return {
