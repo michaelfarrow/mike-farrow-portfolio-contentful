@@ -10,7 +10,8 @@
     "lint": "next lint",
     "codegen": "contentful-typescript-codegen --output @types/contentful.d.ts",
     "codegen:poll": "contentful-typescript-codegen --output @types/contentful.ts --poll --interval 15",
-    "script": "npx -y ts-node --project tsconfig.node.json"
+    "script": "npx -y ts-node --project tsconfig.node.json",
+    "inngest-dev": "npx inngest-cli@latest dev"
   },
   "devDependencies": {
     "@types/lodash": "^4.14.191",
@@ -39,6 +40,7 @@
     "dayjs": "^1.11.7",
     "dotenv": "^16.0.3",
     "format-duration": "^3.0.2",
+    "inngest": "^3.4.4",
     "lodash": "^4.17.21",
     "next": "^14.0.1",
     "normalize.css": "^8.0.1",
