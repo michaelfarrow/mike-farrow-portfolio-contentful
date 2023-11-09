@@ -74,19 +74,16 @@ export default inngest.createFunction(
         }
       })
 
-      await step.sleep('wait', '5s')
-
       if (projectInfo) {
         for (const url of projectInfo.urls) {
           await step.run('check-project-url', async () => {
+            console.log('checking project url', url)
             return {
               projectId: projectInfo.project,
               url,
               exists: await checkUrl(url),
             }
           })
-
-          await step.sleep('wait', '5s')
         }
       }
     }
@@ -102,14 +99,14 @@ export default inngest.createFunction(
 
         const { url, name } = link.fields
 
+        console.log('checking link url', url)
+
         return {
           id: linkId,
           url,
           exists: await checkUrl(url),
         }
       })
-
-      await step.sleep('wait', '5s')
     }
 
     return {
