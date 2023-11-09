@@ -1,4 +1,5 @@
 import inngest from '@/lib/inngest/client'
+import axios from 'axios'
 
 export default inngest.createFunction(
   {
@@ -9,7 +10,9 @@ export default inngest.createFunction(
   },
   { event: 'photos/upload.photo' },
   async ({ step, event }) => {
-    console.log(event.data)
+    await step.run('Ensure image is generated', () =>
+      axios.get(event.data.url.instagram).then(() => true)
+    )
 
     return {
       done: true,

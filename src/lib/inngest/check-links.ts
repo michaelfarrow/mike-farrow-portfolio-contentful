@@ -52,7 +52,7 @@ export default inngest.createFunction(
   async ({ step }) => {
     console.log('check-links')
 
-    const urls = await step.run('fetch-urls', async () => {
+    const urls = await step.run('Fetch URLs', async () => {
       console.log('fetching urls')
 
       const links = await getEntries({
@@ -70,7 +70,7 @@ export default inngest.createFunction(
     })
 
     for (const url of urls) {
-      await step.run('check-url', async () => {
+      await step.run('Check URL', async () => {
         console.log('checking url', url)
 
         return {

@@ -11,7 +11,7 @@ export default inngest.createFunction(
   },
   { event: 'photos/check.albums' },
   async ({ step }) => {
-    const albumIds = await step.run('fetch-album-ids', async () => {
+    const albumIds = await step.run('Fetch album IDs', async () => {
       const albums = await getEntries({
         content_type: 'photoAlbum',
       })
@@ -19,7 +19,7 @@ export default inngest.createFunction(
     })
 
     for (const album of albumIds) {
-      await step.sendEvent('send-photos-check-album-event', {
+      await step.sendEvent('Send photos check album event', {
         name: 'photos/check.album',
         data: { id: album },
       })

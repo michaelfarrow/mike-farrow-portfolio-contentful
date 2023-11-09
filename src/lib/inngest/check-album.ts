@@ -11,7 +11,7 @@ export default inngest.createFunction(
   },
   { event: 'photos/check.album' },
   async ({ step, event }) => {
-    const assetIds = await step.run('fetch-album-asset-ids', async () => {
+    const assetIds = await step.run('Fetch album asset IDs', async () => {
       const album = await getEntry({
         content_type: 'photoAlbum',
         'sys.id': event.data.id,
@@ -21,7 +21,7 @@ export default inngest.createFunction(
     })
 
     for (const photo of assetIds) {
-      await step.sendEvent('send-photos-check-photo-event', {
+      await step.sendEvent('Send photos check photo event', {
         name: 'photos/check.photo',
         data: { id: photo },
       })

@@ -13,11 +13,14 @@ export default inngest.createFunction(
   },
   { event: 'photos/check.photo' },
   async ({ step, event }) => {
-    const photo = await step.run('get-photo', async () => (await getAsset(event.data.id)).fields)
+    const photo = await step.run(
+      'Get photo asset data',
+      async () => (await getAsset(event.data.id)).fields
+    )
 
     if (photo) {
       const exifInfo = await step.run(
-        'get-photo-exif',
+        'Get photo EXIF data',
         async () => normaliseExifData(await getRemoteExifData(photo.file.url)).processed
       )
 
@@ -40,7 +43,7 @@ export default inngest.createFunction(
         quality: 100,
       })
 
-      await step.sendEvent('send-photos-upload-photo-event', {
+      await step.sendEvent('Send photos upload photo event', {
         name: 'photos/upload.photo',
         data: {
           title,
