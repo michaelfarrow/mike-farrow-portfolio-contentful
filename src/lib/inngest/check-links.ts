@@ -43,7 +43,11 @@ export default inngest.createFunction(
   { id: 'check-links' },
   { event: 'check' },
   async ({ step }) => {
+    console.log('check-links')
+
     const urls = await step.run('fetch-urls', async () => {
+      console.log('fetching urls')
+
       const links = await getEntries({
         content_type: 'contentLink',
       })
@@ -59,10 +63,14 @@ export default inngest.createFunction(
     })
 
     for (const url of urls) {
-      await step.run('check-url', async () => ({
-        url,
-        exists: await checkUrl(url),
-      }))
+      await step.run('check-url', async () => {
+        console.log('checking url', url)
+
+        return {
+          url,
+          exists: await checkUrl(url),
+        }
+      })
     }
 
     // for (const url of urls) {
