@@ -4,6 +4,10 @@ import { Document, Block, Inline, Text } from '@contentful/rich-text-types'
 
 import { getEntries, getEntry } from '@/lib/contentful'
 
+export type LinksCheckLinks = {
+  data: {}
+}
+
 function allowedError(e: any) {
   return [
     999, // linkedin not logged in error
@@ -40,8 +44,15 @@ async function checkUrl(url: string) {
 }
 
 export default inngest.createFunction(
-  { id: 'check-links' },
-  { event: 'check' },
+  {
+    id: 'links-check-links',
+    concurrency: {
+      limit: 1,
+    },
+  },
+  {
+    event: 'links/check.links',
+  },
   async ({ step }) => {
     console.log('check-links')
 

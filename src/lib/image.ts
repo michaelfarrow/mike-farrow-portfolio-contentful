@@ -102,7 +102,7 @@ export async function getRemoteExifData(url: string) {
   return ExifParserFactory.create(buffer).parse()
 }
 
-export function normaliseExitData(data: ExifData): NormalisedExifData {
+export function normaliseExifData(data: ExifData): NormalisedExifData {
   const tags = data.tags || {}
 
   const {
@@ -155,5 +155,5 @@ export async function getAssetExifData(asset: Asset, cache?: boolean): Promise<N
     ? unstable_cache(fetchData, ['asset-exif', id, updatedAt])()
     : fetchData())
 
-  return normaliseExitData(data)
+  return normaliseExifData(data)
 }

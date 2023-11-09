@@ -11,7 +11,7 @@
     "codegen": "contentful-typescript-codegen --output @types/contentful.d.ts",
     "codegen:poll": "contentful-typescript-codegen --output @types/contentful.ts --poll --interval 15",
     "script": "npx -y ts-node --project tsconfig.node.json",
-    "inngest-dev": "npx inngest-cli@latest dev"
+    "inngest": "npx inngest-cli@latest dev"
   },
   "devDependencies": {
     "@types/lodash": "^4.14.191",

@@ -93,3 +93,6 @@ export async function getEntry<T extends CONTENT_TYPE, C extends Entry<any> = Co
   const entries = await getEntriesPage<C>({ query, single: true })
   return (entries.length && entries[0]) || null
 }
+
+export const getAsset = contentfulClient.getAsset
+export const getAssets = contentfulClient.getAssets
