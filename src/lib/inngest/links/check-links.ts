@@ -24,9 +24,11 @@ export default inngest.createFunction(
       limit: 1,
     },
   },
-  {
-    event: 'links/check.links',
-  },
+  process.env.NODE_ENV === 'production'
+    ? { cron: 'TZ=Europe/London 0 16 * * 3' }
+    : {
+        event: 'links/check.links',
+      },
   async ({ step }) => {
     const urlsData = await step.run('Fetch URLs', async () => {
       const links = await getEntries({
