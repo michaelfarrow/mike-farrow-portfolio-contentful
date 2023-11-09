@@ -1,13 +1,5 @@
 import inngest from '@/lib/inngest/client'
 
-export type PhotosUploadPhoto = {
-  data: {
-    title: string
-    description: string
-    url: string
-  }
-}
-
 export default inngest.createFunction(
   {
     id: 'photos-upload-photo',

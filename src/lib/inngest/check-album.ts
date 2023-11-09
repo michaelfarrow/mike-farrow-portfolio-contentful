@@ -2,12 +2,6 @@ import inngest from '@/lib/inngest/client'
 
 import { getEntry } from '@/lib/contentful'
 
-export type PhotosCheckAlbum = {
-  data: {
-    id: string
-  }
-}
-
 export default inngest.createFunction(
   {
     id: 'photos-check-album',
@@ -35,6 +29,7 @@ export default inngest.createFunction(
 
     return {
       done: true,
+      dispatched: assetIds.length,
     }
   }
 )

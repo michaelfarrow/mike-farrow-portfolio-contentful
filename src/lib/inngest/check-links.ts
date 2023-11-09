@@ -4,10 +4,6 @@ import { Document, Block, Inline, Text } from '@contentful/rich-text-types'
 
 import { getEntries, getEntry } from '@/lib/contentful'
 
-export type LinksCheckLinks = {
-  data: {}
-}
-
 function allowedError(e: any) {
   return [
     999, // linkedin not logged in error

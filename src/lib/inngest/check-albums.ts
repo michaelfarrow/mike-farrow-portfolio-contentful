@@ -2,10 +2,6 @@ import inngest from '@/lib/inngest/client'
 
 import { getEntries } from '@/lib/contentful'
 
-export type PhotosCheckAlbums = {
-  data: {}
-}
-
 export default inngest.createFunction(
   {
     id: 'photos-check-albums',
@@ -31,6 +27,7 @@ export default inngest.createFunction(
 
     return {
       done: true,
+      dispatched: albumIds.length,
     }
   }
 )

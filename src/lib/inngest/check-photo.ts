@@ -1,14 +1,8 @@
 import inngest from '@/lib/inngest/client'
 
 import { getAsset } from '@/lib/contentful'
-import { getAssetExifData } from '@/lib/image'
+import { getRemoteExifData, normaliseExifData, imageAssetProps } from '@/lib/image'
 import { Asset } from 'contentful'
-
-export type PhotosCheckPhoto = {
-  data: {
-    id: string
-  }
-}
 
 export default inngest.createFunction(
   {
@@ -19,42 +13,54 @@ export default inngest.createFunction(
   },
   { event: 'photos/check.photo' },
   async ({ step, event }) => {
-    const photo = await step.run('get-photo', () => getAsset(event.data.id))
+    const photo = await step.run('get-photo', async () => (await getAsset(event.data.id)).fields)
 
     if (photo) {
       const exifInfo = await step.run(
         'get-photo-exif',
-        async () => (await getAssetExifData(photo as Asset, true)).processed
+        async () => normaliseExifData(await getRemoteExifData(photo.file.url)).processed
       )
 
       const {
         title,
         description,
-        file: { url },
-      } = photo.fields
+        file: {
+          url,
+          details: { image: { width, height } = {} },
+        },
+      } = photo
 
       const { camera, lens, settings } = exifInfo
       const _settings = Object.values(settings).filter((v) => !!v)
+
+      const instagram = imageAssetProps({
+        asset: { fields: photo } as Asset,
+        format: 'jpg',
+        [width && height && width > height ? 'height' : 'width']: 1350,
+        quality: 100,
+      })
 
       await step.sendEvent('send-photos-upload-photo-event', {
         name: 'photos/upload.photo',
         data: {
           title,
-          description: [
-            (description.length && description) || null,
-            camera,
-            lens,
-            (_settings.length && _settings.join(' ')) || null,
-          ]
-            .filter((v) => !!v)
-            .join('. '),
-          url,
+          description: (description.length && description) || undefined,
+          info: [camera, lens, (_settings.length && _settings.join(' ')) || undefined].filter(
+            (v?: string): v is string => {
+              return !!v
+            }
+          ),
+          url: {
+            original: url,
+            instagram: instagram.src,
+          },
         },
       })
     }
 
     return {
       done: true,
+      dispatched: true,
     }
   }
 )

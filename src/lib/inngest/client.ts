@@ -1,17 +1,25 @@
 import { EventSchemas, Inngest } from 'inngest'
 
-import { PhotosCheckAlbums } from './check-albums'
-import { PhotosCheckAlbum } from './check-album'
-import { PhotosCheckPhoto } from './check-photo'
-import { PhotosUploadPhoto } from './upload-photo'
-import { LinksCheckLinks } from './check-links'
+type Data<T extends object> = {
+  data: T
+}
+
+type Id<T extends object = {}> = Data<{ id: string } & T>
 
 type Events = {
-  'photos/check.albums': PhotosCheckAlbums
-  'photos/check.album': PhotosCheckAlbum
-  'photos/check.photo': PhotosCheckPhoto
-  'photos/upload.photo': PhotosUploadPhoto
-  'links/check.links': LinksCheckLinks
+  'photos/check.albums': {}
+  'photos/check.album': Id
+  'photos/check.photo': Id
+  'photos/upload.photo': Data<{
+    title: string
+    description?: string
+    info: string[]
+    url: {
+      original: string
+      instagram: string
+    }
+  }>
+  'links/check.links': {}
 }
 
 const inngest = new Inngest({ id: 'mf', schemas: new EventSchemas().fromRecord<Events>() })
