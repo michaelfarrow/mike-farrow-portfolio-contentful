@@ -43,71 +43,115 @@ export default inngest.createFunction(
   { id: 'check-links' },
   { event: 'check' },
   async ({ step }) => {
-    const linkIds = await step.run('fetch-link-ids', async () => {
+    const urls = await step.run('fetch-urls', async () => {
       const links = await getEntries({
         content_type: 'contentLink',
       })
-      return links.map((link) => link.sys.id)
-    })
 
-    const projectIds = await step.run('fetch-project-ids', async () => {
       const projects = await getEntries({
         content_type: 'project',
       })
-      return projects.map((project) => project.sys.id)
+
+      return [
+        ...links.map((link) => link.fields.url),
+        ...projects.map((project) => findUrls(project.fields.content)).flat(),
+      ]
     })
 
-    for (const projectId of projectIds) {
-      const projectInfo = await step.run('fetch-project-information', async () => {
-        const project = await getEntry({
-          content_type: 'project',
-          'sys.id': projectId,
-        })
-
-        if (!project) return null
-
-        const { content } = project.fields
-
-        return {
-          project: projectId,
-          urls: findUrls(content),
-        }
-      })
-
-      if (projectInfo) {
-        for (const url of projectInfo.urls) {
-          await step.run('check-project-url', async () => {
-            console.log('checking project url', url)
-            return {
-              projectId: projectInfo.project,
-              url,
-              exists: await checkUrl(url),
-            }
-          })
-        }
-      }
+    for (const url of urls) {
+      await step.run('check-url', async () => ({
+        url,
+        exists: await checkUrl(url),
+      }))
     }
 
-    for (const linkId of linkIds) {
-      await step.run('check-link-url', async () => {
-        const link = await getEntry({
-          content_type: 'contentLink',
-          'sys.id': linkId,
-        })
+    // for (const url of urls) {
+    //   await step.run('check-link-url', async () => {
+    //     const link = await getEntry({
+    //       content_type: 'contentLink',
+    //       'sys.id': linkId,
+    //     })
 
-        if (!link) return { id: linkId, exists: null }
+    //     if (!link) return { id: linkId, exists: null }
 
-        const { url, name } = link.fields
+    //     const { url, name } = link.fields
 
-        console.log('checking link url', url)
+    //     console.log('checking link url', url)
 
-        return {
-          id: linkId,
-          url,
-          exists: await checkUrl(url),
-        }
-      })
-    }
+    //     return {
+    //       id: linkId,
+    //       url,
+    //       exists: await checkUrl(url),
+    //     }
+    //   })
+    // }
+    // const linkIds = await step.run('fetch-link-ids', async () => {
+    //   console.log('fetching link ids')
+
+    //   const links = await getEntries({
+    //     content_type: 'contentLink',
+    //   })
+    //   return links.map((link) => link.sys.id)
+    // })
+
+    // const projectIds = await step.run('fetch-project-ids', async () => {
+    //   const projects = await getEntries({
+    //     content_type: 'project',
+    //   })
+    //   return projects.map((project) => project.sys.id)
+    // })
+
+    // for (const projectId of projectIds) {
+    //   const projectInfo = await step.run('fetch-project-information', async () => {
+    //     const project = await getEntry({
+    //       content_type: 'project',
+    //       'sys.id': projectId,
+    //     })
+
+    //     if (!project) return null
+
+    //     const { content } = project.fields
+
+    //     return {
+    //       project: projectId,
+    //       urls: findUrls(content),
+    //     }
+    //   })
+
+    //   if (projectInfo) {
+    //     for (const url of projectInfo.urls) {
+    //       await step.run('check-project-url', async () => {
+    //         console.log('checking project url', url)
+    //         return {
+    //           projectId: projectInfo.project,
+    //           url,
+    //           exists: await checkUrl(url),
+    //         }
+    //       })
+    //     }
+    //   }
+    // }
+
+    // for (const linkId of linkIds) {
+    //   await step.run('check-link-url', async () => {
+    //     const link = await getEntry({
+    //       content_type: 'contentLink',
+    //       'sys.id': linkId,
+    //     })
+
+    //     if (!link) return { id: linkId, exists: null }
+
+    //     const { url, name } = link.fields
+
+    //     console.log('checking link url', url)
+
+    //     return {
+    //       id: linkId,
+    //       url,
+    //       exists: await checkUrl(url),
+    //     }
+    //   })
+    // }
 
     return {
       done: true,
