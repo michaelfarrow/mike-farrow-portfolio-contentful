@@ -19,25 +19,19 @@ export default inngest.createFunction(
   },
   { event: 'photos/check.photo' },
   async ({ step, event }) => {
-    const photo = await step.run('get-photo', async () => {
-      const photo = await getAsset(event.data.id)
-
-      if (!photo) return null
-
-      return photo
-    })
+    const photo = await step.run('get-photo', () => getAsset(event.data.id))
 
     if (photo) {
+      const exifInfo = await step.run(
+        'get-photo-exif',
+        async () => (await getAssetExifData(photo as Asset)).processed
+      )
+
       const {
         title,
         description,
         file: { url },
       } = photo.fields
-
-      const exifInfo = await step.run(
-        'get-photo-exif',
-        async () => (await getAssetExifData(photo as Asset)).processed
-      )
 
       const { camera, lens, settings } = exifInfo
       const _settings = Object.values(settings).filter((v) => !!v)

@@ -1,6 +1,6 @@
 import inngest from '@/lib/inngest/client'
 
-import { getEntries, getEntry } from '@/lib/contentful'
+import { getEntries } from '@/lib/contentful'
 
 export type PhotosCheckAlbums = {
   data: {}
