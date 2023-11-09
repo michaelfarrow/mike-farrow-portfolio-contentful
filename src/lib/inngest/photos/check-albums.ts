@@ -19,7 +19,7 @@ export default inngest.createFunction(
     })
 
     for (const album of albumIds) {
-      await step.sendEvent('Send photos check album event', {
+      await step.sendEvent('Dispatch check album event', {
         name: 'photos/check.album',
         data: { id: album },
       })

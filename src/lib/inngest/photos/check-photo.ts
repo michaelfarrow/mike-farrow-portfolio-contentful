@@ -43,7 +43,7 @@ export default inngest.createFunction(
         quality: 100,
       })
 
-      await step.sendEvent('Send photos upload photo event', {
+      await step.sendEvent('Dispatch upload photo event', {
         name: 'photos/upload.photo',
         data: {
           title,

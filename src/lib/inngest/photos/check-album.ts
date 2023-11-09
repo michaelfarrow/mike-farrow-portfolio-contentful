@@ -21,7 +21,7 @@ export default inngest.createFunction(
     })
 
     for (const photo of assetIds) {
-      await step.sendEvent('Send photos check photo event', {
+      await step.sendEvent('Dispatch check photo event', {
         name: 'photos/check.photo',
         data: { id: photo },
       })

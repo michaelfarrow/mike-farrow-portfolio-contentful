@@ -20,6 +20,11 @@ type Events = {
     }
   }>
   'links/check.links': {}
+  'links/check.link': Data<{
+    type: string
+    name: string
+    url: string
+  }>
 }
 
 const inngest = new Inngest({ id: 'mf', schemas: new EventSchemas().fromRecord<Events>() })

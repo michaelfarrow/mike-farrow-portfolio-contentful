@@ -10,7 +10,6 @@
     "lint": "next lint",
     "codegen": "contentful-typescript-codegen --output @types/contentful.d.ts",
     "codegen:poll": "contentful-typescript-codegen --output @types/contentful.ts --poll --interval 15",
-    "script": "npx -y ts-node --project tsconfig.node.json",
     "inngest": "npx inngest-cli@latest dev"
   },
   "devDependencies": {
@@ -24,7 +23,6 @@
     "concurrently": "^7.6.0",
     "eslint": "^8.53.0",
     "eslint-config-next": "^14.0.1",
-    "tsconfig-paths": "^4.2.0",
     "typescript": "^5.2.2"
   },
   "dependencies": {
