@@ -14,6 +14,6 @@ type Events = {
   'links/check.links': LinksCheckLinks
 }
 
-const inngest = new Inngest({ id: 'Mike Farrow', schemas: new EventSchemas().fromRecord<Events>() })
+const inngest = new Inngest({ id: 'mf', schemas: new EventSchemas().fromRecord<Events>() })
 
 export default inngest
