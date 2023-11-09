@@ -24,7 +24,7 @@ export default inngest.createFunction(
     if (photo) {
       const exifInfo = await step.run(
         'get-photo-exif',
-        async () => (await getAssetExifData(photo as Asset)).processed
+        async () => (await getAssetExifData(photo as Asset, true)).processed
       )
 
       const {
