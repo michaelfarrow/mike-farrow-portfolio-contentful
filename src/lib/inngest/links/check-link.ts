@@ -1,6 +1,7 @@
 import axios from 'axios'
 
 import inngest from '@/lib/inngest/client'
+import knock from '@/lib/knock'
 
 function allowedError(e: any) {
   return [
@@ -36,7 +37,7 @@ export default inngest.createFunction(
   async ({ step, event }) => {
     const { type, name, url } = event.data
 
-    return await step.run('Check URL', async () => {
+    const res = await step.run('Check URL', async () => {
       return {
         type,
         name,
@@ -44,5 +45,16 @@ export default inngest.createFunction(
         ok: await checkUrl(url),
       }
     })
+
+    if (!res.ok) {
+      await step.run('Report URL', () =>
+        knock.workflows.trigger('report-link', {
+          recipients: ['0'],
+          data: res,
+        })
+      )
+    }
+
+    return res
   }
 )
