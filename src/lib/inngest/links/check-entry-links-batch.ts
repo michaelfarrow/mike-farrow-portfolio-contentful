@@ -41,7 +41,6 @@ export default inngest.createFunction(
           fields: { name, content },
         } = entry
         return {
-          type,
           name,
           edit: editLink(entry),
           urls: findUrls(content),
@@ -52,7 +51,7 @@ export default inngest.createFunction(
     let total = 0
 
     for (const entry of entries) {
-      const { type, name, edit, urls } = entry
+      const { name, edit, urls } = entry
       for (const url of urls) {
         total++
         await step.sendEvent('Dispatch check link event', {
