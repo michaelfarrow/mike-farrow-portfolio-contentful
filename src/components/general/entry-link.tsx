@@ -1,6 +1,8 @@
-import { CONTENT_TYPE, IContentLink, IEntry } from '@t/contentful'
-import { ContentType } from '@/lib/contentful'
 import { default as NextLink, LinkProps } from 'next/link'
+import { CONTENT_TYPE, IEntry } from '@t/contentful'
+
+import { ContentType, isContentType } from '@/lib/contentful'
+import { okLink } from '@/lib/link'
 
 import Link from '@/components/general/link'
 
@@ -33,9 +35,9 @@ const types: LinkTypes = {
 export default function EntryLink({ className, entry, children, ...rest }: Props) {
   const _type = entry.sys.contentType.sys.id
 
-  if (_type == 'contentLink') {
+  if (isContentType(entry, 'contentLink')) {
     return (
-      <Link {...rest} className={className} href={(entry as IContentLink).fields.url}>
+      <Link {...rest} className={className} href={okLink(entry.fields.url)}>
         {children}
       </Link>
     )

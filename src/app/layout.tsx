@@ -8,6 +8,7 @@ import { Analytics } from '@vercel/analytics/react'
 import settings from '@/lib/settings'
 import Header from '@/components/global/header'
 import DraftMode from '@/components/global/draft-mode'
+import Notifications from '@/components/global/notifications'
 
 // import Link from '@/components/general/link'
 
@@ -45,6 +46,7 @@ export default async function RootLayout({ children }: Props) {
             </p>
           )}
           <Header />
+          <Notifications />
           {/* {(linkedInUrl && <Link href={linkedInUrl}>{linkedInLabel || 'LinkedIn'}</Link>) || null} */}
           <main>{children}</main>
         </div>

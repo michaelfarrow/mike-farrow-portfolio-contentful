@@ -1,10 +1,16 @@
 import { EventSchemas, Inngest } from 'inngest'
 
+import { CONTENT_TYPE } from '@t/contentful'
+
+export const CHUNK_DEFAULT = 5
+
 type Data<T extends object> = {
   data: T
 }
 
 type Id<T extends object = {}> = Data<{ id: string } & T>
+
+type EntryWithContent = Extract<CONTENT_TYPE, 'project'>
 
 type Events = {
   'photos/check.albums': {}
@@ -20,10 +26,22 @@ type Events = {
     }
   }>
   'links/check.links': {}
+  'links/check.entry-links': Data<{
+    type: EntryWithContent
+  }>
+  'links/check.entry-links-batch': Data<{
+    type: EntryWithContent
+    ids: string[]
+  }>
+  'links/check.content-links': {}
+  'links/check.content-links-batch': Data<{
+    ids: string[]
+  }>
   'links/check.link': Data<{
     type: string
     name: string
     url: string
+    edit: string
   }>
 }
 

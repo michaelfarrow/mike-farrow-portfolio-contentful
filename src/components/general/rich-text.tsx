@@ -1,6 +1,6 @@
 import { HTMLAttributes, ReactNode } from 'react'
 import clsx from 'clsx'
-import { Entry, Asset } from 'contentful'
+import { Asset } from 'contentful'
 import {
   Document as ContentfulDocument,
   Block,
@@ -16,7 +16,10 @@ import {
 } from '@contentful/rich-text-react-renderer'
 
 import { CONTENT_TYPE, IEntry } from '@t/contentful'
+
 import { toText, slugGenerator } from '@/lib/document'
+import { okLink } from '@/lib/link'
+
 import Link from '@/components/general/link'
 import EntryLink from '@/components/general/entry-link'
 
@@ -56,7 +59,7 @@ function getContentType(node: any): string | null {
   return node?.data?.target?.fields?.file?.contentType || ''
 }
 
-type EntryHandler = (entry: Entry<any>, type: CONTENT_TYPE | null, children: ReactNode) => ReactNode
+type EntryHandler = (entry: IEntry, type: CONTENT_TYPE | null, children: ReactNode) => ReactNode
 
 function handleEntry<T extends EntryHandler>(handler: T) {
   const h: NodeRenderer = (node, children) => {
@@ -90,7 +93,7 @@ function EntryComponent({
   handlers: EntryHandlers
   children?: ReactNode
   type: CONTENT_TYPE
-  entry: Entry<any>
+  entry: IEntry
 }) {
   const Component: any = handlers[type]
   if (!Component) return null
@@ -161,7 +164,7 @@ export default function RichText({
       [INLINES.HYPERLINK]: (node, children) => {
         return (
           (inlineHyperlink && inlineHyperlink(node.data.uri, children)) || (
-            <Link href={node.data.uri}>{children}</Link>
+            <Link href={okLink(node.data.uri)}>{children}</Link>
           )
         )
       },
@@ -173,14 +176,14 @@ export default function RichText({
             </EntryComponent>
           )
         }
-        return <EntryLink entry={entry as any}>{children}</EntryLink>
+        return <EntryLink entry={entry}>{children}</EntryLink>
       }),
       [INLINES.ASSET_HYPERLINK]: handleAsset(
         (asset, contentType, children) =>
           (inlineAssetHyperlink &&
             contentType &&
             inlineAssetHyperlink(asset, contentType, children)) || (
-            <Link href={asset.fields.file.url}>{children}</Link>
+            <Link href={okLink(asset.fields.file.url)}>{children}</Link>
           )
       ),
       [INLINES.EMBEDDED_ENTRY]: handleEntry((entry, type) => {

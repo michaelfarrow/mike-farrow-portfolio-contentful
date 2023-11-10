@@ -28,17 +28,25 @@ export default inngest.createFunction(
   {
     id: 'links-check-link',
     concurrency: {
-      limit: 1,
+      limit: 10,
     },
   },
   {
     event: 'links/check.link',
   },
-  async ({ step, event }) => {
-    const { data } = event
-    const { url } = data
+  async ({
+    step,
+    event: {
+      data,
+      data: { url },
+    },
+  }) => {
+    const status = await step.run('Check URL', async () =>
+      url.match(/#ok$/) ? 2 : (await checkUrl(url)) ? 1 : 0
+    )
 
-    const ok = await step.run('Check URL', () => checkUrl(url))
+    const ok = status > 0
+    const skipped = status === 2
 
     if (!ok) {
       await step.run('Report URL', () =>
@@ -49,6 +57,6 @@ export default inngest.createFunction(
       )
     }
 
-    return { ...data, ok }
+    return { ...data, ok, skipped }
   }
 )

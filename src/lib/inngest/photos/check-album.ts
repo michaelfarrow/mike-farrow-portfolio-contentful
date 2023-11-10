@@ -10,11 +10,16 @@ export default inngest.createFunction(
     },
   },
   { event: 'photos/check.album' },
-  async ({ step, event }) => {
+  async ({
+    step,
+    event: {
+      data: { id },
+    },
+  }) => {
     const assetIds = await step.run('Fetch album asset IDs', async () => {
       const album = await getEntry({
         content_type: 'photoAlbum',
-        'sys.id': event.data.id,
+        'sys.id': id,
       })
       return album?.fields.photos?.map((photo) => photo.sys.id) || []
     })
