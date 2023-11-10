@@ -25,7 +25,6 @@ export default inngest.createFunction(
           fields: { name, url },
         } = link
         return {
-          type: 'link',
           name,
           edit: editLink(link),
           url,
@@ -36,7 +35,7 @@ export default inngest.createFunction(
     for (const link of links) {
       await step.sendEvent('Dispatch check link event', {
         name: 'links/check.link',
-        data: link,
+        data: { type: 'link', ...link },
       })
     }
 
