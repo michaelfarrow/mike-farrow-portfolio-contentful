@@ -16,8 +16,7 @@ export default inngest.createFunction(
         content_type: 'photoAlbum',
         'sys.id': event.data.id,
       })
-      if (!album) return []
-      return album.fields.photos?.map((photo) => photo.sys.id) || []
+      return album?.fields.photos?.map((photo) => photo.sys.id) || []
     })
 
     for (const photo of assetIds) {

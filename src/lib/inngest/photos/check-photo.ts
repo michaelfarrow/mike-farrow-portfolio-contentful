@@ -34,7 +34,7 @@ export default inngest.createFunction(
       } = photo
 
       const { camera, lens, settings } = exifInfo
-      const _settings = Object.values(settings).filter((v) => !!v)
+      const settingsNormalised = Object.values(settings).filter((v) => !!v)
 
       const instagram = imageAssetProps({
         asset: { fields: photo } as Asset,
@@ -48,11 +48,13 @@ export default inngest.createFunction(
         data: {
           title,
           description: (description.length && description) || undefined,
-          info: [camera, lens, (_settings.length && _settings.join(' ')) || undefined].filter(
-            (v?: string): v is string => {
-              return !!v
-            }
-          ),
+          info: [
+            camera,
+            lens,
+            (settingsNormalised.length && settingsNormalised.join(' ')) || undefined,
+          ].filter((v?: string): v is string => {
+            return !!v
+          }),
           url: {
             original: url,
             instagram: instagram.src,
