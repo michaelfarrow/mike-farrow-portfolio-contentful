@@ -35,26 +35,20 @@ export default inngest.createFunction(
     event: 'links/check.link',
   },
   async ({ step, event }) => {
-    const { type, name, url } = event.data
+    const { data } = event
+    const { url } = data
 
-    const res = await step.run('Check URL', async () => {
-      return {
-        type,
-        name,
-        url,
-        ok: await checkUrl(url),
-      }
-    })
+    const ok = await step.run('Check URL', () => checkUrl(url))
 
-    if (!res.ok) {
+    if (!ok) {
       await step.run('Report URL', () =>
         knock.workflows.trigger('report-link', {
           recipients: ['0'],
-          data: res,
+          data,
         })
       )
     }
 
-    return res
+    return { ...data, ok }
   }
 )
