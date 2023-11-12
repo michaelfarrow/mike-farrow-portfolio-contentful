@@ -2,6 +2,7 @@ import axios from 'axios'
 
 import inngest from '@/lib/inngest/client'
 import knock from '@/lib/knock'
+import { OK_REGEX } from '@/lib/link'
 
 function allowedError(e: any) {
   return [
@@ -42,7 +43,7 @@ export default inngest.createFunction(
     },
   }) => {
     const status = await step.run('Check URL', async () =>
-      url.match(/#ok$/) ? 2 : (await checkUrl(url)) ? 1 : 0
+      url.match(OK_REGEX) ? 2 : (await checkUrl(url)) ? 1 : 0
     )
 
     const ok = status > 0
