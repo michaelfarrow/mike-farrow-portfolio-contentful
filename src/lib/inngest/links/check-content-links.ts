@@ -1,5 +1,4 @@
 import inngest from '@/lib/inngest/client'
-import { chunkedEntryIds } from '@/lib/contentful'
 
 export default inngest.createFunction(
   {
@@ -12,23 +11,19 @@ export default inngest.createFunction(
     event: 'links/check.content-links',
   },
   async ({ step }) => {
-    const links = chunkedEntryIds('contentLink', 100)
-
-    const chunks = await step.run('Get total chunks', links.totalChunks)
-
-    for (let i = 0; i < chunks; i++) {
-      const ids = await step.run('Get chunked links', () => links.getChunk(i))
-      await step.sendEvent('Dispatch check content links batch event', {
-        name: 'links/check.content-links-batch',
-        data: {
-          ids,
+    step.sendEvent('Dispatch batch id event', {
+      name: 'general/batch.ids',
+      data: {
+        type: 'contentLink',
+        chunk: 250,
+        dispatch: {
+          event: 'links/check.content-links-batch',
         },
-      })
-    }
+      },
+    })
 
     return {
       done: true,
-      dispatched: chunks,
     }
   }
 )

@@ -4,6 +4,8 @@ import inngest from '@/lib/inngest/client'
 
 import cronCheckLinks from '@/lib/inngest/cron/check-links'
 
+import generalBatchIds from '@/lib/inngest/general/batch-ids'
+
 import linksCheckEntryLinks from '@/lib/inngest/links/check-entry-links'
 import linksCheckEntryLinksBatch from '@/lib/inngest/links/check-entry-links-batch'
 import linksCheckContentLinks from '@/lib/inngest/links/check-content-links'
@@ -20,6 +22,8 @@ export const { GET, POST, PUT } = serve({
   client: inngest,
   functions: [
     cronCheckLinks,
+
+    generalBatchIds,
 
     linksCheckEntryLinks,
     linksCheckEntryLinksBatch,

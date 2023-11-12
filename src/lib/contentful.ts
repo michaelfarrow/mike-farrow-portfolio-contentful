@@ -65,7 +65,6 @@ export function editLink(entry: IEntry) {
 export function getEntriesPage<T extends IEntry>({
   query,
   single,
-  singlePage,
   page = 1,
   entries = [],
   perPage = PER_PAGE,
@@ -79,7 +78,7 @@ export function getEntriesPage<T extends IEntry>({
     .then((res) => {
       if (res.items && res.items.length) {
         entries = entries.concat(res.items as unknown as T[])
-        if (single || singlePage || res.total == res.skip + res.items.length) return entries
+        if (single || res.total == res.skip + res.items.length) return entries
         return getEntriesPage({
           query,
           single,
@@ -107,18 +106,6 @@ export async function getEntry<T extends CONTENT_TYPE, C extends IEntry = Conten
 ): Promise<C | null> {
   const entries = await getEntriesPage<C>({ query, single: true })
   return (entries.length && entries[0]) || null
-}
-
-export function chunkedEntryIds<T extends CONTENT_TYPE>(type: T, chunk: number) {
-  const query = { content_type: type, order: 'sys.createdAt' }
-
-  return {
-    totalChunks: async () => Math.ceil((await getEntries(query)).length / chunk),
-    getChunk: async (i: number) =>
-      (await getEntriesPage({ query, singlePage: true, page: i + 1, perPage: chunk })).map(
-        (entry) => entry.sys.id
-      ),
-  }
 }
 
 export const getAsset = contentfulClient.getAsset
