@@ -28,13 +28,19 @@ const get = (settings: ISettingFields[]) => (key: string) => {
 }
 
 const createHelper =
-  <P extends SettingPrefix, K = SettingPrefixKeyMap[P]>(settings: ISettingFields[], prefix: P) =>
+  <
+    P extends SettingPrefix | undefined,
+    K = P extends SettingPrefix ? SettingPrefixKeyMap[P] : SettingKey
+  >(
+    settings: ISettingFields[],
+    prefix?: P
+  ) =>
   <T, D extends NonNullable<T>>(process: (v?: string | null) => T) => {
     function getSetting(key: K): T
     function getSetting(key: K, defaultValue: D): NonNullable<T>
 
     function getSetting(key: K, defaultValue?: any) {
-      const val = process(get(settings)(`${prefix}.${key}`))
+      const val = process(get(settings)(String(prefix ? `${prefix}.${key}` : key)))
       return defaultValue !== undefined
         ? val !== null && val !== undefined
           ? val
@@ -45,7 +51,7 @@ const createHelper =
     return getSetting
   }
 
-export default async function settings<P extends SettingPrefix>(prefix: P) {
+async function getMethods<P extends SettingPrefix | undefined>(prefix?: P) {
   const settings = await getSettings(prefix)
   const h = createHelper(settings, prefix)
 
@@ -70,3 +76,12 @@ export default async function settings<P extends SettingPrefix>(prefix: P) {
     ),
   }
 }
+
+function settings(): ReturnType<typeof getMethods<undefined>>
+function settings<P extends SettingPrefix>(prefix: P): ReturnType<typeof getMethods<P>>
+
+function settings(prefix?: any) {
+  return getMethods(prefix)
+}
+
+export default settings
