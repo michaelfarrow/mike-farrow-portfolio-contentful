@@ -1,7 +1,16 @@
 import { ISettingFields } from '@t/contentful'
 import { getEntries } from '@/lib/contentful'
 
-export async function getSettings(prefix?: string) {
+type SettingKey = ISettingFields['key']
+
+type SettingPrefix = SettingKey extends `${infer Type}.${string}` ? Type : never
+type SettingPrefixKeys<T extends SettingKey> = T extends `${string}.${infer Key}` ? Key : never
+
+type SettingPrefixKeyMap = {
+  [key in SettingPrefix]: SettingPrefixKeys<Extract<SettingKey, `${key}.${string}`>>
+}
+
+export async function getSettings(prefix?: SettingPrefix) {
   const settings = await getEntries({
     content_type: 'setting',
     ...((prefix && { 'fields.key[match]': `^${prefix}` }) || {}),
@@ -19,13 +28,13 @@ const get = (settings: ISettingFields[]) => (key: string) => {
 }
 
 const createHelper =
-  (settings: ISettingFields[], prefix?: string) =>
+  <P extends SettingPrefix, K = SettingPrefixKeyMap[P]>(settings: ISettingFields[], prefix: P) =>
   <T, D extends NonNullable<T>>(process: (v?: string | null) => T) => {
-    function getSetting(key: string): T
-    function getSetting(key: string, defaultValue: D): NonNullable<T>
+    function getSetting(key: K): T
+    function getSetting(key: K, defaultValue: D): NonNullable<T>
 
-    function getSetting(key: string, defaultValue?: any) {
-      const val = process(get(settings)(prefix ? `${prefix}.${key}` : key))
+    function getSetting(key: K, defaultValue?: any) {
+      const val = process(get(settings)(`${prefix}.${key}`))
       return defaultValue !== undefined
         ? val !== null && val !== undefined
           ? val
@@ -35,7 +44,8 @@ const createHelper =
 
     return getSetting
   }
-export default async function settings(prefix?: string) {
+
+export default async function settings<P extends SettingPrefix>(prefix: P) {
   const settings = await getSettings(prefix)
   const h = createHelper(settings, prefix)
 
