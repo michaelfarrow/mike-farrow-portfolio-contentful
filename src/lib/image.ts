@@ -141,7 +141,7 @@ export function normaliseExifData(data: ExifData): NormalisedExifData {
   }
 }
 
-export async function getAssetExifData(asset: Asset, cache?: boolean): Promise<NormalisedExifData> {
+export async function getAssetExifData(asset: Asset, cache?: boolean) {
   const {
     fields: {
       file: { url },
