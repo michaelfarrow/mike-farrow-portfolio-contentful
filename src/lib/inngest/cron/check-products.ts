@@ -2,7 +2,7 @@ import inngest from '@/lib/inngest/client'
 
 export default inngest.createFunction(
   {
-    id: 'cron-check-cameraworld',
+    id: 'cron-check-products',
     concurrency: {
       limit: 1,
     },

@@ -112,7 +112,7 @@ export default inngest.createFunction(
       specialMet,
     }
 
-    if (!found || targetMet || specialMet) {
+    if (!found || targetMet || (!target && specialMet)) {
       await step.run('Report Product', () =>
         knock.workflows.trigger('report-product', {
           recipients: ['0'],

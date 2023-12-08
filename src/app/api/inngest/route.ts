@@ -3,7 +3,7 @@ import { serve } from 'inngest/next'
 import inngest from '@/lib/inngest/client'
 
 import cronCheckLinks from '@/lib/inngest/cron/check-links'
-import cronCheckCameraWorld from '@/lib/inngest/cron/check-cameraworld'
+import cronCheckProducts from '@/lib/inngest/cron/check-products'
 
 import generalBatchIds from '@/lib/inngest/general/batch-ids'
 
@@ -26,7 +26,7 @@ export const { GET, POST, PUT } = serve({
   client: inngest,
   functions: [
     cronCheckLinks,
-    cronCheckCameraWorld,
+    cronCheckProducts,
 
     generalBatchIds,
 
