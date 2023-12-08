@@ -63,6 +63,10 @@ type Events = {
     url: string
     edit: string
   }>
+  'track/check.cameraworld': {}
+  'track/check.cameraworld-product': Id<{
+    target?: number
+  }>
 }
 
 const schemas = new EventSchemas().fromRecord<Events>()

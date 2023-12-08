@@ -568,7 +568,12 @@ export interface IProjectAttribution extends Entry<IProjectAttributionFields> {
 
 export interface ISettingFields {
   /** Key */
-  key: 'cv.blurb' | 'global.linkedin.label' | 'global.linkedin.url' | 'home.blurb'
+  key:
+    | 'cv.blurb'
+    | 'global.linkedin.label'
+    | 'global.linkedin.url'
+    | 'home.blurb'
+    | 'track.cameraworld'
 
   /** Value */
   value?: string | undefined

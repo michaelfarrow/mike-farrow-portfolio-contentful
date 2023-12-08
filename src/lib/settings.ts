@@ -69,11 +69,20 @@ async function getMethods<P extends SettingPrefix | undefined>(prefix?: P) {
       (v) =>
         (v &&
           v
-            .split(/(?<=[^\\]|^);/)
-            .map((v) => v.trim().replace(/\\;/g, ';'))
+            .split(/\n/)
+            .map((v) => v.trim())
             .filter((v) => v.length)) ||
         null
     ),
+    // textArray: h(
+    //   (v) =>
+    //     (v &&
+    //       v
+    //         .split(/(?<=[^\\]|^);/)
+    //         .map((v) => v.trim().replace(/\\;/g, ';'))
+    //         .filter((v) => v.length)) ||
+    //     null
+    // ),
   }
 }
 
