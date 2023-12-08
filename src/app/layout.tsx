@@ -4,6 +4,7 @@ import clsx from 'clsx'
 import { DM_Mono, Sora } from 'next/font/google'
 import { draftMode } from 'next/headers'
 import { Analytics } from '@vercel/analytics/react'
+import { SpeedInsights } from '@vercel/speed-insights/next'
 
 import settings from '@/lib/settings'
 import Header from '@/components/global/header'
@@ -51,6 +52,7 @@ export default async function RootLayout({ children }: Props) {
           <main>{children}</main>
         </div>
         <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   )
