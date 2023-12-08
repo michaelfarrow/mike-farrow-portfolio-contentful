@@ -19,8 +19,8 @@ import photosCheckAlbum from '@/lib/inngest/photos/check-album'
 import photosCheckPhoto from '@/lib/inngest/photos/check-photo'
 import photosUploadPhoto from '@/lib/inngest/photos/upload-photo'
 
-import trackCheckCameraworld from '@/lib/inngest/track/check-cameraworld'
-import trackCheckCameraworldProduct from '@/lib/inngest/track/check-cameraworld-product'
+import productsCheckCameraworld from '@/lib/inngest/products/check-cameraworld'
+import productsCheckCameraworldProduct from '@/lib/inngest/products/check-cameraworld-product'
 
 export const { GET, POST, PUT } = serve({
   client: inngest,
@@ -42,7 +42,7 @@ export const { GET, POST, PUT } = serve({
     photosCheckPhoto,
     photosUploadPhoto,
 
-    trackCheckCameraworld,
-    trackCheckCameraworldProduct,
+    productsCheckCameraworld,
+    productsCheckCameraworldProduct,
   ],
 })

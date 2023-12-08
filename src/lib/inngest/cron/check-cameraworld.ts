@@ -12,7 +12,7 @@ export default inngest.createFunction(
   },
   async ({ step }) => {
     await step.sendEvent('Dispatch check cameraworld event', {
-      name: 'track/check.cameraworld',
+      name: 'products/check.cameraworld',
     })
 
     return {

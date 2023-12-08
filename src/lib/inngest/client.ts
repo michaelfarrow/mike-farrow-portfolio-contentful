@@ -63,8 +63,8 @@ type Events = {
     url: string
     edit: string
   }>
-  'track/check.cameraworld': {}
-  'track/check.cameraworld-product': Id<{
+  'products/check.cameraworld': {}
+  'products/check.cameraworld-product': Id<{
     target?: number
   }>
 }

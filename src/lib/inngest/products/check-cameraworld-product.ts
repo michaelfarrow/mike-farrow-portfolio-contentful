@@ -86,12 +86,12 @@ async function lookupProduct(id: string) {
 
 export default inngest.createFunction(
   {
-    id: 'track-check-cameraworld-product',
+    id: 'products-check-cameraworld-product',
     concurrency: {
       limit: 1,
     },
   },
-  { event: 'track/check.cameraworld-product' },
+  { event: 'products/check.cameraworld-product' },
   async ({
     step,
     event: {

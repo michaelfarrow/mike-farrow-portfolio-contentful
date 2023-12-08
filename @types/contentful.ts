@@ -573,7 +573,7 @@ export interface ISettingFields {
     | 'global.linkedin.label'
     | 'global.linkedin.url'
     | 'home.blurb'
-    | 'track.cameraworld'
+    | 'products.cameraworld'
 
   /** Value */
   value?: string | undefined

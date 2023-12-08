@@ -4,15 +4,15 @@ import settings from '@/lib/settings'
 
 export default inngest.createFunction(
   {
-    id: 'track-check-cameraworld',
+    id: 'products-check-cameraworld',
     concurrency: {
       limit: 1,
     },
   },
-  { event: 'track/check.cameraworld' },
+  { event: 'products/check.cameraworld' },
   async ({ step }) => {
     const products = await step.run('Fetch CameraWorld products to check', async () => {
-      const s = await settings('track')
+      const s = await settings('products')
       const products = s.textArray('cameraworld', [])
 
       return products.map((product) => {
@@ -29,7 +29,7 @@ export default inngest.createFunction(
 
     for (const product of products) {
       await step.sendEvent('Dispatch check CameraWorld product event', {
-        name: 'track/check.cameraworld-product',
+        name: 'products/check.cameraworld-product',
         data: product,
       })
     }
