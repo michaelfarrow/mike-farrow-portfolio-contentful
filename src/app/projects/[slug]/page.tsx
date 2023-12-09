@@ -45,15 +45,15 @@ export async function generateMetadata({
   return { title: name, robots: hideFromSearch ? 'noindex' : undefined }
 }
 
-export async function generateStaticParams() {
-  const projects = await getEntries({
-    content_type: 'project',
-  })
+// export async function generateStaticParams() {
+//   const projects = await getEntries({
+//     content_type: 'project',
+//   })
 
-  return projects.map((project) => ({
-    slug: project.fields.slug,
-  }))
-}
+//   return projects.map((project) => ({
+//     slug: project.fields.slug,
+//   }))
+// }
 
 export default async function Page({ params: { slug } }: { params: Params }) {
   const imageFullWidth = false
