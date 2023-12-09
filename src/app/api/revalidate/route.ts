@@ -1,4 +1,4 @@
-import { revalidateTag } from 'next/cache'
+import { revalidatePath, revalidateTag } from 'next/cache'
 import { tag } from '@/lib/cache'
 
 function revalidate(...tags: string[]) {
@@ -33,6 +33,7 @@ export async function POST(request: Request) {
 
   revalidate('entry')
   revalidate('entries')
+  revalidatePath('/projects/bluetooth-typewriter')
 
   return Response.json({ ok: true })
 }
