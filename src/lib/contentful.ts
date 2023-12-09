@@ -78,6 +78,7 @@ export function getEntriesPage<T extends IEntry>({
   entries = [],
   perPage = PER_PAGE,
 }: GetEntriesPageParams<T>): Promise<T[]> {
+  console.log('fetch', query)
   return contentfulClient
     .getEntries<T>({
       ...query,
