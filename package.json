@@ -43,7 +43,7 @@
     "format-duration": "^3.0.2",
     "inngest": "^3.4.4",
     "lodash": "^4.17.21",
-    "next": "^14.0.1",
+    "next": "^14.0.4",
     "normalize.css": "^8.0.1",
     "num2fraction": "^1.2.2",
     "p-queue": "^8.0.0",
