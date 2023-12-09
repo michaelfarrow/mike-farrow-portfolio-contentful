@@ -54,12 +54,6 @@ function cacheConfig(tags: string[]) {
   return process.env.NODE_ENV === 'production' ? { tags } : { revalidate: 5 }
 }
 
-const wait = (n: number) => {
-  return new Promise((resolve) => {
-    setTimeout(() => resolve(null), n * 1000)
-  })
-}
-
 export type ContentType<P extends CONTENT_TYPE, T = IEntry> = T extends IEntry & {
   sys: { contentType: { sys: { id: P } } }
 }
@@ -84,8 +78,7 @@ export async function getEntriesPage<T extends IEntry>({
   entries = [],
   perPage = PER_PAGE,
 }: GetEntriesPageParams<T>): Promise<T[]> {
-  await wait(5)
-  console.log('fetch', query)
+  // console.log('fetch', query)
   return await contentfulClient
     .getEntries<T>({
       ...query,
