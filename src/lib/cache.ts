@@ -10,9 +10,9 @@ export function tag(
       .sort()
       .map((key) => {
         const val = attrs[key]
-        return ![false, undefined, null].includes(val as any) && `${paramCase(key)}:${String(val)}`
+        return ![false, undefined, null].includes(val as any) && `${paramCase(key)}_${String(val)}`
       }),
   ]
     .filter((part) => !!part)
-    .join(';')
+    .join('__')
 }
