@@ -108,12 +108,13 @@ export async function getEntries<T extends CONTENT_TYPE, C extends IEntry = Cont
   query: Query<T>
 ) {
   const _query = { order: 'sys.createdAt', ...query }
+  const type = query.content_type
   return (
     (await queue.add(() =>
       unstable_cache(
         () => getEntriesPage<C>({ query: _query }),
         ['entries', JSON.stringify(_query)],
-        cacheConfig(['entries', `entries,type:${_query.content_type}`])
+        cacheConfig(['entries', tag('entries', { type: _query.content_type })])
       )()
     )) || []
   )
@@ -123,15 +124,12 @@ export async function getEntry<T extends CONTENT_TYPE, C extends IEntry = Conten
   query: Query<T>
 ) {
   const type = query.content_type
+  const slug = query['fields.slug']
   const entries = await queue.add(() =>
     unstable_cache(
       () => getEntriesPage<C>({ query, single: true }),
       ['entry', JSON.stringify(query)],
-      cacheConfig([
-        'entry',
-        tag('entry', { type }),
-        tag('entry', { type, slug: query['fields.slug'] }),
-      ])
+      cacheConfig(['entry', tag('entry', { type }), tag('entry', { type, slug })])
     )()
   )
   return (entries && entries.length && entries[0]) || null
