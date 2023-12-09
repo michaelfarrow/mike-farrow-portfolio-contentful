@@ -18,6 +18,9 @@ import richTextStyles from '@/styles/pages/content/project.module.scss'
 
 import { getEntry, getEntries } from '@/lib/contentful'
 
+export const dynamic = 'force-static',
+  dynamicParams = true
+
 export interface Params {
   slug: string
 }
@@ -43,6 +46,10 @@ export async function generateMetadata({
   } = project
 
   return { title: name, robots: hideFromSearch ? 'noindex' : undefined }
+}
+
+export function generateStaticParams() {
+  return []
 }
 
 // export async function generateStaticParams() {
