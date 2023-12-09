@@ -28,6 +28,9 @@ export async function POST(request: Request) {
     const type = body?.sys?.contentType?.sys?.id
     const slug = body?.fields?.slug?.['en-US']
 
+    revalidate('entry')
+    revalidate('entries')
+
     // type && slug && revalidate(tag('entry', { type, slug }))
     // type && revalidate(tag('entries', { type }))
   }
