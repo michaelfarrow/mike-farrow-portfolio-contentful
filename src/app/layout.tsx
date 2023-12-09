@@ -12,8 +12,6 @@ import DraftMode from '@/components/global/draft-mode'
 import Notifications from '@/components/global/notifications'
 
 // import Link from '@/components/general/link'
-export const dynamic = 'force-static'
-export const dynamicParams = true
 
 export interface Props {
   children: React.ReactNode
