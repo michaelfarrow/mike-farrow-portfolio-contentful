@@ -18,6 +18,9 @@ import richTextStyles from '@/styles/pages/content/project.module.scss'
 
 import { getEntry, getEntries } from '@/lib/contentful'
 
+export const dynamic = 'force-static'
+export const dynamicParams = true
+
 export interface Params {
   slug: string
 }
