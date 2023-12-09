@@ -51,7 +51,13 @@ export type Query<T extends CONTENT_TYPE> = {
 }
 
 function cacheConfig(tags: string[]) {
-  return process.env.NODE_ENV === 'production' ? { tags } : { revalidate: 1 }
+  return process.env.NODE_ENV === 'production' ? { tags } : { revalidate: 5 }
+}
+
+const wait = (n: number) => {
+  return new Promise((resolve) => {
+    setTimeout(() => resolve(null), n * 1000)
+  })
 }
 
 export type ContentType<P extends CONTENT_TYPE, T = IEntry> = T extends IEntry & {
@@ -71,15 +77,16 @@ export function editLink(entry: IEntry) {
   return `https://app.contentful.com/spaces/${SPACE_ID}/entries/${entry.sys.id}`
 }
 
-export function getEntriesPage<T extends IEntry>({
+export async function getEntriesPage<T extends IEntry>({
   query,
   single,
   page = 1,
   entries = [],
   perPage = PER_PAGE,
 }: GetEntriesPageParams<T>): Promise<T[]> {
+  await wait(5)
   console.log('fetch', query)
-  return contentfulClient
+  return await contentfulClient
     .getEntries<T>({
       ...query,
       limit: single ? 1 : perPage,
