@@ -1,5 +1,10 @@
 import { CONTENT_TYPE, IEntry } from '@t/contentful'
-import { createClient } from 'contentful'
+import { Asset, AssetCollection, createClient } from 'contentful'
+import { unstable_cache } from 'next/cache'
+import Queue from 'p-queue'
+import { tag } from '@/lib/cache'
+
+const queue = new Queue({ concurrency: 1 })
 
 export const PREVIEW = Boolean(
   process.env.NODE_ENV === 'development' && process.env.CONTENTFUL_PREVIEW_TOKEN
@@ -43,6 +48,10 @@ export type Query<T extends CONTENT_TYPE> = {
   content_type: T
   include?: number
   [key: string]: any
+}
+
+function cacheConfig(tags: string[]) {
+  return process.env.NODE_ENV === 'production' ? { tags } : { revalidate: 1 }
 }
 
 export type ContentType<P extends CONTENT_TYPE, T = IEntry> = T extends IEntry & {
@@ -95,18 +104,56 @@ export function getEntriesPage<T extends IEntry>({
     })
 }
 
-export function getEntries<T extends CONTENT_TYPE, C extends IEntry = ContentType<T>>(
+export async function getEntries<T extends CONTENT_TYPE, C extends IEntry = ContentType<T>>(
   query: Query<T>
-): Promise<C[]> {
-  return getEntriesPage<C>({ query: { order: 'sys.createdAt', ...query } })
+) {
+  const _query = { order: 'sys.createdAt', ...query }
+  return (
+    (await queue.add(() =>
+      unstable_cache(
+        () => getEntriesPage<C>({ query: _query }),
+        ['entries', JSON.stringify(_query)],
+        cacheConfig(['entries', `entries,type:${_query.content_type}`])
+      )()
+    )) || []
+  )
 }
 
 export async function getEntry<T extends CONTENT_TYPE, C extends IEntry = ContentType<T>>(
   query: Query<T>
-): Promise<C | null> {
-  const entries = await getEntriesPage<C>({ query, single: true })
-  return (entries.length && entries[0]) || null
+) {
+  const type = query.content_type
+  const entries = await queue.add(() =>
+    unstable_cache(
+      () => getEntriesPage<C>({ query, single: true }),
+      ['entry', JSON.stringify(query)],
+      cacheConfig([
+        'entry',
+        tag('entry', { type }),
+        tag('entry', { type, slug: query['fields.slug'] }),
+      ])
+    )()
+  )
+  return (entries && entries.length && entries[0]) || null
 }
 
-export const getAsset = contentfulClient.getAsset
-export const getAssets = contentfulClient.getAssets
+export const getAsset: typeof contentfulClient.getAsset = (...args) => {
+  const [id] = args
+  return queue.add(() =>
+    unstable_cache(
+      () => contentfulClient.getAsset(...args),
+      ['asset', JSON.stringify(args)],
+      cacheConfig(['asset', tag('asset', { id })])
+    )()
+  ) as Promise<Asset>
+}
+
+export const getAssets: typeof contentfulClient.getAssets = (...args) => {
+  return queue.add(() =>
+    unstable_cache(
+      () => contentfulClient.getAssets(...args),
+      ['assets', JSON.stringify(args)],
+      cacheConfig(['assets'])
+    )()
+  ) as Promise<AssetCollection>
+}

@@ -5,7 +5,10 @@ import { urlForEntrySlug } from '@/lib/entry'
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url)
-  if (searchParams.get('secret') !== process.env.CONTENTFUL_PREVIEW_SECRET) {
+  if (
+    process.env.NODE_ENV !== 'development' &&
+    searchParams.get('secret') !== process.env.CONTENTFUL_PREVIEW_SECRET
+  ) {
     return new Response('Invalid token', { status: 401 })
   }
 

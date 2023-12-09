@@ -27,7 +27,7 @@ export default function EntryLink({ className, entry, children, ...rest }: Props
   if (!url) return <a className={className}>Link type {entry.sys.contentType.sys.id} not found</a>
 
   return (
-    <NextLink {...rest} className={className} href={url} /* scroll={false} */>
+    <NextLink prefetch={false} {...rest} className={className} href={url} /* scroll={false} */>
       {children}
     </NextLink>
   )

@@ -1,19 +1,35 @@
-import { draftMode } from 'next/headers'
-import { redirect } from 'next/navigation'
+import { revalidateTag } from 'next/cache'
+import { tag } from '@/lib/cache'
 
-import { urlForEntrySlug } from '@/lib/entry'
+function revalidate(...tags: string[]) {
+  for (const tag of tags) {
+    console.log(`Revalidating "${tag}"`)
+    revalidateTag(tag)
+  }
+}
 
-export async function GET(request: Request) {
-  const { searchParams } = new URL(request.url)
-  if (searchParams.get('secret') !== process.env.CONTENTFUL_PREVIEW_SECRET) {
+export async function POST(request: Request) {
+  const secret = request.headers.get('X-Contentful-Secret')
+  const topic = request.headers.get('X-Contentful-Topic')
+  const body = await request.json()
+
+  if (process.env.NODE_ENV !== 'development' && secret !== process.env.CONTENTFUL_WEBHOOK_SECRET) {
     return new Response('Invalid token', { status: 401 })
   }
 
-  draftMode().enable()
+  if (topic?.startsWith('ContentManagement.Asset')) {
+    const id = body?.sys?.id
+    id && revalidate(tag('asset', { id }))
+    revalidate('assets')
+  }
 
-  const type = searchParams.get('type')
-  const slug = searchParams.get('slug')
-  const url = type && slug && urlForEntrySlug(type as any, slug)
+  if (topic?.startsWith('ContentManagement.Entry')) {
+    const type = body?.sys?.contentType?.sys?.id
+    const slug = body?.fields?.slug?.['en-US']
 
-  redirect(url || '/')
+    type && slug && revalidate(tag('entry', { type, slug }))
+    type && revalidate(tag('entries', { type }))
+  }
+
+  return Response.json({ ok: true })
 }
