@@ -114,7 +114,7 @@ export async function getEntries<T extends CONTENT_TYPE, C extends IEntry = Cont
       unstable_cache(
         () => getEntriesPage<C>({ query: _query }),
         ['entries', JSON.stringify(_query)],
-        cacheConfig(['entries', tag('entries', { type: _query.content_type })])
+        cacheConfig(['entries', tag('entries', { type })])
       )()
     )) || []
   )
