@@ -19,8 +19,7 @@ export async function POST(request: Request) {
 
   if (topic?.startsWith('ContentManagement.Asset')) {
     const id = body?.sys?.id
-    revalidate('asset')
-    // id && revalidate(tag('asset', { id }))
+    id && revalidate(tag('asset', { id }))
     revalidate('assets')
   }
 
@@ -28,11 +27,8 @@ export async function POST(request: Request) {
     const type = body?.sys?.contentType?.sys?.id
     const slug = body?.fields?.slug?.['en-US']
 
-    revalidate('entry')
-    revalidate('entries')
-
-    // type && slug && revalidate(tag('entry', { type, slug }))
-    // type && revalidate(tag('entries', { type }))
+    type && slug && revalidate(tag('entry', { type, slug }))
+    type && revalidate(tag('entries', { type }))
   }
 
   return Response.json({ ok: true })
