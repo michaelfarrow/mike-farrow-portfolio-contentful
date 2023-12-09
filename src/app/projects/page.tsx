@@ -2,9 +2,6 @@ import { getEntries } from '@/lib/contentful'
 
 import EntryLink from '@/components/general/entry-link'
 
-export const dynamic = 'force-static'
-export const dynamicParams = true
-
 export default async function Page() {
   const projects = await getEntries({
     content_type: 'project',
