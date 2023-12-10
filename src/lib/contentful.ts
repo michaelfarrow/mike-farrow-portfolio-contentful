@@ -57,7 +57,7 @@ function cacheConfig(tags: string[]) {
 }
 
 const maybeCache: typeof unstable_cache = (cb, ...rest) => {
-  if (DRAFT_MODE) return cb() as any
+  if (DRAFT_MODE) return cb
   return unstable_cache(cb, ...rest)
 }
 
