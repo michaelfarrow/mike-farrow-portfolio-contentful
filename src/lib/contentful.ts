@@ -6,10 +6,17 @@ import Queue from 'p-queue'
 import { tag } from '@/lib/cache'
 
 const queue = new Queue({ concurrency: 1 })
+let DRAFT_MODE = false
+
+try {
+  DRAFT_MODE = draftMode().isEnabled
+} catch (e) {
+  DRAFT_MODE = false
+}
 
 export const PREVIEW = Boolean(
   (process.env.NODE_ENV === 'development' && process.env.CONTENTFUL_PREVIEW_TOKEN) ||
-    (process.env.NODE_ENV === 'production' && draftMode().isEnabled)
+    (process.env.NODE_ENV === 'production' && DRAFT_MODE)
 )
 
 const SPACE_ID = process.env.CONTENTFUL_SPACE_ID
