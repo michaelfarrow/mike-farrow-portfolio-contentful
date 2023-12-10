@@ -1,25 +1,20 @@
 import { CONTENT_TYPE, IEntry } from '@t/contentful'
 import { Asset, AssetCollection, createClient } from 'contentful'
 import { unstable_cache } from 'next/cache'
+import { draftMode } from 'next/headers'
 import Queue from 'p-queue'
 import { tag } from '@/lib/cache'
 
 const queue = new Queue({ concurrency: 1 })
 
 export const PREVIEW = Boolean(
-  process.env.NODE_ENV === 'development' && process.env.CONTENTFUL_PREVIEW_TOKEN
-)
-
-export const LIVE_PREVIEW = Boolean(
-  process.env.NODE_ENV === 'production' &&
-    !process.env.NETLIFY &&
-    process.env.CONTENTFUL_PREVIEW_TOKEN
+  (process.env.NODE_ENV === 'development' && process.env.CONTENTFUL_PREVIEW_TOKEN) ||
+    (process.env.NODE_ENV === 'production' && draftMode().isEnabled)
 )
 
 const SPACE_ID = process.env.CONTENTFUL_SPACE_ID
 const ACCESS_TOKEN =
-  ((LIVE_PREVIEW || PREVIEW) && process.env.CONTENTFUL_PREVIEW_TOKEN) ||
-  process.env.CONTENTFUL_ACCESS_TOKEN
+  (PREVIEW && process.env.CONTENTFUL_PREVIEW_TOKEN) || process.env.CONTENTFUL_ACCESS_TOKEN
 
 if (!SPACE_ID) throw new Error('Contentful space id must be specified')
 if (!ACCESS_TOKEN) throw new Error('Contentful access token must be specified')
@@ -28,7 +23,7 @@ const contentfulClient = createClient({
   space: SPACE_ID,
   accessToken: ACCESS_TOKEN,
   environment: process.env.CONTENTFUL_ENVIRONMENT,
-  host: LIVE_PREVIEW || PREVIEW ? 'preview.contentful.com' : undefined,
+  host: PREVIEW ? 'preview.contentful.com' : undefined,
 })
 
 export default contentfulClient
