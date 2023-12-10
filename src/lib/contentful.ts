@@ -53,7 +53,7 @@ export type Query<T extends CONTENT_TYPE> = {
 }
 
 function cacheConfig(tags: string[]) {
-  return process.env.NODE_ENV === 'production' ? { tags } : { revalidate: 5 }
+  return process.env.NODE_ENV === 'production' && !DRAFT_MODE ? { tags } : { revalidate: 1 }
 }
 
 export type ContentType<P extends CONTENT_TYPE, T = IEntry> = T extends IEntry & {
