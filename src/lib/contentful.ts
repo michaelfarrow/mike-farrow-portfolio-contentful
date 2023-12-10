@@ -53,7 +53,12 @@ export type Query<T extends CONTENT_TYPE> = {
 }
 
 function cacheConfig(tags: string[]) {
-  return process.env.NODE_ENV === 'production' && !DRAFT_MODE ? { tags } : { revalidate: 1 }
+  return process.env.NODE_ENV === 'production' ? { tags } : { revalidate: 1 }
+}
+
+const maybeCache: typeof unstable_cache = (cb, ...rest) => {
+  if (DRAFT_MODE) return cb() as any
+  return unstable_cache(cb, ...rest)
 }
 
 export type ContentType<P extends CONTENT_TYPE, T = IEntry> = T extends IEntry & {
@@ -114,7 +119,7 @@ export async function getEntries<T extends CONTENT_TYPE, C extends IEntry = Cont
   const type = query.content_type
   return (
     (await queue.add(() =>
-      unstable_cache(
+      maybeCache(
         () => getEntriesPage<C>({ query: _query }),
         ['entries', JSON.stringify(_query)],
         cacheConfig(['entries', tag('entries', { type })])
@@ -129,7 +134,7 @@ export async function getEntry<T extends CONTENT_TYPE, C extends IEntry = Conten
   const type = query.content_type
   const slug = query['fields.slug']
   const entries = await queue.add(() =>
-    unstable_cache(
+    maybeCache(
       () => getEntriesPage<C>({ query, single: true }),
       ['entry', JSON.stringify(query)],
       cacheConfig(['entry', tag('entry', { type }), tag('entry', { type, slug })])
@@ -140,8 +145,9 @@ export async function getEntry<T extends CONTENT_TYPE, C extends IEntry = Conten
 
 export const getAsset: typeof contentfulClient.getAsset = (...args) => {
   const [id] = args
+
   return queue.add(() =>
-    unstable_cache(
+    maybeCache(
       () => contentfulClient.getAsset(...args),
       ['asset', JSON.stringify(args)],
       cacheConfig(['asset', tag('asset', { id })])
@@ -151,7 +157,7 @@ export const getAsset: typeof contentfulClient.getAsset = (...args) => {
 
 export const getAssets: typeof contentfulClient.getAssets = (...args) => {
   return queue.add(() =>
-    unstable_cache(
+    maybeCache(
       () => contentfulClient.getAssets(...args),
       ['assets', JSON.stringify(args)],
       cacheConfig(['assets'])
