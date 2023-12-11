@@ -2,6 +2,10 @@ import inngest from '@/lib/inngest/client'
 
 import { revalidateTag } from 'next/cache'
 
+async function wait(seconds: number) {
+  return new Promise((resolve) => setTimeout(resolve, seconds * 1000))
+}
+
 export default inngest.createFunction(
   {
     id: 'cache-revalidate-tag',
@@ -13,17 +17,12 @@ export default inngest.createFunction(
     event: 'cache/revalidate.tag',
   },
   async ({
-    step,
     event: {
       data: { tag },
     },
   }) => {
-    await step.run('Revalidate tag', async () => {
-      await revalidateTag(tag)
-      return new Promise((resolve) => {
-        setTimeout(resolve, 5 * 1000)
-      })
-    })
+    await revalidateTag(tag)
+    await wait(3)
 
     return { ok: true }
   }
