@@ -77,7 +77,7 @@ export function editLink(entry: IEntry) {
 }
 
 const apiRequest = throttle((endpoint: string, query: any = {}, tags?: string[]) => {
-  console.log('apiRequest', endpoint, query, tags)
+  // console.log('apiRequest', endpoint, query, tags)
   const url = new URL(`${BASE_URL}/${endpoint}`)
   url.search = new URLSearchParams({ access_token: ACCESS_TOKEN || '', ...query }).toString()
   return fetch(url.toString(), {

@@ -18,7 +18,7 @@ export default inngest.createFunction(
       data: { id },
     },
   }) => {
-    const photo = await step.run('Get photo asset data', async () => (await getAsset(id)).fields)
+    const photo = await step.run('Get photo asset data', async () => (await getAsset(id))?.fields)
 
     if (photo) {
       const exifInfo = await step.run(
