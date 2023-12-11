@@ -5,12 +5,30 @@ import { draftMode } from 'next/headers'
 import pThrottle from 'p-throttle'
 import { tag } from '@/lib/cache'
 
-const PER_PAGE = 100
+let DRAFT = false
+
+try {
+  DRAFT = draftMode().isEnabled
+} catch (e) {
+  DRAFT = false
+}
+
+const PREVIEW = Boolean(
+  (process.env.NODE_ENV === 'development' && process.env.CONTENTFUL_PREVIEW_TOKEN) ||
+    (process.env.NODE_ENV === 'production' && DRAFT)
+)
+
 const SPACE = process.env.CONTENTFUL_SPACE_ID
 const ENVIRONMENT = process.env.CONTENTFUL_ENVIRONMENT
+const TOKEN =
+  (PREVIEW && process.env.CONTENTFUL_PREVIEW_TOKEN) || process.env.CONTENTFUL_ACCESS_TOKEN
+const HOST = PREVIEW ? 'preview.contentful.com' : 'cdn.contentful.com'
+const BASE_URL = `https://${HOST}/spaces/${SPACE}/environments/${ENVIRONMENT}`
+const RATE_LIMIT = PREVIEW ? 14 : 55
+const PER_PAGE = 100
 
 const throttle = pThrottle({
-  limit: 50,
+  limit: RATE_LIMIT,
   interval: 1000,
 })
 
@@ -53,30 +71,11 @@ export function editLink(entry: IEntry) {
 }
 
 const apiRequest = throttle((endpoint: string, query: any = {}, tags?: string[]) => {
-  let draft = false
-
-  try {
-    draft = draftMode().isEnabled
-  } catch (e) {
-    draft = false
-  }
-
-  const preview = Boolean(
-    (process.env.NODE_ENV === 'development' && process.env.CONTENTFUL_PREVIEW_TOKEN) ||
-      (process.env.NODE_ENV === 'production' && draft)
-  )
-
-  const token =
-    (preview && process.env.CONTENTFUL_PREVIEW_TOKEN) || process.env.CONTENTFUL_ACCESS_TOKEN
-  const host = preview ? 'preview.contentful.com' : 'cdn.contentful.com'
-
-  const baseUrl = `https://${host}/spaces/${SPACE}/environments/${ENVIRONMENT}`
-
   // console.log('apiRequest', endpoint, query, tags)
-  const url = new URL(`${baseUrl}/${endpoint}`)
-  url.search = new URLSearchParams({ access_token: token || '', ...query }).toString()
+  const url = new URL(`${BASE_URL}/${endpoint}`)
+  url.search = new URLSearchParams({ access_token: TOKEN || '', ...query }).toString()
   return fetch(url.toString(), {
-    cache: preview ? 'no-cache' : undefined,
+    cache: PREVIEW ? 'no-cache' : undefined,
     // next: {
     //   tags: preview ? undefined : tags,
     // },
