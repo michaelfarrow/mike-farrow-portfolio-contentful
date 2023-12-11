@@ -1,11 +1,11 @@
-import { revalidateTag } from 'next/cache'
 import { get as _get } from 'lodash'
 import { tag } from '@/lib/cache'
+import inngest from '@/lib/inngest/client'
 
 async function revalidate(...tags: string[]) {
   for (const tag of tags) {
-    console.log(`Revalidating "${tag}"`)
-    await revalidateTag(tag)
+    console.log(`Queuing revalidation of "${tag}"`)
+    await inngest.send({ name: 'cache/revalidate.tag', data: { tag } })
   }
 }
 

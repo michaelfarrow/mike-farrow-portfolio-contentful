@@ -63,6 +63,8 @@ type Events = {
     url: string
     edit: string
   }>
+  'cache/revalidate.tags': Data<{ tags: string[] }>
+  'cache/revalidate.tag': Data<{ tag: string }>
   'products/check.cameraworld': {}
   'products/check.cameraworld-product': Id<{
     target?: number
