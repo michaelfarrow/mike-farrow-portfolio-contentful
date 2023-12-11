@@ -2,10 +2,10 @@ import { revalidateTag } from 'next/cache'
 import { get as _get } from 'lodash'
 import { tag } from '@/lib/cache'
 
-function revalidate(...tags: string[]) {
+async function revalidate(...tags: string[]) {
   for (const tag of tags) {
     console.log(`Revalidating "${tag}"`)
-    revalidateTag(tag)
+    await revalidateTag(tag)
   }
 }
 
@@ -30,8 +30,8 @@ export async function POST(request: Request) {
 
   if (topic?.startsWith('ContentManagement.Asset')) {
     const id = get('sys.id')
-    id && revalidate(tag('asset', { id }))
-    revalidate('assets')
+    id && (await revalidate(tag('asset', { id })))
+    await revalidate('assets')
   }
 
   if (topic?.startsWith('ContentManagement.Entry')) {
@@ -40,10 +40,10 @@ export async function POST(request: Request) {
 
     if (type === 'setting') {
       const prefix = get('fields.key.en-US')?.split(/\./)?.[0]
-      revalidate(tag('entries', { type: 'setting', prefix }))
+      await revalidate(tag('entries', { type: 'setting', prefix }))
     } else if (type) {
-      revalidate(tag('entry', { type, slug }))
-      revalidate(tag('entries', { type }))
+      await revalidate(tag('entry', { type, slug }))
+      await revalidate(tag('entries', { type }))
     }
   }
 

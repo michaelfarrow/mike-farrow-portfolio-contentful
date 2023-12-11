@@ -124,11 +124,10 @@ export async function getEntries<T extends CONTENT_TYPE, C extends IEntry = Cont
   query: Query<T>,
   tags: string[] = []
 ) {
-  const _query = { order: 'sys.createdAt', ...query }
   const type = query.content_type
 
   return getEntriesPage<C>({
-    query: _query,
+    query: { order: 'sys.createdAt', ...query },
     tags: ['entries', tag('entries', { type }), ...tags],
   })
 }
