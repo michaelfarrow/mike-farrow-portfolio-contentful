@@ -41,9 +41,9 @@ export async function POST(request: Request) {
     if (type === 'setting') {
       const prefix = get('fields.key.en-US')?.split(/\./)?.[0]
       revalidate(tag('entries', { type: 'setting', prefix }))
-    } else {
-      type && slug && revalidate(tag('entry', { type, slug }))
-      type && revalidate(tag('entries', { type }))
+    } else if (type) {
+      revalidate(tag('entry', { type, slug }))
+      revalidate(tag('entries', { type }))
     }
   }
 
