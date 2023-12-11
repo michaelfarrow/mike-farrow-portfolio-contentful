@@ -5,10 +5,15 @@ import { revalidateTag } from 'next/cache'
 
 export const dynamic = 'force-dynamic'
 
+async function wait(seconds: number) {
+  return new Promise((resolve) => setTimeout(resolve, seconds * 1000))
+}
+
 async function revalidate(...tags: string[]) {
   for (const tag of tags) {
-    console.log(`Queuing revalidation of "${tag}"`)
+    console.log(`Revalidating of "${tag}"`)
     await revalidateTag(tag)
+    await wait(1)
     // await inngest.send({ name: 'cache/revalidate.tag', data: { tag } })
   }
 }
