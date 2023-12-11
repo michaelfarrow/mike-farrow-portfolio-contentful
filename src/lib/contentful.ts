@@ -78,7 +78,7 @@ const apiRequest = throttle((endpoint: string, query: any = {}, tags?: string[])
   const url = new URL(`${baseUrl}/${endpoint}`)
   url.search = new URLSearchParams({ access_token: token || '', ...query }).toString()
   return fetch(url.toString(), {
-    cache: preview ? 'no-cache' : 'no-cache',
+    cache: preview ? 'no-cache' : 'force-cache',
     next: {
       tags: preview ? undefined : tags,
     },
