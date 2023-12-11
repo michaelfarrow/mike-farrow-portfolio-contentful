@@ -10,7 +10,7 @@ const SPACE = process.env.CONTENTFUL_SPACE_ID
 const ENVIRONMENT = process.env.CONTENTFUL_ENVIRONMENT
 
 const throttle = pThrottle({
-  limit: 10,
+  limit: 50,
   interval: 1000,
 })
 
