@@ -43,7 +43,7 @@
     "format-duration": "^3.0.2",
     "inngest": "^3.4.4",
     "lodash": "^4.17.21",
-    "next": "^14.0.4",
+    "next": "^14.0.5-canary.7",
     "normalize.css": "^8.0.1",
     "num2fraction": "^1.2.2",
     "p-throttle": "^6.1.0",

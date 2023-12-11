@@ -1,9 +1,7 @@
 import { get as _get } from 'lodash'
 import { tag } from '@/lib/cache'
-import inngest from '@/lib/inngest/client'
-// import { revalidateTag } from 'next/cache'
-
-export const dynamic = 'force-dynamic'
+// import inngest from '@/lib/inngest/client'
+import { revalidateTag } from 'next/cache'
 
 async function wait(seconds: number) {
   return new Promise((resolve) => setTimeout(resolve, seconds * 1000))
@@ -12,9 +10,9 @@ async function wait(seconds: number) {
 async function revalidate(...tags: string[]) {
   for (const tag of tags) {
     console.log(`Revalidating of "${tag}"`)
-    // await revalidateTag(tag)
-    // await wait(1)
-    await inngest.send({ name: 'cache/revalidate.tag', data: { tag } })
+    await revalidateTag(tag)
+    await wait(1)
+    // await inngest.send({ name: 'cache/revalidate.tag', data: { tag } })
   }
 }
 
