@@ -53,9 +53,17 @@ export function editLink(entry: IEntry) {
 }
 
 const apiRequest = throttle((endpoint: string, query: any = {}, tags?: string[]) => {
+  let draft = false
+
+  try {
+    draft = draftMode().isEnabled
+  } catch (e) {
+    draft = false
+  }
+
   const preview = Boolean(
     (process.env.NODE_ENV === 'development' && process.env.CONTENTFUL_PREVIEW_TOKEN) ||
-      (process.env.NODE_ENV === 'production' && draftMode().isEnabled)
+      (process.env.NODE_ENV === 'production' && draft)
   )
 
   const token =
