@@ -61,10 +61,12 @@ const apiRequest = throttle((endpoint: string, query: any = {}, tags?: string[])
     draft = false
   }
 
-  const preview = Boolean(
-    (process.env.NODE_ENV === 'development' && process.env.CONTENTFUL_PREVIEW_TOKEN) ||
-      (process.env.NODE_ENV === 'production' && draft)
-  )
+  // const preview = Boolean(
+  //   (process.env.NODE_ENV === 'development' && process.env.CONTENTFUL_PREVIEW_TOKEN) ||
+  //     (process.env.NODE_ENV === 'production' && draft)
+  // )
+
+  const preview = false
 
   const token =
     (preview && process.env.CONTENTFUL_PREVIEW_TOKEN) || process.env.CONTENTFUL_ACCESS_TOKEN
@@ -76,7 +78,7 @@ const apiRequest = throttle((endpoint: string, query: any = {}, tags?: string[])
   const url = new URL(`${baseUrl}/${endpoint}`)
   url.search = new URLSearchParams({ access_token: token || '', ...query }).toString()
   return fetch(url.toString(), {
-    cache: preview ? 'no-cache' : undefined,
+    cache: preview ? 'no-cache' : 'default',
     next: {
       tags: preview ? undefined : tags,
     },
