@@ -61,12 +61,10 @@ const apiRequest = throttle((endpoint: string, query: any = {}, tags?: string[])
     draft = false
   }
 
-  // const preview = Boolean(
-  //   (process.env.NODE_ENV === 'development' && process.env.CONTENTFUL_PREVIEW_TOKEN) ||
-  //     (process.env.NODE_ENV === 'production' && draft)
-  // )
-
-  const preview = false
+  const preview = Boolean(
+    (process.env.NODE_ENV === 'development' && process.env.CONTENTFUL_PREVIEW_TOKEN) ||
+      (process.env.NODE_ENV === 'production' && draft)
+  )
 
   const token =
     (preview && process.env.CONTENTFUL_PREVIEW_TOKEN) || process.env.CONTENTFUL_ACCESS_TOKEN
