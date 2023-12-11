@@ -55,6 +55,7 @@ export type Query<T extends CONTENT_TYPE> = {
 }
 
 function cacheConfig(tags: string[]) {
+  return { revalidate: 5 }
   return { tags }
 }
 
