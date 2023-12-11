@@ -25,8 +25,6 @@ import photosUploadPhoto from '@/lib/inngest/photos/upload-photo'
 import productsCheckCameraworld from '@/lib/inngest/products/check-cameraworld'
 import productsCheckCameraworldProduct from '@/lib/inngest/products/check-cameraworld-product'
 
-export const dynamic = 'force-dynamic'
-
 export const { GET, POST, PUT } = serve({
   client: inngest,
   functions: [
