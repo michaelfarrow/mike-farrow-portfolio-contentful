@@ -7,9 +7,6 @@ import cronCheckProducts from '@/lib/inngest/cron/check-products'
 
 import generalBatchIds from '@/lib/inngest/general/batch-ids'
 
-import cacheRevalidateTags from '@/lib/inngest/cache/revalidate-tags'
-import cacheRevalidateTag from '@/lib/inngest/cache/revalidate-tag'
-
 import linksCheckEntryLinks from '@/lib/inngest/links/check-entry-links'
 import linksCheckEntryLinksBatch from '@/lib/inngest/links/check-entry-links-batch'
 import linksCheckContentLinks from '@/lib/inngest/links/check-content-links'
@@ -32,9 +29,6 @@ export const { GET, POST, PUT } = serve({
     cronCheckProducts,
 
     generalBatchIds,
-
-    cacheRevalidateTags,
-    cacheRevalidateTag,
 
     linksCheckEntryLinks,
     linksCheckEntryLinksBatch,
