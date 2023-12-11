@@ -28,8 +28,6 @@ type BatchDispatch = {
 }[keyof SupportBatch]
 
 type Events = {
-  'cron-check-links': {}
-  'cron-check-products': {}
   'general/batch.ids': Data<{
     type: CONTENT_TYPE
     chunk: number
