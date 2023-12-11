@@ -9,12 +9,6 @@ async function revalidate(...tags: string[]) {
   }
 }
 
-function wait(seconds: number) {
-  return new Promise((resolve) => {
-    setTimeout(resolve, seconds * 1000)
-  })
-}
-
 export async function POST(request: Request) {
   const secret = request.headers.get('X-Contentful-Secret')
   const topic = request.headers.get('X-Contentful-Topic')
@@ -42,12 +36,9 @@ export async function POST(request: Request) {
       const prefix = get('fields.key.en-US')?.split(/\./)?.[0]
       await revalidate(tag('entries', { type: 'setting', prefix }))
     } else if (type) {
-      await revalidate(tag('entry', { type, slug }))
-      await revalidate(tag('entries', { type }))
+      await revalidate(tag('entry', { type, slug }), tag('entries', { type }))
     }
   }
-
-  await wait(5)
 
   return Response.json({ ok: true })
 }
