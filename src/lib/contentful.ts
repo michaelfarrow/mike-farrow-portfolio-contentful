@@ -5,42 +5,18 @@ import { draftMode } from 'next/headers'
 import pThrottle from 'p-throttle'
 import { tag } from '@/lib/cache'
 
-let DRAFT_MODE = false
-
-try {
-  DRAFT_MODE = draftMode().isEnabled
-} catch (e) {
-  DRAFT_MODE = false
-}
-
-export const PREVIEW = Boolean(
-  (process.env.NODE_ENV === 'development' && process.env.CONTENTFUL_PREVIEW_TOKEN) ||
-    (process.env.NODE_ENV === 'production' && DRAFT_MODE)
-)
-
-const SPACE_ID = process.env.CONTENTFUL_SPACE_ID
-const ENVIRONMENT = process.env.CONTENTFUL_ENVIRONMENT
-const ACCESS_TOKEN =
-  (PREVIEW && process.env.CONTENTFUL_PREVIEW_TOKEN) || process.env.CONTENTFUL_ACCESS_TOKEN
-const HOST = PREVIEW ? 'preview.contentful.com' : 'cdn.contentful.com'
-const RATE_LIMIT = PREVIEW ? 14 : 55
-
-if (!SPACE_ID) throw new Error('Contentful space id must be specified')
-if (!ACCESS_TOKEN) throw new Error('Contentful access token must be specified')
-
 const PER_PAGE = 100
-const BASE_URL = `https://${HOST}/spaces/${SPACE_ID}/environments/${ENVIRONMENT}`
+const SPACE = process.env.CONTENTFUL_SPACE_ID
+const ENVIRONMENT = process.env.CONTENTFUL_ENVIRONMENT
 
 const throttle = pThrottle({
-  limit: RATE_LIMIT,
+  limit: 10,
   interval: 1000,
 })
 
 const contentful = createClient({
-  accessToken: ACCESS_TOKEN,
-  space: SPACE_ID,
-  environment: ENVIRONMENT,
-  host: HOST,
+  accessToken: '-',
+  space: '-',
 })
 
 type GetEntriesPageParams<T> = {
@@ -73,17 +49,28 @@ export function isContentType<T extends CONTENT_TYPE>(
 }
 
 export function editLink(entry: IEntry) {
-  return `https://app.contentful.com/spaces/${SPACE_ID}/entries/${entry.sys.id}`
+  return `https://app.contentful.com/spaces/${SPACE}/entries/${entry.sys.id}`
 }
 
 const apiRequest = throttle((endpoint: string, query: any = {}, tags?: string[]) => {
+  const preview = Boolean(
+    (process.env.NODE_ENV === 'development' && process.env.CONTENTFUL_PREVIEW_TOKEN) ||
+      (process.env.NODE_ENV === 'production' && draftMode().isEnabled)
+  )
+
+  const token =
+    (preview && process.env.CONTENTFUL_PREVIEW_TOKEN) || process.env.CONTENTFUL_ACCESS_TOKEN
+  const host = preview ? 'preview.contentful.com' : 'cdn.contentful.com'
+
+  const baseUrl = `https://${host}/spaces/${SPACE}/environments/${ENVIRONMENT}`
+
   // console.log('apiRequest', endpoint, query, tags)
-  const url = new URL(`${BASE_URL}/${endpoint}`)
-  url.search = new URLSearchParams({ access_token: ACCESS_TOKEN || '', ...query }).toString()
+  const url = new URL(`${baseUrl}/${endpoint}`)
+  url.search = new URLSearchParams({ access_token: token || '', ...query }).toString()
   return fetch(url.toString(), {
-    cache: PREVIEW ? 'no-cache' : undefined,
+    cache: preview ? 'no-cache' : undefined,
     next: {
-      tags: PREVIEW ? undefined : tags,
+      tags: preview ? undefined : tags,
     },
   })
 })
