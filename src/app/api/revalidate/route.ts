@@ -1,4 +1,5 @@
-import { revalidatePath, revalidateTag } from 'next/cache'
+import { revalidateTag } from 'next/cache'
+import { get as _get } from 'lodash'
 import { tag } from '@/lib/cache'
 
 function revalidate(...tags: string[]) {
@@ -17,18 +18,27 @@ export async function POST(request: Request) {
     return new Response('Invalid token', { status: 401 })
   }
 
+  const get = <T = string>(path: string): T | undefined => {
+    return _get(body, path)
+  }
+
   if (topic?.startsWith('ContentManagement.Asset')) {
-    const id = body?.sys?.id
+    const id = get('sys.id')
     id && revalidate(tag('asset', { id }))
     revalidate('assets')
   }
 
   if (topic?.startsWith('ContentManagement.Entry')) {
-    const type = body?.sys?.contentType?.sys?.id
-    const slug = body?.fields?.slug?.['en-US']
+    const type = get('sys.contentType.sys.id')
+    const slug = get('fields.slug.en-US')
 
-    type && slug && revalidate(tag('entry', { type, slug }))
-    type && revalidate(tag('entries', { type }))
+    if (type === 'setting') {
+      const prefix = get('fields.key.en-US')?.split(/\./)?.[0]
+      revalidate(tag('entries', { type: 'setting', prefix }))
+    } else {
+      type && slug && revalidate(tag('entry', { type, slug }))
+      type && revalidate(tag('entries', { type }))
+    }
   }
 
   return Response.json({ ok: true })

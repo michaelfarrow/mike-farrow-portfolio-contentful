@@ -6,6 +6,8 @@ import Queue from 'p-queue'
 import { tag } from '@/lib/cache'
 
 const queue = new Queue({ concurrency: 1 })
+
+const DEBUG_CACHE = false
 let DRAFT_MODE = false
 
 try {
@@ -53,11 +55,11 @@ export type Query<T extends CONTENT_TYPE> = {
 }
 
 function cacheConfig(tags: string[]) {
-  return process.env.NODE_ENV === 'production' ? { tags } : { revalidate: 1 }
+  return { tags }
 }
 
 const maybeCache: typeof unstable_cache = (cb, ...rest) => {
-  if (DRAFT_MODE) return cb
+  if (DRAFT_MODE || !DEBUG_CACHE) return cb
   return unstable_cache(cb, ...rest)
 }
 
@@ -85,7 +87,7 @@ export async function getEntriesPage<T extends IEntry>({
   entries = [],
   perPage = PER_PAGE,
 }: GetEntriesPageParams<T>): Promise<T[]> {
-  // console.log('fetch', query)
+  DEBUG_CACHE && console.log('fetch', query)
   return await contentfulClient
     .getEntries<T>({
       ...query,
@@ -113,7 +115,8 @@ export async function getEntriesPage<T extends IEntry>({
 }
 
 export async function getEntries<T extends CONTENT_TYPE, C extends IEntry = ContentType<T>>(
-  query: Query<T>
+  query: Query<T>,
+  tags: string[] = []
 ) {
   const _query = { order: 'sys.createdAt', ...query }
   const type = query.content_type
@@ -122,14 +125,15 @@ export async function getEntries<T extends CONTENT_TYPE, C extends IEntry = Cont
       maybeCache(
         () => getEntriesPage<C>({ query: _query }),
         ['entries', JSON.stringify(_query)],
-        cacheConfig(['entries', tag('entries', { type })])
+        cacheConfig(['entries', tag('entries', { type }), ...tags])
       )()
     )) || []
   )
 }
 
 export async function getEntry<T extends CONTENT_TYPE, C extends IEntry = ContentType<T>>(
-  query: Query<T>
+  query: Query<T>,
+  tags: string[] = []
 ) {
   const type = query.content_type
   const slug = query['fields.slug']
@@ -137,7 +141,7 @@ export async function getEntry<T extends CONTENT_TYPE, C extends IEntry = Conten
     maybeCache(
       () => getEntriesPage<C>({ query, single: true }),
       ['entry', JSON.stringify(query)],
-      cacheConfig(['entry', tag('entry', { type }), tag('entry', { type, slug })])
+      cacheConfig(['entry', tag('entry', { type }), tag('entry', { type, slug }), ...tags])
     )()
   )
   return (entries && entries.length && entries[0]) || null

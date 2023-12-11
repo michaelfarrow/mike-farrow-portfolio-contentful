@@ -1,5 +1,6 @@
 import { ISettingFields } from '@t/contentful'
 import { getEntries } from '@/lib/contentful'
+import { tag } from '@/lib/cache'
 
 type SettingKey = ISettingFields['key']
 
@@ -11,10 +12,13 @@ type SettingPrefixKeyMap = {
 }
 
 export async function getSettings(prefix?: SettingPrefix) {
-  const settings = await getEntries({
-    content_type: 'setting',
-    ...((prefix && { 'fields.key[match]': `^${prefix}` }) || {}),
-  })
+  const settings = await getEntries(
+    {
+      content_type: 'setting',
+      ...((prefix && { 'fields.key[match]': `^${prefix}` }) || {}),
+    },
+    (prefix && [tag('entries', { type: 'setting', prefix })]) || []
+  )
 
   const mapped = settings.map((setting) => setting.fields)
   return mapped
