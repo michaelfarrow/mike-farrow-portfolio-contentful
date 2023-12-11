@@ -2,6 +2,8 @@ import inngest from '@/lib/inngest/client'
 
 import { revalidateTag } from 'next/cache'
 
+export const runtime = 'edge'
+
 export default inngest.createFunction(
   {
     id: 'cache-revalidate-tag',
