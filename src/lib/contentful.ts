@@ -55,12 +55,11 @@ export type Query<T extends CONTENT_TYPE> = {
 }
 
 function cacheConfig(tags: string[]) {
-  return { revalidate: 5 }
   return { tags }
 }
 
 const maybeCache: typeof unstable_cache = (cb, ...rest) => {
-  if (DRAFT_MODE || !DEBUG_CACHE) return cb
+  if (DRAFT_MODE || (process.env.NODE_ENV === 'development' && !DEBUG_CACHE)) return cb
   return unstable_cache(cb, ...rest)
 }
 
