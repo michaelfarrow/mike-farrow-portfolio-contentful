@@ -9,6 +9,12 @@ function revalidate(...tags: string[]) {
   }
 }
 
+function wait(seconds: number) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, seconds * 1000)
+  })
+}
+
 export async function POST(request: Request) {
   const secret = request.headers.get('X-Contentful-Secret')
   const topic = request.headers.get('X-Contentful-Topic')
@@ -40,6 +46,8 @@ export async function POST(request: Request) {
       type && revalidate(tag('entries', { type }))
     }
   }
+
+  await wait(5)
 
   return Response.json({ ok: true })
 }
