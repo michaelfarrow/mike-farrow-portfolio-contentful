@@ -4,6 +4,7 @@ import { Asset } from 'contentful'
 import numToFraction from 'num2fraction'
 
 import { getRemoteBuffer } from '@/lib/file'
+import { createUrl } from '@/lib/url'
 
 export type ImageAssetParams = {
   asset: Asset
@@ -87,10 +88,7 @@ export function imageAssetProps({
   }
 
   return {
-    src: `${src}?${Object.entries(params)
-      .filter(([{}, v]) => v !== undefined)
-      .map(([k, v]) => `${k}=${v}`)
-      .join('&')}`,
+    src: createUrl(src, params),
     alt: alt || assetAlt,
     width: _width,
     height: _height,

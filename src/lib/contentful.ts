@@ -1,9 +1,9 @@
-import { URL } from 'url'
 import { CONTENT_TYPE, IEntry } from '@t/contentful'
 import { Asset, createClient } from 'contentful'
 import { draftMode } from 'next/headers'
 import pThrottle from 'p-throttle'
 import { tag } from '@/lib/cache'
+import { createUrl } from '@/lib/url'
 
 let DRAFT = false
 
@@ -72,9 +72,7 @@ export function editLink(entry: IEntry) {
 
 const apiRequest = throttle((endpoint: string, query: any = {}, tags?: string[]) => {
   // console.log('apiRequest', endpoint, query, tags)
-  const url = new URL(`${BASE_URL}/${endpoint}`)
-  url.search = new URLSearchParams({ access_token: TOKEN || '', ...query }).toString()
-  return fetch(url.toString(), {
+  return fetch(createUrl(`${BASE_URL}/${endpoint}`, { access_token: TOKEN || '', ...query }), {
     cache: PREVIEW ? 'no-cache' : undefined,
     // next: {
     //   tags: preview ? undefined : tags,
