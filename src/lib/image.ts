@@ -128,7 +128,10 @@ export function normaliseExifData(data: ExifData): NormalisedExifData {
   }
 
   const processed: ProcessedExifTags = {
-    camera: model?.replace(/[mM](\d)+/g, ({}, digit: number) => ` Mark ${'I'.repeat(digit)}`),
+    camera: model?.replace(
+      /[mM](\d)+/g,
+      ({}, digit: string) => ` Mark ${'I'.repeat(Number(digit))}`
+    ),
     lens: lens?.replace(/(?<=RF)(?=\d)/g, ' '),
     settings,
   }
