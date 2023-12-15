@@ -53,10 +53,10 @@ export type Query<T extends CONTENT_TYPE> = {
   [key: string]: any
 }
 
-export type ContentType<P extends CONTENT_TYPE, T = IEntry> = T extends IEntry & {
-  sys: { contentType: { sys: { id: P } } }
+export type ContentType<T extends CONTENT_TYPE, E = IEntry> = E extends IEntry & {
+  sys: { contentType: { sys: { id: T } } }
 }
-  ? T
+  ? E
   : never
 
 export function isContentType<T extends CONTENT_TYPE>(
