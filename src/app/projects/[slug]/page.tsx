@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import clsx from 'clsx'
 
+import Locked from '@/components/global/locked'
 import TOC from '@/components/content/toc'
 import RichText from '@/components/content/page-rich-text'
 import Attributions from '@/components/project/attributions'
@@ -41,10 +42,10 @@ export async function generateMetadata({
   if (!project) return notFound()
 
   const {
-    fields: { name, hideFromSearch },
+    fields: { name, hideFromSearch, private: isPrivate },
   } = project
 
-  return { title: name, robots: hideFromSearch ? 'noindex' : undefined }
+  return { title: name, robots: hideFromSearch || isPrivate ? 'noindex' : undefined }
 }
 
 export async function generateStaticParams() {
@@ -63,11 +64,20 @@ export default async function Page({ params: { slug } }: { params: Params }) {
   const project = await getProject(slug)
   if (!project) return notFound()
 
-  const { name, date, colour, categories, description, content, thumbnail, attributions } =
-    project.fields
+  const {
+    name,
+    date,
+    colour,
+    categories,
+    description,
+    content,
+    thumbnail,
+    attributions,
+    private: isPrivate,
+  } = project.fields
 
   return (
-    <>
+    <Locked show={!isPrivate}>
       {/* <ReadingTime
         key={`/projects/${slug}`}
         content={
@@ -130,6 +140,6 @@ export default async function Page({ params: { slug } }: { params: Params }) {
       {/* )} */}
       {/* </ReadingTime> */}
       {attributions?.length ? <Attributions entries={attributions} /> : null}
-    </>
+    </Locked>
   )
 }

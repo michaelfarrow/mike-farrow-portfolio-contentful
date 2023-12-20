@@ -13,6 +13,7 @@
     "inngest": "npx inngest-cli@latest dev"
   },
   "devDependencies": {
+    "@types/cookie": "^0.6.0",
     "@types/lodash": "^4.14.191",
     "@types/node": "18.14.6",
     "@types/num2fraction": "^1.2.1",
@@ -38,6 +39,7 @@
     "contentful": "^9.3.3",
     "contentful-management": "^10.30.0",
     "contentful-typescript-codegen": "^3.4.0",
+    "cookie": "^0.6.0",
     "dayjs": "^1.11.7",
     "dotenv": "^16.0.3",
     "format-duration": "^3.0.2",
@@ -58,7 +60,9 @@
     "reading-time": "^1.5.0",
     "refractor": "^4.8.1",
     "sass": "^1.59.3",
-    "ts-exif-parser": "^0.2.2"
+    "ts-exif-parser": "^0.2.2",
+    "zod": "^3.22.4",
+    "zod-validation-error": "^2.1.0"
   },
   "prettier": {
     "semi": false,

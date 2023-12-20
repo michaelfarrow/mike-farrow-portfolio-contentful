@@ -519,6 +519,9 @@ export interface IProjectFields {
 
   /** Hide from Seach Engines */
   hideFromSearch: boolean
+
+  /** Private */
+  private?: boolean | undefined
 }
 
 export interface IProject extends Entry<IProjectFields> {
